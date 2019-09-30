@@ -24,7 +24,11 @@
         @include('layouts.nav')
 
         <main class="py-6">
-            @yield('content')
+            <div class="container">
+                <div class="row justify-center">
+                    @yield('content')
+                </div>
+            </div>
         </main>
 
         <flash message="{{ session('flash.message') }}" baselevel="{{ session('flash.level') }}"></flash>

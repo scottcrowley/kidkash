@@ -12,7 +12,7 @@ body {
     @apply flex flex-wrap -mx-4
 }
 
-.col-8, .col-6, .col-4, .offset-4, .offset-6, .offset-8 {
+.col-10, .col-8, .col-6, .col-4, .offset-4, .offset-6, .offset-8 {
     @apply relative w-full px-4;
 }
 
@@ -45,7 +45,7 @@ body {
 }
 
 div {
-    &.success, .warning, .danger {
+    &.success, &.warning, &.danger {
         @apply py-4 px-6 border rounded;
     }
     &.success {
@@ -136,8 +136,12 @@ div {
         @apply max-w-3xl;
     }
     
-    .col-8, .col-6, .col-4 {
+    .col-10, .col-8, .col-6, .col-4 {
         @apply flex-grow-0 flex-shrink-0
+    }
+
+    .col-10 {
+        @apply w-5/6;
     }
 
     .col-8 {
