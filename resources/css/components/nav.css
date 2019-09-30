@@ -25,6 +25,37 @@
     @apply block pb-0;
 }
 
+.subnav {
+    &.collapsable {
+        @apply hidden;
+    }
+
+    & a {
+        @apply text-left ml-2;
+
+        &:hover {
+            @apply border-b-2 border-secondary-500 text-secondary-900;
+        }
+    }
+
+    & a:first-child {
+        @apply ml-0;
+    }
+}
+
+.dropdown-menu .subnav {
+    @apply block;
+
+    & a {
+        @apply block no-underline text-sm leading-loose px-4 text-secondary-800 text-left ml-0;
+
+        &:hover {
+            @apply border-none no-underline text-secondary-800;
+            background: rgba(0, 0, 0, 0.1);
+        }
+    }
+}
+
 @screen sm {
 }
 
@@ -39,6 +70,14 @@
 
     .navbar .nav-link {
         @apply px-2;
+    }
+
+    .subnav.collapsable {
+        @apply block mr-auto;
+    }
+
+    .dropdown-menu .subnav {
+        @apply hidden;
     }
 }
 

@@ -5,8 +5,8 @@
         </a>
         <div class="flex items-center flex-1">
             <!-- Left Side Of Navbar -->
-            <div class="mr-auto">
-
+            <div class="subnav collapsable">
+                @include('layouts.subnav')
             </div>
 
             <!-- Right Side Of Navbar -->
@@ -49,7 +49,9 @@
                             </div>
                         </div>
 
-                        <a href="#" class="dropdown-menu-link w-full text-left">Link 1</a>
+                        <div class="subnav">
+                            @include('layouts.subnav')
+                        </div>
                         <a href="#" class="dropdown-menu-link w-full text-left"
                             onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">  
