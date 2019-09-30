@@ -89,27 +89,15 @@ div {
     }
 }
 
-.form-control {
-    @apply block w-full h-8 text-sm font-normal leading-relaxed text-secondary-700 bg-white py-1 px-3 border border-secondary-300 rounded;
+.checkbox-label {
+    @apply inline-flex items-center;
 
-    &:focus {
-        @apply outline-none shadow-outline border-primary-200;
+    & :first-child {
+        @apply mr-2;
     }
 }
 
-.form-checkbox {
-    @apply block relative pl-5;
-
-    & input[type="checkbox"] {
-        @apply absolute mt-1 -ml-5;
-    }
-
-    & input {
-        @apply mb-0;
-    }
-}
-
-.offset-4, .offset-6, .offset-8 {
+.offset-4, .offset-6, .offset-8, .offset-10 {
     @apply ml-auto;
 }
 
@@ -123,6 +111,10 @@ div {
 
 .offset-8 {
     @apply w-1/3;
+}
+
+.offset-10 {
+    @apply w-1/6;
 }
 
 @screen sm {

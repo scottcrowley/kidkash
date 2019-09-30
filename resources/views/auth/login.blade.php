@@ -13,7 +13,7 @@
                     <label for="email" class="col-4 text-left md:text-right">{{ __('E-Mail Address') }}</label>
 
                     <div class="col-6">
-                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                        <input id="email" type="email" class="form-input @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                         @error('email')
                             <span class="alert-danger" role="alert">
@@ -27,7 +27,7 @@
                     <label for="password" class="col-4 text-left md:text-right">{{ __('Password') }}</label>
 
                     <div class="col-6">
-                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                        <input id="password" type="password" class="form-input @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                         @error('password')
                             <span class="alert-danger" role="alert">
@@ -39,13 +39,10 @@
 
                 <div class="form-group row">
                     <div class="offset-4">
-                        <div class="form-checkbox">
-                            <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                            <label for="remember">
-                                {{ __('Remember Me') }}
-                            </label>
-                        </div>
+                        <label for="remember" class="checkbox-label">
+                            <input type="checkbox" name="remember" id="remember" class="form-checkbox" {{ old('remember') ? 'checked' : '' }}>
+                            <span>{{ __('Remember Me') }}</span>
+                        </label>
                     </div>
                 </div>
 
