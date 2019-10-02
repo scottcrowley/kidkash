@@ -23,7 +23,7 @@
     <div id="app" v-cloak>
         @include('layouts.nav')
 
-        <main class="py-6">
+        <main class="py-16">
             <div class="container">
                 <div class="row justify-center">
                     @yield('content')

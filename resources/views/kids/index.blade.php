@@ -3,7 +3,10 @@
 @section('content')
 <div class="col-8">
     <div class="card">
-        <div class="card-header">Kids</div>
+        <div class="card-header flex">
+            Kids
+            <a href="{{ route('kids.create') }}" class="btn is-primary is-xsmall ml-auto">Create New</a>
+        </div>
 
         <div class="card-body">
             @forelse ($kids as $kid)

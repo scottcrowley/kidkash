@@ -24,5 +24,9 @@ Route::group([
     'middleware' => 'auth'
 ], function () {
     Route::get('', 'KidsController@index')->name('kids.index');
+    Route::get('/create', 'KidsController@create')->name('kids.create');
     Route::post('', 'KidsController@store')->name('kids.store');
+    Route::get('/{kid}/edit', 'KidsController@edit')->name('kids.edit');
+    Route::delete('/{kid}', 'KidsController@destroy')->name('kids.delete');
+    Route::patch('/{kid}', 'KidsController@update')->name('kids.update');
 });

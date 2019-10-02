@@ -1,3 +1,9 @@
-div {
-    
+.bg-smoke {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.btn.is-xsmall {
+    @apply px-2 text-xs leading-normal;
+    padding-top: .15px;
+    padding-bottom: .15px;
 }
