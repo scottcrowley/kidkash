@@ -18,3 +18,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group([
+    'prefix' => 'kids',
+    'middleware' => 'auth'
+], function () {
+    Route::get('', 'KidsController@index')->name('kids.index');
+    Route::post('', 'KidsController@store')->name('kids.store');
+});

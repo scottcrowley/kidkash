@@ -10,7 +10,7 @@ class UsersTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function an_authenticated_admin_can_view_all_kids()
+    public function test()
     {
         $this->assertTrue(true);
     }
