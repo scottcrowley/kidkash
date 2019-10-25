@@ -116,6 +116,7 @@ class KidsController extends Controller
         }
 
         $data = Arr::except($validator->attributes(), ['current_password', 'password_confirmation']);
+
         if ($request->filled('password')) {
             $data['password'] = Hash::make($data['password']);
         }

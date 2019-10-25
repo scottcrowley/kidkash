@@ -19,14 +19,17 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('kids/', 'KidsController@index')->middleware('auth')->name('kids.index');
+Route::get('kids/{kid}/edit', 'KidsController@edit')->middleware('auth', 'authorized')->name('kids.edit');
+Route::patch('kids/{kid}', 'KidsController@update')->middleware('auth', 'authorized')->name('kids.update');
+
 Route::group([
     'prefix' => 'kids',
-    'middleware' => 'auth'
+    'middleware' => ['auth', 'parent']
 ], function () {
-    Route::get('', 'KidsController@index')->name('kids.index');
-    Route::get('/create', 'KidsController@create')->name('kids.create');
+    Route::get('create', 'KidsController@create')->name('kids.create');
     Route::post('', 'KidsController@store')->name('kids.store');
-    Route::get('/{kid}/edit', 'KidsController@edit')->name('kids.edit');
-    Route::delete('/{kid}', 'KidsController@destroy')->name('kids.delete');
-    Route::patch('/{kid}', 'KidsController@update')->name('kids.update');
+    Route::delete('{kid}', 'KidsController@destroy')->name('kids.delete');
 });
+
+Route::post('api/users/{user}/avatar', 'UserAvatarController@store');

@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_kid',
+        'name', 'email', 'password', 'is_kid', 'avatar_path'
     ];
 
     /**
@@ -35,4 +35,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * getter for whether or not the user has an avatar
+     *
+     * @return bool
+     */
+    public function getHasAvatarAttribute()
+    {
+        return $this->avatar_path != '';
+    }
 }

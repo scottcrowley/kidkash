@@ -3,10 +3,25 @@
 @section('content')
 <div class="col-8">
     <div class="card">
-        <div class="card-header">Edit {{ $kid->name }}</div>
+        <div class="card-header">
+            @if ($kid->id == auth()->user()->id)
+                Edit Your Profile
+            @else
+                Edit {{ $kid->name }}'s Profile
+            @endif
+        </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('kids.update', $kid->id) }}">
+            <avatar-upload current-avatar-path="{{ $kid->avatar_path }}" id="{{ $kid->id }}" name="{{ $kid->name }}" is-kid="{{ $kid->is_kid }}" user-id="{{ auth()->user()->id }}"></avatar-upload>
+            {{-- <div class="relative h-64 w-48 mb-6 mx-auto">
+                <div class="h-full w-full overflow-hidden rounded-lg shadow-lg">
+                    <img src="/{{ $kid->avatar_path ?: 'avatars/default.jpg' }}" alt="{{ $kid->name }}" class="w-full h-full object-cover" />
+                </div>
+                @can('update', $kid)
+                    <avatar-upload current-avatar-path="{{ $kid->avatar_path }}" id="{{ $kid->id }}" name="{{ $kid->name }}" is-kid="{{ $kid->is_kid }}" user-id="{{ auth()->user()->id }}"/>
+                @endcan
+            </div> --}}
+            <form method="POST" action="{{ route('kids.update', $kid->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
 
@@ -67,23 +82,29 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="password_confirm" class="col-4 text-left md:text-right">Confirm Password</label>
+                    <label for="password_confirmation" class="col-4 text-left md:text-right">Confirm Password</label>
 
                     <div class="col-6">
-                        <input id="password_confirm" type="password" class="form-input" name="password_confirmation">
+                        <input id="password_confirmation" type="password" class="form-input" name="password_confirmation">
                     </div>
                 </div>
 
                 <div class="form-group row mb-0">
-                    <div class="offset-4">
+                    <div class="offset-4 flex items-center">
                         <button type="submit" class="btn is-primary">
                             Update Kid
                         </button>
-
-                        <delete-confirm-button label="delete" classes="btn btn-text ml-4" path="/kids/{{ $kid->id }}" redirect-path="/kids" class="inline">
-                            <div slot="title">Are You Sure?</div>  
-                            Are you sure you want to delete {{ $kid->name }} from the database?
-                        </delete-confirm-button>
+                        <a href="{{ route('kids.index') }}" class="btn ml-2 border border-secondary-300">
+                            Cancel
+                        </a>
+                        @can('delete', $kid)
+                            <div class="ml-auto">
+                                <delete-confirm-button label="delete" classes="btn btn-text" path="/kids/{{ $kid->id }}" redirect-path="/kids" class="inline">
+                                    <div slot="title">Are You Sure?</div>  
+                                    Are you sure you want to delete {{ $kid->name }} from the database?
+                                </delete-confirm-button>
+                            </div>
+                        @endcan
                     </div>
                 </div>
             </form>

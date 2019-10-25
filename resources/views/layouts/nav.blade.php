@@ -52,6 +52,7 @@
                         <div class="subnav">
                             @include('layouts.subnav')
                         </div>
+                        <a href="{{ route('kids.edit', auth()->user()->id) }}" class="dropdown-menu-link w-full text-left">Edit Profile</a>
                         <a href="#" class="dropdown-menu-link w-full text-left"
                             onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();">  

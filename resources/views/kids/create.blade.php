@@ -60,10 +60,13 @@
                 </div>
 
                 <div class="form-group row mb-0">
-                    <div class="offset-4">
+                    <div class="offset-4 flex">
                         <button type="submit" class="btn is-primary">
                             Add Kid
                         </button>
+                        <a href="{{ url()->previous() }}" class="btn ml-2 border border-secondary-300">
+                            Cancel
+                        </a>
                     </div>
                 </div>
             </form>
