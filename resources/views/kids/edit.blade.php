@@ -12,15 +12,7 @@
         </div>
 
         <div class="card-body">
-            <avatar-upload current-avatar-path="{{ $kid->avatar_path }}" id="{{ $kid->id }}" name="{{ $kid->name }}" is-kid="{{ $kid->is_kid }}" user-id="{{ auth()->user()->id }}"></avatar-upload>
-            {{-- <div class="relative h-64 w-48 mb-6 mx-auto">
-                <div class="h-full w-full overflow-hidden rounded-lg shadow-lg">
-                    <img src="/{{ $kid->avatar_path ?: 'avatars/default.jpg' }}" alt="{{ $kid->name }}" class="w-full h-full object-cover" />
-                </div>
-                @can('update', $kid)
-                    <avatar-upload current-avatar-path="{{ $kid->avatar_path }}" id="{{ $kid->id }}" name="{{ $kid->name }}" is-kid="{{ $kid->is_kid }}" user-id="{{ auth()->user()->id }}"/>
-                @endcan
-            </div> --}}
+            <avatar current-avatar-path="{{ $kid->avatar_path }}" id="{{ $kid->id }}" name="{{ $kid->name }}" is-kid="{{ $kid->is_kid }}" user-id="{{ auth()->user()->id }}"></avatar>
             <form method="POST" action="{{ route('kids.update', $kid->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
@@ -92,10 +84,10 @@
                 <div class="form-group row mb-0">
                     <div class="offset-4 flex items-center">
                         <button type="submit" class="btn is-primary">
-                            Update Kid
+                            Update
                         </button>
                         <a href="{{ route('kids.index') }}" class="btn ml-2 border border-secondary-300">
-                            Cancel
+                            Done
                         </a>
                         @can('delete', $kid)
                             <div class="ml-auto">

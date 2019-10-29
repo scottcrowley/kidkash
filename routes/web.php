@@ -20,8 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('kids/', 'KidsController@index')->middleware('auth')->name('kids.index');
-Route::get('kids/{kid}/edit', 'KidsController@edit')->middleware('auth', 'authorized')->name('kids.edit');
-Route::patch('kids/{kid}', 'KidsController@update')->middleware('auth', 'authorized')->name('kids.update');
+Route::get('kids/{user}/edit', 'KidsController@edit')->middleware('auth', 'authorized')->name('kids.edit');
+Route::patch('kids/{user}', 'KidsController@update')->middleware('auth', 'authorized')->name('kids.update');
 
 Route::group([
     'prefix' => 'kids',
@@ -32,4 +32,5 @@ Route::group([
     Route::delete('{kid}', 'KidsController@destroy')->name('kids.delete');
 });
 
-Route::post('api/users/{user}/avatar', 'UserAvatarController@store');
+Route::post('api/users/{user}/avatar', 'UserAvatarController@store')->middleware('auth', 'authorized')->name('api.users.avatar.add');
+Route::delete('api/users/{user}/avatar', 'UserAvatarController@destroy')->middleware('auth', 'authorized')->name('api.users.avatar.delete');

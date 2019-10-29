@@ -71,22 +71,22 @@ class KidsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $kid
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $kid)
+    public function edit(User $user)
     {
-        return view('kids.edit', compact('kid'));
+        return view('kids.edit', ['kid' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $kid
+     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $kid)
+    public function update(Request $request, User $user)
     {
         if (! $request->filled('current_password')) {
             $input = $request->except(['current_password', 'password', 'password_confirmation']);
@@ -96,11 +96,11 @@ class KidsController extends Controller
 
         $validator = Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($kid)],
+            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user)],
             'current_password' => [
                 'sometimes',
-                function ($attribute, $value, $fail) use ($kid) {
-                    $check = Hash::check($value, $kid->password);
+                function ($attribute, $value, $fail) use ($user) {
+                    $check = Hash::check($value, $user->password);
                     if (! $check) {
                         $fail('Your current password is invalid.');
                     }
@@ -121,9 +121,9 @@ class KidsController extends Controller
             $data['password'] = Hash::make($data['password']);
         }
 
-        $kid->update($data);
+        $user->update($data);
 
-        session()->flash('flash', ['message' => $kid->name.' was successfully updated!', 'level' => 'success']);
+        session()->flash('flash', ['message' => $user->name.' was successfully updated!', 'level' => 'success']);
 
         return redirect(route('kids.index'));
     }
