@@ -3,7 +3,7 @@
 @section('content')
 <div class="col-8">
     <div class="card">
-        <div class="card-header">Create a new Kid</div>
+        <div class="card-header">Add a new Kid</div>
 
         <div class="card-body">
             <form method="POST" action="{{ route('kids.store') }}">

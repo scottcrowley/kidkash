@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 
-class UserAvatarController extends Controller
+class UserAvatarsController extends Controller
 {
     /**
      * Store a newly created resource in storage.

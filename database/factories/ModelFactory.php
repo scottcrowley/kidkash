@@ -3,6 +3,7 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\User;
+use App\Vendor;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
@@ -40,5 +41,12 @@ $factory->state(User::class, 'withAvatar', function () {
 
     return [
         'avatar_path' => 'avatars/'.$file->hashName(),
+    ];
+});
+
+$factory->define(Vendor::class, function (Faker $faker) {
+    return [
+        'name' => $faker->company,
+        'url' => $faker->url,
     ];
 });

@@ -32,5 +32,17 @@ Route::group([
     Route::delete('{kid}', 'KidsController@destroy')->name('kids.delete');
 });
 
-Route::post('api/users/{user}/avatar', 'UserAvatarController@store')->middleware('auth', 'authorized')->name('api.users.avatar.add');
-Route::delete('api/users/{user}/avatar', 'UserAvatarController@destroy')->middleware('auth', 'authorized')->name('api.users.avatar.delete');
+Route::group([
+    'prefix' => 'vendors',
+    'middleware' => ['auth', 'parent']
+], function () {
+    Route::get('', 'VendorsController@index')->name('vendors.index');
+    Route::get('create', 'VendorsController@create')->name('vendors.create');
+    Route::post('', 'VendorsController@store')->name('vendors.store');
+    Route::get('{vendor}/edit', 'VendorsController@edit')->name('vendors.edit');
+    Route::patch('{vendor}', 'VendorsController@update')->name('vendors.update');
+    Route::delete('{vendor}', 'VendorsController@destroy')->name('vendors.delete');
+});
+
+Route::post('api/users/{user}/avatar', 'UserAvatarsController@store')->middleware('auth', 'authorized')->name('api.users.avatar.add');
+Route::delete('api/users/{user}/avatar', 'UserAvatarsController@destroy')->middleware('auth', 'authorized')->name('api.users.avatar.delete');

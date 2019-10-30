@@ -21,14 +21,14 @@ class KidsTest extends TestCase
     /** @test */
     public function an_authenticated_user_may_view_all_kids()
     {
-        $this->signIn(create('App\User'));
-        $parent = create('App\User');
+        $this->signIn();
+        $anotherParent = create('App\User');
 
         $kid = createStates('App\User', 'kid');
 
         $this->get(route('kids.index'))
             ->assertSee($kid->name)
-            ->assertDontSee($parent->name);
+            ->assertDontSee($anotherParent->name);
     }
 
     /** @test */

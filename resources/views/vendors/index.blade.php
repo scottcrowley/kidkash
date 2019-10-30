@@ -4,28 +4,19 @@
 <div class="w-auto">
     <div class="card">
         <div class="card-header flex justify-between">
-            <p class="text-3xl">Kids</p>
-            @can('create', auth()->user())
-                <a href="{{ route('kids.create') }}" class="btn is-primary is-xsmall self-center">Create New</a>
-            @endcan
+            <p class="text-3xl">Vendors</p>
+            <a href="{{ route('vendors.create') }}" class="btn is-primary is-xsmall self-center">Create New</a>
         </div>
 
         <div class="card-body">
             <div class="mx-6 mt-8">
-                @forelse ($kids as $kid)
+                @forelse ($vendors as $vendor)
                     <div class="max-w-sm w-full lg:max-w-3xl lg:flex mb-12 mx-auto shadow-lg rounded">
-                        <div class="w-full h-64 lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden bg-secondary-100">
-                            @if ($kid->has_avatar)
-                                <img src="{{ $kid->avatar_path }}" alt="{{ $kid->name }}" class="w-full h-full object-cover" />
-                            @endif
-                        </div>
-                        <div class="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                        <div class="bg-white rounded-b rounded-l lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                             <div class="mb-8">
                                 <div class="text-gray-900 font-bold text-xl mb-2 flex items-center justify-between">
-                                    {{ $kid->name }}
-                                    @can('update', $kid)
-                                        <a href="{{ route('kids.edit', $kid->id) }}" class="btn is-primary is-xsmall">Edit</a>
-                                    @endcan
+                                    {{ $vendor->name }}
+                                    <a href="{{ route('vendors.edit', $vendor->id) }}" class="btn is-primary is-xsmall">Edit</a>
                                 </div>
                                 <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
                             </div>
@@ -40,7 +31,7 @@
                         </div>
                     </div>
                 @empty
-                    <p class="text-center mb-8 w-full md:w-112 lg:w-120">There are currently no Kids in the database.</p>
+                    <p class="text-center mb-8 w-full md:w-112 lg:w-120">There are currently no Vendors in the database.</p>
                 @endforelse
             </div>
         </div>
