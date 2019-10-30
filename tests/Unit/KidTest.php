@@ -125,4 +125,28 @@ class KidTest extends TestCase
         $this->patch(route('kids.update', $kid['id']), $kid)
             ->assertSessionHasErrors('password');
     }
+
+    /** @test */
+    public function it_can_access_all_of_its_transactions()
+    {
+        $this->signIn();
+
+        $kid = createStates('App\User', 'kid');
+        create('App\Transaction', ['kid_id' => $kid->id], 2);
+
+        $this->assertCount(2, $kid->transactions);
+    }
+
+    /** @test */
+    public function it_can_access_all_vendors_used_in_transactions()
+    {
+        $this->signIn();
+
+        $kid = createStates('App\User', 'kid');
+        create('App\Transaction', ['kid_id' => $kid->id], 4);
+
+        $this->assertCount(4, $kid->vendors);
+
+        $this->assertInstanceOf('App\Vendor', $kid->vendors[0]);
+    }
 }

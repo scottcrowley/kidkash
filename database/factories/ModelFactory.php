@@ -4,6 +4,7 @@
 
 use App\User;
 use App\Vendor;
+use App\Transaction;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
@@ -48,5 +49,14 @@ $factory->define(Vendor::class, function (Faker $faker) {
     return [
         'name' => $faker->company,
         'url' => $faker->url,
+    ];
+});
+
+$factory->define(Transaction::class, function (Faker $faker) {
+    return [
+        'kid_id' => factory('App\User')->states('kid')->create(),
+        'vendor_id' => factory('App\Vendor')->create(),
+        'type' => 'adding',
+        'amount' => 20
     ];
 });

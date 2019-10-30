@@ -45,4 +45,24 @@ class User extends Authenticatable
     {
         return $this->avatar_path != '';
     }
+
+    /**
+     * A kid (user) has many transactions
+     *
+     * @return hasMany
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'kid_id');
+    }
+
+    /**
+     * A kid (user) has many vendors through related transactions
+     *
+     * @return hasManyThrough
+     */
+    public function vendors()
+    {
+        return $this->hasManyThrough(Vendor::class, Transaction::class, 'kid_id', 'id', 'id', 'vendor_id');
+    }
 }

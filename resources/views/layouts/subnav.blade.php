@@ -1,6 +1,5 @@
 @can('update', auth()->user())
     <a href="{{ route('kids.index') }}">Manage Kids</a> 
-@endcan
-@can('update', auth()->user())
-    <a href="{{ route('vendors.index') }}">Manage Vendors</a> 
+    <a href="{{ route('vendors.index') }}">Manage Vendors</a>
+    <a href="{{ route('transactions.index') }}">Manage Transactions</a>
 @endcan

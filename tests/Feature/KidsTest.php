@@ -52,7 +52,7 @@ class KidsTest extends TestCase
 
         $this->get(route('kids.create'))
             ->assertStatus(200)
-            ->assertSee('Create a new Kid');
+            ->assertSee('Add a new Kid');
     }
 
     /** @test */
