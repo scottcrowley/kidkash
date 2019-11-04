@@ -21,6 +21,17 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can view parent nav items
+     *
+     * @param  \App\User  $user
+     * @return bool
+     */
+    public function viewNav(User $user)
+    {
+        return ! $user->is_kid;
+    }
+
+    /**
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user

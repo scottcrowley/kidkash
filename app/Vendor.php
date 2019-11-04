@@ -20,7 +20,7 @@ class Vendor extends Model
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'vendor_id');
+        return $this->hasMany(Transaction::class, 'vendor_id')->with('kid');
     }
 
     /**

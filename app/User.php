@@ -53,7 +53,12 @@ class User extends Authenticatable
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'kid_id');
+        return $this->hasMany(Transaction::class, 'kid_id')->latest()->with('vendor');
+    }
+
+    public function getTransactionTotalsAttribute()
+    {
+        return number_format($this->transactions->sum('amount'), 2);
     }
 
     /**

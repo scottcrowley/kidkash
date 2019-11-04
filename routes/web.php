@@ -19,7 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('kids/', 'KidsController@index')->middleware('auth')->name('kids.index');
 Route::get('kids/{user}/edit', 'KidsController@edit')->middleware('auth', 'authorized')->name('kids.edit');
 Route::patch('kids/{user}', 'KidsController@update')->middleware('auth', 'authorized')->name('kids.update');
 
@@ -27,6 +26,7 @@ Route::group([
     'prefix' => 'kids',
     'middleware' => ['auth', 'parent']
 ], function () {
+    Route::get('', 'KidsController@index')->name('kids.index');
     Route::get('create', 'KidsController@create')->name('kids.create');
     Route::post('', 'KidsController@store')->name('kids.store');
     Route::delete('{kid}', 'KidsController@destroy')->name('kids.delete');

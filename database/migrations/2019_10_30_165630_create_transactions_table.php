@@ -17,8 +17,8 @@ class CreateTransactionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('kid_id');
             $table->unsignedBigInteger('vendor_id');
-            $table->string('type');
             $table->double('amount', 8, 2);
+            $table->text('description')->nullable();
             $table->timestamps();
 
             $table->foreign('kid_id')

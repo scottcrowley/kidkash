@@ -52,6 +52,9 @@
                         <div class="subnav">
                             @include('layouts.subnav')
                         </div>
+                        @if (auth()->user()->is_kid)
+                            <a href="{{ route('home') }}" class="dropdown-menu-link w-full text-left">View Dashboard</a>
+                        @endif
                         <a href="{{ route('kids.edit', auth()->user()->id) }}" class="dropdown-menu-link w-full text-left">Edit Profile</a>
                         <a href="#" class="dropdown-menu-link w-full text-left"
                             onclick="event.preventDefault();

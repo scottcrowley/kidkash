@@ -54,9 +54,9 @@ $factory->define(Vendor::class, function (Faker $faker) {
 
 $factory->define(Transaction::class, function (Faker $faker) {
     return [
-        'kid_id' => factory('App\User')->states('kid')->create(),
-        'vendor_id' => factory('App\Vendor')->create(),
-        'type' => 'adding',
-        'amount' => 20
+        'kid_id' => factory('App\User')->states('kid'),
+        'vendor_id' => factory('App\Vendor'),
+        'amount' => 20,
+        'description' => $faker->text(),
     ];
 });

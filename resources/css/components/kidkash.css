@@ -7,3 +7,33 @@
     padding-top: .15px;
     padding-bottom: .15px;
 }
+
+select {
+    @apply block appearance-none bg-white border border-secondary-400 text-secondary-800 text-sm py-2 pl-2 pr-8 rounded leading-tight shadow;
+    
+    &:focus {
+        @apply outline-none bg-white shadow-outline;
+    }
+
+    &:hover {
+        @apply border-secondary-600;
+    }
+}
+
+.select-menu-icon {
+    @apply pointer-events-none absolute top-0 right-0 flex items-center px-2 text-secondary-800 mt-2;
+}
+
+.activity-label {
+    @apply text-gray-700 text-2xl truncate;
+
+    & .activity-label-kid, & .activity-label-vendor, & .activity-label-amount {
+        @apply font-semibold;
+    }
+    & .activity-label-type {
+        @apply text-lg;
+        & .activity-label-amount {
+            @apply text-xl;
+        }
+    }
+}

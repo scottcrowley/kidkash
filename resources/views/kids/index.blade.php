@@ -19,24 +19,30 @@
                                 <img src="{{ $kid->avatar_path }}" alt="{{ $kid->name }}" class="w-full h-full object-cover" />
                             @endif
                         </div>
-                        <div class="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
+                        <div class="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col lg:flex-grow justify-around leading-normal">
                             <div class="mb-8">
-                                <div class="text-gray-900 font-bold text-xl mb-2 flex items-center justify-between">
-                                    {{ $kid->name }}
-                                    @can('update', $kid)
-                                        <a href="{{ route('kids.edit', $kid->id) }}" class="btn is-primary is-xsmall">Edit</a>
-                                    @endcan
-                                </div>
-                                <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
-                            </div>
-                            <div class="pr-6">
-                                <p>Recent Activity:</p>
-                                <div class="pt-2 pb-4">
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#photography</span>
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#travel</span>
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
+                                <div class="text-gray-900 font-bold text-4xl mb-2 flex items-center justify-between">
+                                    <div>{{ $kid->name }}</div>
+                                    <p class="font-bold text-3xl">
+                                        <span>{{ (($kid->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($kid->transaction_totals),2)) }}</span>
+                                    </p>
                                 </div>
                             </div>
+                            <div class="">
+                                <p class="font-bold text-base">Recent Activity:</p>
+                                <div class="flex flex-col lg:flex-row pt-2 pb-4">
+                                    @forelse ($kid->transactions->take(3) as $transaction)
+                                        <div class="bg-gray-200 rounded-full mb-2 lg:mb:0 lg:mr-2 px-3 py-1 text-sm font-semibold text-gray-700 text-center">{!! $transaction->kid_activity_label !!}</div>
+                                    @empty
+                                        <p>No transactions found</p>
+                                    @endforelse
+                                </div>
+                            </div>
+                            @can('update', $kid)
+                                <div class="lg:text-right">
+                                    <a href="{{ route('kids.edit', $kid->id) }}" class="btn is-primary lg:is-xsmall block lg:inline lg:px-3 lg:py-1 lg:leading-normal lg:text-xs">Edit</a>
+                                </div>
+                            @endcan
                         </div>
                     </div>
                 @empty

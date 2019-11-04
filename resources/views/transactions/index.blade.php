@@ -11,23 +11,27 @@
         <div class="card-body">
             <div class="mx-6 mt-8">
                 @forelse ($transactions as $transaction)
-                    <div class="max-w-sm w-full lg:max-w-3xl lg:flex mb-12 mx-auto shadow-lg rounded">
+                    <div class="max-w-sm w-full lg:max-w-3xl mb-12 mx-auto shadow-lg rounded">
                         <div class="bg-white rounded-b rounded-l lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
                             <div class="mb-8">
-                                <div class="text-gray-900 font-bold text-xl mb-2 flex items-center justify-between">
-                                    Kid: {{ $transaction->kid->name }}
-                                    Vendor: {{ $transaction->vendor->name }}
-                                    <a href="{{ route('transactions.edit', $transaction->id) }}" class="btn is-primary is-xsmall">Edit</a>
+                                <div class="mb-2 flex items-center justify-between">
+                                    <div class="w-10 h-10 mr-3 overflow-hidden rounded-full border border-secondary-700">
+                                        <img src="/{{ $transaction->kid->avatar_path ?: 'storage/avatars/default.jpg' }}" class="w-full h-full object-cover" />
+                                    </div>
+                                    <p class="activity-label">
+                                        {!! $transaction->activity_label !!}
+                                    </p>
+                                    <div class="flex-1 text-right">
+                                        <a href="{{ route('transactions.edit', $transaction->id) }}" class="btn is-primary is-xsmall">Edit</a>
+                                    </div>
                                 </div>
-                                <p class="text-gray-700 text-base">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.</p>
+                                <p class="text-gray-700 text-base">{{ $transaction->description }}</p>
                             </div>
-                            <div class="pr-6">
-                                <p>Recent Activity:</p>
-                                <div class="pt-2 pb-4">
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#photography</span>
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">#travel</span>
-                                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">#winter</span>
-                                </div>
+                            <div class="">
+                                <p class="font-bold text-3xl text-right">
+                                    <span>{{ ($transaction->type == 'use') ? '-' : '' }}</span>
+                                    <span>$ {{ $transaction->modified_amount }}</span>
+                                </p>
                             </div>
                         </div>
                     </div>
