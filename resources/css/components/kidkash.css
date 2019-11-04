@@ -25,15 +25,32 @@ select {
 }
 
 .activity-label {
-    @apply text-gray-700 text-2xl truncate;
+    @apply text-gray-700 text-xl;
 
     & .activity-label-kid, & .activity-label-vendor, & .activity-label-amount {
         @apply font-semibold;
     }
+
     & .activity-label-type {
-        @apply text-lg;
+        @apply text-base;
+
         & .activity-label-amount {
-            @apply text-xl;
+            @apply text-lg;
         }
     }
+}
+
+@screen lg {
+    .activity-label {
+        @apply text-2xl;
+    
+        & .activity-label-type {
+            @apply text-lg;
+
+            & .activity-label-amount {
+                @apply text-xl;
+            }
+        }
+    }
+    
 }

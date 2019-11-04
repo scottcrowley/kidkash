@@ -21,9 +21,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->is_kid) {
-            return view('home');
+        if (! auth()->user()->is_kid) {
+            return redirect(route('kids.index'));
         }
-        return redirect(route('kids.index'));
+
+        return view('home', ['user' => auth()->user()]);
     }
 }

@@ -53,9 +53,14 @@ class User extends Authenticatable
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'kid_id')->latest()->with('vendor');
+        return $this->hasMany(Transaction::class, 'kid_id')->latest('updated_at')->with('vendor');
     }
 
+    /**
+     * Get the total for all transactions
+     *
+     * @return void
+     */
     public function getTransactionTotalsAttribute()
     {
         return number_format($this->transactions->sum('amount'), 2);
@@ -69,5 +74,18 @@ class User extends Authenticatable
     public function vendors()
     {
         return $this->hasManyThrough(Vendor::class, Transaction::class, 'kid_id', 'id', 'id', 'vendor_id');
+    }
+
+    /**
+     * Get transactions for each vendor
+     *
+     * @return void
+     */
+    public function getVendorsListAttribute()
+    {
+        return $this->vendors->unique('name')->each(function ($vendor) {
+            $vendor->kid_transactions = $vendor->transactions()->where('kid_id', $this->id)->without('kid')->latest('updated_at')->get();
+            $vendor->kid_transaction_totals = $vendor->kid_transactions->sum('amount');
+        });
     }
 }

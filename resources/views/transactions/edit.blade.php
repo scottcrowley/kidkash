@@ -150,6 +150,12 @@
                         <a href="{{ route('transactions.index') }}" class="btn ml-2 border border-secondary-300">
                             Cancel
                         </a>
+                        <div class="ml-auto">
+                            <delete-confirm-button label="delete" classes="btn btn-text" path="/transactions/{{ $transaction->id }}" redirect-path="/transactions" class="inline">
+                                <div slot="title">Are You Sure?</div>  
+                                Are you sure you want to delete this transaction from the database?
+                            </delete-confirm-button>
+                        </div>
                     </div>
                 </div>
             </form>

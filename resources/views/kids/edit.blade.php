@@ -86,7 +86,7 @@
                         <button type="submit" class="btn is-primary">
                             Update
                         </button>
-                        <a href="{{ route('kids.index') }}" class="btn ml-2 border border-secondary-300">
+                        <a href="{{ (auth()->user()->is_kid) ? route('home') : route('kids.index') }}" class="btn ml-2 border border-secondary-300">
                             Done
                         </a>
                         @can('delete', $kid)

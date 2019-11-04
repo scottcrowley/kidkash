@@ -5,9 +5,7 @@
     <div class="card">
         <div class="card-header flex justify-between">
             <p class="text-3xl">Kids</p>
-            @can('create', auth()->user())
-                <a href="{{ route('kids.create') }}" class="btn is-primary is-xsmall self-center">Create New</a>
-            @endcan
+            <a href="{{ route('kids.create') }}" class="btn is-primary is-xsmall self-center">Create New</a>
         </div>
 
         <div class="card-body">
@@ -20,10 +18,10 @@
                             @endif
                         </div>
                         <div class="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col lg:flex-grow justify-around leading-normal">
-                            <div class="mb-8">
-                                <div class="text-gray-900 font-bold text-4xl mb-2 flex items-center justify-between">
+                            <div class="mb-4 lg:mb-8">
+                                <div class="text-gray-900 font-bold text-4xl mb-2 block lg:flex items-center lg:justify-between">
                                     <div>{{ $kid->name }}</div>
-                                    <p class="font-bold text-3xl">
+                                    <p class="font-bold text-3xl text-center lg:text-right mt-2 lg:mt-0">
                                         <span>{{ (($kid->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($kid->transaction_totals),2)) }}</span>
                                     </p>
                                 </div>
@@ -38,11 +36,9 @@
                                     @endforelse
                                 </div>
                             </div>
-                            @can('update', $kid)
-                                <div class="lg:text-right">
-                                    <a href="{{ route('kids.edit', $kid->id) }}" class="btn is-primary lg:is-xsmall block lg:inline lg:px-3 lg:py-1 lg:leading-normal lg:text-xs">Edit</a>
-                                </div>
-                            @endcan
+                            <div class="lg:text-right">
+                                <a href="{{ route('kids.edit', $kid->id) }}" class="btn is-primary lg:is-xsmall block lg:inline lg:px-3 lg:py-1 lg:leading-normal lg:text-xs">Edit</a>
+                            </div>
                         </div>
                     </div>
                 @empty

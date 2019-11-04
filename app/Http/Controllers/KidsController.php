@@ -125,7 +125,7 @@ class KidsController extends Controller
 
         session()->flash('flash', ['message' => $user->name.' was successfully updated!', 'level' => 'success']);
 
-        return redirect(route('kids.index'));
+        return redirect((auth()->user()->is_kid) ? route('home') : route('kids.index'));
     }
 
     /**

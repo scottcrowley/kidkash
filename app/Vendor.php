@@ -24,6 +24,16 @@ class Vendor extends Model
     }
 
     /**
+     * Get the total for all transactions
+     *
+     * @return void
+     */
+    public function getTransactionTotalsAttribute()
+    {
+        return number_format($this->transactions->sum('amount'), 2);
+    }
+
+    /**
      * A vendor has many related kids through transactions
      *
      * @return hasManyThrough

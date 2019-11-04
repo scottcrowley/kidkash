@@ -1,18 +1,35 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="col-8">
-    <div class="card">
-        <div class="card-header">Dashboard</div>
+<div class="w-3/4">
+    <div class="card w-full ">
+        <div class="card-header flex justify-between items-center">
+            <p class="text-3xl">Dashboard</p>
+            <p class="text-2xl text-right">{{ (($user->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($user->transaction_totals),2)) }}</p>
+        </div>
 
-        <div class="card-body">
-            @if (session('status'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('status') }}
-                </div>
-            @endif
-
-            You are logged in!
+        <div class="card-body" style="padding: 0;">
+            <div class="">
+                <content-drawers title="Balances" :open-default="true">
+                    @forelse ($user->vendors_list as $vendor)
+                        <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700">
+                            <div>{{ $vendor->name }}</div>
+                            <div>{{ (($vendor->kid_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->kid_transaction_totals),2)) }}</div>
+                        </div>
+                    @empty
+                        <p>No vendors found</p>
+                    @endforelse
+                </content-drawers>
+            </div>
+            <div class="">
+                <content-drawers title="Transactions">
+                    @forelse ($user->transactions as $transaction)
+                        <div class="px-3 leading-loose text-base text-gray-700">{!! $transaction->kid_activity_label !!} {{ $transaction->updated_at->diffForHumans() }}</div>
+                    @empty
+                        <p>No transactions found</p>
+                    @endforelse
+                </content-drawers>
+            </div>
         </div>
     </div>
 </div>

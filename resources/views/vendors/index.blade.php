@@ -14,12 +14,14 @@
                     <div class="max-w-sm w-full lg:max-w-3xl mb-12 mx-auto shadow-lg rounded">
                         <div class="bg-white rounded-b rounded-l lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-around leading-normal">
                             <div class="mb-8">
-                                <div class="text-gray-900 font-bold text-2xl mb-2 flex items-center justify-between">
-                                    <span class="truncate pr-1 lg:pr-3">{{ $vendor->name }}</span>
-                                    <a href="{{ route('vendors.edit', $vendor->id) }}" class="btn is-primary is-xsmall">Edit</a>
+                                <div class="text-gray-900 font-bold text-2xl mb-2 block lg:flex items-center lg:justify-between">
+                                    <div class="truncate pr-0 lg:pr-3">{{ $vendor->name }}</div>
+                                    <p class="font-bold text-3xl text-center lg:text-right mt-2 lg:mt-0">
+                                        <span>{{ (($vendor->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->transaction_totals),2)) }}</span>
+                                    </p>
                                 </div>
                             </div>
-                            <div class="pr-6">
+                            <div>
                                 <p class="font-semibold">Recent Activity:</p>
                                 <div class="flex flex-col lg:flex-row pt-2 pb-4">
                                     @forelse ($vendor->transactions->take(8) as $transaction)
@@ -28,6 +30,9 @@
                                         <p>No transactions found</p>
                                     @endforelse
                                 </div>
+                            </div>
+                            <div class="lg:text-right">
+                                <a href="{{ route('vendors.edit', $vendor->id) }}" class="btn is-primary lg:is-xsmall block lg:inline lg:px-3 lg:py-1 lg:leading-normal lg:text-xs">Edit</a>
                             </div>
                         </div>
                     </div>
