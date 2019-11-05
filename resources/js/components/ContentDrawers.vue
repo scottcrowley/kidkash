@@ -1,5 +1,5 @@
 <template>
-    <div class="dropdown relative">
+    <div>
         <div class="flex items-center justify-between p-2">
             <p class="text-xl" v-text="title"></p>
             <div>
