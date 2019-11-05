@@ -152,4 +152,35 @@ class VendorsTest extends TestCase
 
         $this->assertDatabaseMissing('vendors', ['id' => $vendor->id]);
     }
+
+    /** @test */
+    public function a_user_must_be_authenticated_to_view_show_page()
+    {
+        $vendor = create('App\Vendor');
+
+        $this->get(route('vendors.show', $vendor->id))
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_user_must_be_a_parent_to_view_show_page()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
+
+        $vendor = create('App\Vendor');
+
+        $this->get(route('vendors.show', $vendor->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_parent_may_view_show_page()
+    {
+        $this->signIn();
+
+        $vendor = create('App\Vendor');
+
+        $this->get(route('vendors.show', $vendor->id))
+            ->assertSee($vendor->name);
+    }
 }

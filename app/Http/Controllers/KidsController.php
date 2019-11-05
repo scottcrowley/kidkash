@@ -65,7 +65,7 @@ class KidsController extends Controller
      */
     public function show(User $kid)
     {
-        //
+        return view('kids.show', compact('kid'));
     }
 
     /**

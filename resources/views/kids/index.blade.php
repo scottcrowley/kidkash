@@ -19,8 +19,12 @@
                         </div>
                         <div class="bg-white rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col lg:flex-grow justify-around leading-normal">
                             <div class="mb-4 lg:mb-8">
-                                <div class="text-gray-900 font-bold text-4xl mb-2 block lg:flex items-center lg:justify-between">
-                                    <div>{{ $kid->name }}</div>
+                                <div class="text-gray-700 font-bold text-4xl mb-2 block lg:flex items-center lg:justify-between">
+                                    <div>
+                                        <a href="{{ route('kids.show', $kid->id) }}" class="hover:underline hover:text-gray-800">
+                                            {{ $kid->name }}
+                                        </a>
+                                    </div>
                                     <p class="font-bold text-3xl text-center lg:text-right mt-2 lg:mt-0">
                                         <span>{{ (($kid->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($kid->transaction_totals),2)) }}</span>
                                     </p>
@@ -30,14 +34,21 @@
                                 <p class="font-bold text-base">Recent Activity:</p>
                                 <div class="flex flex-col lg:flex-row pt-2 pb-4">
                                     @forelse ($kid->transactions->take(3) as $transaction)
-                                        <div class="bg-gray-200 rounded-full mb-2 lg:mb:0 lg:mr-2 px-3 py-1 text-sm font-semibold text-gray-700 text-center">{!! $transaction->kid_activity_label !!}</div>
+                                        <div class="bg-gray-200 rounded-full mb-2 lg:mb:0 lg:mr-2 px-3 py-1 text-sm font-semibold text-gray-700 text-center">
+                                            {!! $transaction->kid_activity_label !!}
+                                        </div>
                                     @empty
                                         <p>No transactions found</p>
                                     @endforelse
                                 </div>
                             </div>
                             <div class="lg:text-right">
-                                <a href="{{ route('kids.edit', $kid->id) }}" class="btn is-primary lg:is-xsmall block lg:inline lg:px-3 lg:py-1 lg:leading-normal lg:text-xs">Edit</a>
+                                <a 
+                                    href="{{ route('kids.edit', $kid->id) }}" 
+                                    class="btn is-primary lg:is-xsmall block lg:inline lg:px-3 lg:py-1 lg:leading-normal lg:text-xs"
+                                >
+                                    Edit
+                                </a>
                             </div>
                         </div>
                     </div>

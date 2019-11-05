@@ -19,7 +19,18 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_may_view_all_kids()
+    public function an_authenticated_user_must_be_a_parent_to_view_all_kids()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
+
+        createStates('App\User', 'kid');
+
+        $this->get(route('kids.index'))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_parent_may_view_all_kids()
     {
         $this->signIn();
         $anotherParent = create('App\User');
@@ -190,7 +201,7 @@ class KidsTest extends TestCase
         $kid['password_confirmation'] = 'newpassword';
 
         $this->patch(route('kids.update', $kid['id']), $kid)
-            ->assertRedirect(route('kids.index'));
+            ->assertRedirect(route('home'));
 
         $this->assertDatabaseHas('users', ['email' => $kid['email']]);
 
@@ -226,5 +237,36 @@ class KidsTest extends TestCase
             ->assertRedirect(route('kids.index'));
 
         $this->assertDatabaseMissing('users', ['id' => $kid->id]);
+    }
+
+    /** @test */
+    public function a_user_must_be_authenticated_to_view_show_page()
+    {
+        $kid = createStates('App\User', 'kid');
+
+        $this->get(route('kids.show', $kid->id))
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_user_must_be_a_parent_to_view_show_page()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
+
+        $kid = createStates('App\User', 'kid');
+
+        $this->get(route('kids.show', $kid->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_parent_may_view_show_page()
+    {
+        $this->signIn();
+
+        $kid = createStates('App\User', 'kid');
+
+        $this->get(route('kids.show', $kid->id))
+            ->assertSee($kid->name);
     }
 }

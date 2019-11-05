@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+// Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -29,6 +30,7 @@ Route::group([
     Route::get('', 'KidsController@index')->name('kids.index');
     Route::get('create', 'KidsController@create')->name('kids.create');
     Route::post('', 'KidsController@store')->name('kids.store');
+    Route::get('{kid}', 'KidsController@show')->name('kids.show');
     Route::delete('{kid}', 'KidsController@destroy')->name('kids.delete');
 });
 
@@ -39,6 +41,7 @@ Route::group([
     Route::get('', 'VendorsController@index')->name('vendors.index');
     Route::get('create', 'VendorsController@create')->name('vendors.create');
     Route::post('', 'VendorsController@store')->name('vendors.store');
+    Route::get('{vendor}', 'VendorsController@show')->name('vendors.show');
     Route::get('{vendor}/edit', 'VendorsController@edit')->name('vendors.edit');
     Route::patch('{vendor}', 'VendorsController@update')->name('vendors.update');
     Route::delete('{vendor}', 'VendorsController@destroy')->name('vendors.delete');

@@ -20,7 +20,7 @@ class Vendor extends Model
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'vendor_id')->with('kid');
+        return $this->hasMany(Transaction::class, 'vendor_id')->with('kid')->latest('updated_at');
     }
 
     /**
@@ -41,5 +41,12 @@ class Vendor extends Model
     public function kids()
     {
         return $this->hasManyThrough(User::class, Transaction::class, 'vendor_id', 'id', 'id', 'kid_id');
+    }
+
+    public function getKidsListAttribute()
+    {
+        return $this->kids->unique('id')->values()->each(function ($kid) {
+            $kid->vendor_transaction_totals = $kid->transactions()->where('vendor_id', $this->id)->sum('amount');
+        });
     }
 }

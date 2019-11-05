@@ -147,7 +147,7 @@
                         <button type="submit" class="btn is-primary">
                             Update Transaction
                         </button>
-                        <a href="{{ route('transactions.index') }}" class="btn ml-2 border border-secondary-300">
+                        <a href="{{ url()->previous() }}" class="btn ml-2 border border-secondary-300">
                             Cancel
                         </a>
                         <div class="ml-auto">
