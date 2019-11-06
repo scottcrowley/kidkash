@@ -22,7 +22,9 @@ class KidTest extends TestCase
     /** @test */
     public function it_requires_a_name()
     {
-        $this->signIn($user = create('App\User'));
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = makeStates('App\User', 'kid', ['name' => '']);
 
         $this->post(route('kids.store'), $kid->toArray())
@@ -39,7 +41,9 @@ class KidTest extends TestCase
     /** @test */
     public function it_requires_an_email()
     {
-        $this->signIn($user = create('App\User'));
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = makeStates('App\User', 'kid', ['email' => '']);
 
         $this->post(route('kids.store'), $kid->toArray())
@@ -56,7 +60,9 @@ class KidTest extends TestCase
     /** @test */
     public function it_requires_a_password()
     {
-        $this->signIn($user = create('App\User'));
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = makeStates('App\User', 'kid', ['password' => '']);
 
         $this->post(route('kids.store'), $kid->toArray())
@@ -66,7 +72,9 @@ class KidTest extends TestCase
     /** @test */
     public function it_requires_a_password_confirmation()
     {
-        $this->signIn($user = create('App\User'));
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = makeStatesRaw('App\User', 'kid');
 
         $kid['password_confirmation'] = '';
@@ -78,7 +86,9 @@ class KidTest extends TestCase
     /** @test */
     public function it_requires_a_valid_current_password_when_updating_to_a_new_password()
     {
-        $this->signIn($user = create('App\User'));
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = createStatesRaw('App\User', 'kid');
         $kid['current_password'] = 'wrong';
         $kid['password'] = 'newpassword';
@@ -91,7 +101,9 @@ class KidTest extends TestCase
     /** @test */
     public function it_requires_a_new_password_when_updating_to_a_new_password()
     {
-        $this->signIn($user = create('App\User'));
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = createStatesRaw('App\User', 'kid');
         $kid['current_password'] = 'password';
         $kid['password'] = '';
@@ -103,7 +115,9 @@ class KidTest extends TestCase
     /** @test */
     public function it_requires_a_new_password_confirmation_when_updating_to_a_new_password()
     {
-        $this->signIn($user = create('App\User'));
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = createStatesRaw('App\User', 'kid');
         $kid['current_password'] = 'password';
         $kid['password'] = 'newpassword';
@@ -116,7 +130,9 @@ class KidTest extends TestCase
     /** @test */
     public function it_requires_a_different_new_password_when_updating_to_a_new_password()
     {
-        $this->signIn($user = create('App\User'));
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = createStatesRaw('App\User', 'kid');
         $kid['current_password'] = 'password';
         $kid['password'] = 'password';
@@ -129,8 +145,6 @@ class KidTest extends TestCase
     /** @test */
     public function it_can_access_all_of_its_transactions()
     {
-        $this->signIn();
-
         $kid = createStates('App\User', 'kid');
         create('App\Transaction', ['kid_id' => $kid->id], 2);
 
@@ -140,8 +154,6 @@ class KidTest extends TestCase
     /** @test */
     public function it_can_access_all_vendors_used_in_transactions()
     {
-        $this->signIn();
-
         $kid = createStates('App\User', 'kid');
         create('App\Transaction', ['kid_id' => $kid->id], 4);
 

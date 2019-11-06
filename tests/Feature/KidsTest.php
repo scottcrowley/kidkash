@@ -33,6 +33,8 @@ class KidsTest extends TestCase
     public function an_authenticated_parent_may_view_all_kids()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $anotherParent = create('App\User');
 
         $kid = createStates('App\User', 'kid');
@@ -43,23 +45,26 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_view_the_kids_create_page()
+    public function a_user_must_be_authenticated_to_view_the_create_page()
     {
         $this->get(route('kids.create'))
             ->assertRedirect(route('login'));
+    }
 
-        $kid = createStates('App\User', 'kid');
-
-        $this->actingAs($kid);
+    /** @test */
+    public function an_authenticated_user_must_be_a_parent_to_view_the_create_page()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
 
         $this->get(route('kids.create'))
             ->assertStatus(403);
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_the_kids_create_page()
+    public function an_authenticated_parent_may_view_the_create_page()
     {
         $this->signIn($user = create('App\User'));
+        config(['kidkash.parents' => [$user->email]]);
 
         $this->get(route('kids.create'))
             ->assertStatus(200)
@@ -67,16 +72,18 @@ class KidsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_must_be_authenticated_to_add_a_new_kid()
+    {
+        $this->post(route('kids.store'), [])
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
     public function an_authenticated_user_must_be_a_parent_to_add_a_new_kid()
     {
-        $this->get(route('kids.store'))
-            ->assertRedirect(route('login'));
+        $this->signIn(createStates('App\User', 'kid'));
 
-        $this->signIn($user = createStates('App\User', 'kid'));
-
-        $kid = makeStatesRaw('App\User', 'kid');
-
-        $this->post(route('kids.store'), $kid)
+        $this->post(route('kids.store'), [])
             ->assertStatus(403);
     }
 
@@ -84,6 +91,8 @@ class KidsTest extends TestCase
     public function an_authenticated_parent_may_add_a_new_kid()
     {
         $this->signIn(create('App\User'));
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = makeStatesRaw('App\User', 'kid');
         $kid['password'] = 'password';
         $kid['password_confirmation'] = 'password';
@@ -99,7 +108,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_must_an_authenticated_parent_to_view_the_kids_edit_page()
+    public function a_user_must_an_authenticated_parent_to_view_the_edit_page()
     {
         $kid = createStates('App\User', 'kid');
 
@@ -108,7 +117,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_an_authorized_kid_to_view_the_kids_edit_page()
+    public function an_authenticated_user_must_be_an_authorized_kid_to_view_the_edit_page()
     {
         $kid = createStates('App\User', 'kid');
         $this->signIn(createStates('App\User', 'kid'));
@@ -118,19 +127,15 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_the_kids_edit_page()
+    public function an_authenticated_parent_may_view_the_edit_page()
     {
         $this->signIn(create('App\User'));
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = createStates('App\User', 'kid');
 
         $this->get(route('kids.edit', $kid->id))
             ->assertSee('Edit '.$kid->name)
-            ->assertStatus(200);
-
-        $this->signIn($kid);
-
-        $this->get(route('kids.edit', $kid->id))
-            ->assertSee('Edit Your Profile')
             ->assertStatus(200);
     }
 
@@ -145,11 +150,11 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_update_an_existing_kid()
+    public function a_user_must_be_authenticated_to_update_an_existing_kid()
     {
         $kid = createStates('App\User', 'kid');
 
-        $this->patch(route('kids.update', $kid->id), $kid->toArray())
+        $this->patch(route('kids.update', $kid->id), [])
             ->assertRedirect(route('login'));
     }
 
@@ -160,7 +165,7 @@ class KidsTest extends TestCase
 
         $this->signIn(createStates('App\User', 'kid'));
 
-        $this->patch(route('kids.update', $kid->id), $kid->toArray())
+        $this->patch(route('kids.update', $kid->id), [])
             ->assertStatus(403);
     }
 
@@ -168,6 +173,8 @@ class KidsTest extends TestCase
     public function an_authenticated_parent_may_update_an_existing_kid()
     {
         $this->signIn(create('App\User'));
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = createStatesRaw('App\User', 'kid');
         $kid['name'] = 'Im John Doe';
         $kid['email'] = 'someone@new.com';
@@ -214,12 +221,18 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_delete_a_child()
+    public function a_user_must_be_authenticated_to_delete_an_existing_kid()
     {
         $kid = createStates('App\User', 'kid');
 
-        $this->delete(route('kids.delete', $kid['id']))
+        $this->delete(route('kids.update', $kid->id))
             ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_user_must_be_a_parent_to_delete_a_child()
+    {
+        $kid = createStates('App\User', 'kid');
 
         $this->signIn(createStates('App\User', 'kid'));
 
@@ -231,12 +244,23 @@ class KidsTest extends TestCase
     public function an_authenticated_parent_may_delete_a_kid()
     {
         $this->signIn(create('App\User'));
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = createStates('App\User', 'kid');
 
         $this->delete(route('kids.delete', $kid['id']))
             ->assertRedirect(route('kids.index'));
 
         $this->assertDatabaseMissing('users', ['id' => $kid->id]);
+    }
+
+    /** @test */
+    public function an_authenticated_kid_may_not_delete_their_own_account()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
+
+        $this->delete(route('kids.delete', auth()->id()))
+            ->assertStatus(403);
     }
 
     /** @test */
@@ -263,6 +287,7 @@ class KidsTest extends TestCase
     public function an_authenticated_parent_may_view_show_page()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $kid = createStates('App\User', 'kid');
 

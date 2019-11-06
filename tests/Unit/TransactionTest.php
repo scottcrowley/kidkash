@@ -12,8 +12,6 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_can_access_the_related_kid()
     {
-        $this->signIn();
-
         $kid = createStates('App\User', 'kid');
         $transaction = create('App\Transaction', ['kid_id' => $kid->id]);
 
@@ -23,8 +21,6 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_can_access_the_related_vendor()
     {
-        $this->signIn();
-
         $vendor = create('App\Vendor');
         $transaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
 
@@ -35,6 +31,7 @@ class TransactionTest extends TestCase
     public function it_requires_a_vendor_id_when_adding_a_new()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = makeRaw('App\Transaction', ['vendor_id' => null]);
 
@@ -46,6 +43,7 @@ class TransactionTest extends TestCase
     public function it_requires_a_valid_vendor_id_when_adding_a_new()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = makeRaw('App\Transaction', ['vendor_id' => 5]);
 
@@ -57,6 +55,7 @@ class TransactionTest extends TestCase
     public function it_requires_a_kid_id_when_adding_a_new()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = makeRaw('App\Transaction', ['kid_id' => null]);
 
@@ -68,6 +67,7 @@ class TransactionTest extends TestCase
     public function it_requires_a_valid_kid_id_when_adding_a_new()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = makeRaw('App\Transaction', ['kid_id' => 5]);
 
@@ -79,6 +79,7 @@ class TransactionTest extends TestCase
     public function it_requires_a_type_when_adding_a_new()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = makeRaw('App\Transaction', ['type' => '']);
 
@@ -90,6 +91,7 @@ class TransactionTest extends TestCase
     public function it_requires_an_amount_when_adding_a_new()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = makeRaw('App\Transaction', ['amount' => '']);
 

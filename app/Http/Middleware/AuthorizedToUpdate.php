@@ -15,7 +15,15 @@ class AuthorizedToUpdate
      */
     public function handle($request, Closure $next)
     {
-        if (! auth()->user()->is_kid || $request->route()->parameters()['user']->id == auth()->user()->id) {
+        if (
+            (
+                ! auth()->user()->is_kid
+                && in_array(
+                    auth()->user()->email,
+                    config('kidkash.parents')
+                )
+            )
+            || $request->route()->parameters()['user']->id == auth()->user()->id) {
             return $next($request);
         }
 

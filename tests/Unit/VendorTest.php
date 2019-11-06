@@ -13,6 +13,7 @@ class VendorTest extends TestCase
     public function it_requires_a_name_when_adding_new()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $vendor = makeRaw('App\Vendor', ['name' => '']);
 
@@ -24,6 +25,7 @@ class VendorTest extends TestCase
     public function it_requires_a_name_when_updating_existing()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $vendor = create('App\Vendor');
 
@@ -37,6 +39,7 @@ class VendorTest extends TestCase
     public function it_requires_a_unique_name_when_adding_new()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         create('App\Vendor', ['name' => 'New Vendor']);
 
@@ -50,6 +53,7 @@ class VendorTest extends TestCase
     public function it_requires_a_unique_name_when_updating_existing()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         create('App\Vendor', ['name' => 'New Vendor']);
 
@@ -63,8 +67,6 @@ class VendorTest extends TestCase
     /** @test */
     public function it_can_access_all_of_its_transactions()
     {
-        $this->signIn();
-
         $vendor = create('App\Vendor');
         create('App\Transaction', ['vendor_id' => $vendor->id], 2);
 
@@ -74,8 +76,6 @@ class VendorTest extends TestCase
     /** @test */
     public function it_can_access_all_kids_with_related_transactions()
     {
-        $this->signIn();
-
         $vendor = create('App\Vendor');
         create('App\Transaction', ['vendor_id' => $vendor->id], 4);
 

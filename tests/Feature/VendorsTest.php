@@ -29,6 +29,7 @@ class VendorsTest extends TestCase
     public function an_authenticated_parent_may_view_all_vendors()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $vendor = create('App\Vendor');
 
@@ -56,6 +57,7 @@ class VendorsTest extends TestCase
     public function an_authenticated_parent_may_view_create_page()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $this->get(route('vendors.create'))
             ->assertSee('Add a new Vendor');
@@ -81,6 +83,7 @@ class VendorsTest extends TestCase
     public function an_authenticated_parent_may_add_a_new_vendor()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $vendor = makeRaw('App\Vendor');
 
@@ -113,6 +116,7 @@ class VendorsTest extends TestCase
     public function an_authenticated_parent_may_view_edit_page()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $vendor = create('App\Vendor');
 
@@ -144,6 +148,7 @@ class VendorsTest extends TestCase
     public function an_authenticated_parent_may_delete_a_vendor()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $vendor = create('App\Vendor');
 
@@ -177,6 +182,7 @@ class VendorsTest extends TestCase
     public function an_authenticated_parent_may_view_show_page()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $vendor = create('App\Vendor');
 

@@ -17,7 +17,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return ! $user->is_kid;
+        return $this->isParent($user);
     }
 
     /**
@@ -28,7 +28,7 @@ class UserPolicy
      */
     public function viewNav(User $user)
     {
-        return ! $user->is_kid;
+        return $this->isParent($user);
     }
 
     /**
@@ -36,11 +36,11 @@ class UserPolicy
      *
      * @param  \App\User  $user
      * @param  \App\User  $kid
-     * @return mixed
+     * @return bool
      */
     public function update(User $user, User $kid)
     {
-        return ! $user->is_kid || $user->id == $kid->id;
+        return $this->isParent($user) || $user->id == $kid->id;
     }
 
     /**
@@ -48,11 +48,11 @@ class UserPolicy
      *
      * @param  \App\User  $user
      * @param  \App\User  $kid
-     * @return mixed
+     * @return bool
      */
     public function delete(User $user, User $kid)
     {
-        return ! $user->is_kid;
+        return $this->isParent($user);
     }
 
     /**
@@ -77,5 +77,16 @@ class UserPolicy
     public function forceDelete(User $user, User $model)
     {
         //
+    }
+
+    /**
+     * Check config and user to verify they are a parent
+     *
+     * @param \App\User $user
+     * @return bool
+     */
+    protected function isParent($user)
+    {
+        return (! $user->is_kid && in_array($user->email, config('kidkash.parents')));
     }
 }

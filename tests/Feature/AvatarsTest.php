@@ -12,7 +12,7 @@ class AvatarsTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function a_user_must_be_an_authenticated_parent_to_add_an_avatar_to_a_kids_profile()
+    public function a_user_must_be_authenticated_to_add_an_avatar_to_a_kids_profile()
     {
         $kid = createStates('App\User', 'kid');
 
@@ -32,21 +32,11 @@ class AvatarsTest extends TestCase
     }
 
     /** @test */
-    public function a_valid_avatar_must_be_provided()
-    {
-        $this->signIn();
-
-        $kid = createStates('App\User', 'kid');
-
-        $this->json('POST', route('api.users.avatar.add', $kid->id), [
-            'avatar' => 'not-an-image'
-        ])->assertStatus(422);
-    }
-
-    /** @test */
     public function an_authenticated_parent_may_add_an_avatar_to_a_kids_profile()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = createStates('App\User', 'kid');
 
         Storage::fake('public');
@@ -77,7 +67,20 @@ class AvatarsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_must_be_an_authenticated_parent_to_delete_a_kids_avatar()
+    public function a_valid_avatar_must_be_provided()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
+        $kid = createStates('App\User', 'kid');
+
+        $this->json('POST', route('api.users.avatar.add', $kid->id), [
+            'avatar' => 'not-an-image'
+        ])->assertStatus(422);
+    }
+
+    /** @test */
+    public function a_user_must_be_an_authenticated_to_delete_a_kids_avatar()
     {
         $kid = createStates('App\User', 'kid');
 
@@ -102,6 +105,8 @@ class AvatarsTest extends TestCase
         Storage::fake('public');
 
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
         $kid = factory('App\User')->states('kid', 'withAvatar')->create();
 
         Storage::disk('public')->assertExists($kid->avatar_path);

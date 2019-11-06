@@ -29,6 +29,7 @@ class TransactionsTest extends TestCase
     public function an_authenticated_parent_may_view_all_transactions()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = create('App\Transaction');
 
@@ -56,6 +57,7 @@ class TransactionsTest extends TestCase
     public function an_authenticated_parent_may_view_create_page()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $this->get(route('transactions.create'))
             ->assertSee('Add a new Transaction');
@@ -81,6 +83,7 @@ class TransactionsTest extends TestCase
     public function an_authenticated_parent_may_create_a_new_transaction()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = makeRaw('App\Transaction');
         $transaction['type'] = 'use';
@@ -116,6 +119,7 @@ class TransactionsTest extends TestCase
     public function an_authenticated_parent_may_view_edit_page()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = create('App\Transaction');
 
@@ -147,6 +151,7 @@ class TransactionsTest extends TestCase
     public function an_authenticated_parent_may_update_an_existing_transaction()
     {
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = createRaw('App\Transaction');
 
@@ -185,9 +190,8 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_parent_may_delete_an_existing_transaction()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = create('App\Transaction');
 
