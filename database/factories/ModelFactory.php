@@ -21,8 +21,10 @@ use Illuminate\Http\UploadedFile;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+    $name = $faker->name;
     return [
-        'name' => $faker->name,
+        'name' => $name,
+        'slug' => Str::slug($name),
         'email' => $faker->unique()->safeEmail,
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
@@ -46,8 +48,10 @@ $factory->state(User::class, 'withAvatar', function () {
 });
 
 $factory->define(Vendor::class, function (Faker $faker) {
+    $name = $faker->company;
     return [
-        'name' => $faker->company,
+        'name' => $name,
+        'slug' => Str::slug($name),
         'url' => $faker->url,
     ];
 });

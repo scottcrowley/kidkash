@@ -97,7 +97,7 @@ class VendorsTest extends TestCase
     {
         $vendor = create('App\Vendor');
 
-        $this->get(route('vendors.edit', $vendor->id))
+        $this->get(route('vendors.edit', $vendor->slug))
             ->assertRedirect(route('login'));
     }
 
@@ -108,7 +108,7 @@ class VendorsTest extends TestCase
 
         $vendor = create('App\Vendor');
 
-        $this->get(route('vendors.edit', $vendor->id))
+        $this->get(route('vendors.edit', $vendor->slug))
             ->assertStatus(403);
     }
 
@@ -120,8 +120,43 @@ class VendorsTest extends TestCase
 
         $vendor = create('App\Vendor');
 
-        $this->get(route('vendors.edit', $vendor->id))
+        $this->get(route('vendors.edit', $vendor->slug))
             ->assertSee($vendor->name);
+    }
+
+    /** @test */
+    public function a_user_must_be_authenticated_to_update_an_existing_vendor()
+    {
+        $vendor = create('App\Vendor');
+
+        $this->patch(route('vendors.update', $vendor->slug), $vendor->toArray())
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function a_user_must_be_a_parent_to_update_an_existing_vendor()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
+
+        $vendor = create('App\Vendor');
+
+        $this->patch(route('vendors.update', $vendor->slug), $vendor->toArray())
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_parent_may_update_an_existing_vendor()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
+        $vendor = createRaw('App\Vendor');
+        $vendor['name'] = 'New Vendor Name';
+
+        $this->patch(route('vendors.update', $vendor['slug']), $vendor)
+            ->assertRedirect(route('vendors.index'));
+
+        $this->assertDatabaseHas('vendors', ['name' => $vendor['name']]);
     }
 
     /** @test */
@@ -129,7 +164,7 @@ class VendorsTest extends TestCase
     {
         $vendor = create('App\Vendor');
 
-        $this->delete(route('vendors.delete', $vendor->id))
+        $this->delete(route('vendors.delete', $vendor->slug))
             ->assertRedirect(route('login'));
     }
 
@@ -140,7 +175,7 @@ class VendorsTest extends TestCase
 
         $vendor = create('App\Vendor');
 
-        $this->delete(route('vendors.delete', $vendor->id))
+        $this->delete(route('vendors.delete', $vendor->slug))
             ->assertStatus(403);
     }
 
@@ -152,7 +187,7 @@ class VendorsTest extends TestCase
 
         $vendor = create('App\Vendor');
 
-        $this->delete(route('vendors.delete', $vendor->id))
+        $this->delete(route('vendors.delete', $vendor->slug))
             ->assertRedirect(route('vendors.index'));
 
         $this->assertDatabaseMissing('vendors', ['id' => $vendor->id]);
@@ -163,7 +198,7 @@ class VendorsTest extends TestCase
     {
         $vendor = create('App\Vendor');
 
-        $this->get(route('vendors.show', $vendor->id))
+        $this->get(route('vendors.show', $vendor->slug))
             ->assertRedirect(route('login'));
     }
 
@@ -174,7 +209,7 @@ class VendorsTest extends TestCase
 
         $vendor = create('App\Vendor');
 
-        $this->get(route('vendors.show', $vendor->id))
+        $this->get(route('vendors.show', $vendor->slug))
             ->assertStatus(403);
     }
 
@@ -186,7 +221,7 @@ class VendorsTest extends TestCase
 
         $vendor = create('App\Vendor');
 
-        $this->get(route('vendors.show', $vendor->id))
+        $this->get(route('vendors.show', $vendor->slug))
             ->assertSee($vendor->name);
     }
 }

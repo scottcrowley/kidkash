@@ -16,7 +16,7 @@ class AvatarsTest extends TestCase
     {
         $kid = createStates('App\User', 'kid');
 
-        $this->json('POST', route('api.users.avatar.add', $kid->id), [])
+        $this->json('POST', route('api.users.avatar.add', $kid->slug), [])
             ->assertStatus(401);
     }
 
@@ -27,7 +27,7 @@ class AvatarsTest extends TestCase
 
         $this->signIn(createStates('App\User', 'kid'));
 
-        $this->json('POST', route('api.users.avatar.add', $kid->id), [])
+        $this->json('POST', route('api.users.avatar.add', $kid->slug), [])
             ->assertStatus(403);
     }
 
@@ -41,7 +41,7 @@ class AvatarsTest extends TestCase
 
         Storage::fake('public');
 
-        $this->json('POST', route('api.users.avatar.add', $kid->id), [
+        $this->json('POST', route('api.users.avatar.add', $kid->slug), [
             'avatar' => $file = UploadedFile::fake()->image('avatar.jpg')
         ]);
 
@@ -57,7 +57,7 @@ class AvatarsTest extends TestCase
 
         Storage::fake('public');
 
-        $this->json('POST', route('api.users.avatar.add', $kid->id), [
+        $this->json('POST', route('api.users.avatar.add', $kid->slug), [
             'avatar' => $file = UploadedFile::fake()->image('avatar.jpg')
         ]);
 
@@ -74,7 +74,7 @@ class AvatarsTest extends TestCase
 
         $kid = createStates('App\User', 'kid');
 
-        $this->json('POST', route('api.users.avatar.add', $kid->id), [
+        $this->json('POST', route('api.users.avatar.add', $kid->slug), [
             'avatar' => 'not-an-image'
         ])->assertStatus(422);
     }
@@ -84,7 +84,7 @@ class AvatarsTest extends TestCase
     {
         $kid = createStates('App\User', 'kid');
 
-        $this->json('DELETE', route('api.users.avatar.delete', $kid->id))
+        $this->json('DELETE', route('api.users.avatar.delete', $kid->slug))
             ->assertStatus(401);
     }
 
@@ -95,7 +95,7 @@ class AvatarsTest extends TestCase
 
         $this->signIn(createStates('App\User', 'kid'));
 
-        $this->json('DELETE', route('api.users.avatar.delete', $kid->id))
+        $this->json('DELETE', route('api.users.avatar.delete', $kid->slug))
             ->assertStatus(403);
     }
 
@@ -111,7 +111,7 @@ class AvatarsTest extends TestCase
 
         Storage::disk('public')->assertExists($kid->avatar_path);
 
-        $this->json('DELETE', route('api.users.avatar.delete', $kid->id))
+        $this->json('DELETE', route('api.users.avatar.delete', $kid->slug))
             ->assertStatus(204);
 
         Storage::disk('public')->assertMissing($kid->avatar_path);
@@ -130,7 +130,7 @@ class AvatarsTest extends TestCase
 
         Storage::disk('public')->assertExists($kid->avatar_path);
 
-        $this->json('DELETE', route('api.users.avatar.delete', $kid->id))
+        $this->json('DELETE', route('api.users.avatar.delete', $kid->slug))
             ->assertStatus(204);
 
         Storage::disk('public')->assertMissing($kid->avatar_path);

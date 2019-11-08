@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Vendor extends Model
@@ -12,6 +13,16 @@ class Vendor extends Model
      * @var array
      */
     protected $fillable = ['name', 'url'];
+
+    /**
+     * Get the route key name.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     /**
      * A vendor has many transactions
@@ -43,10 +54,27 @@ class Vendor extends Model
         return $this->hasManyThrough(User::class, Transaction::class, 'vendor_id', 'id', 'id', 'kid_id');
     }
 
+    /**
+     * Get individual kids with related transactions and sum all transactions
+     *
+     * @return void
+     */
     public function getKidsListAttribute()
     {
         return $this->kids->unique('id')->values()->each(function ($kid) {
             $kid->vendor_transaction_totals = $kid->transactions()->where('vendor_id', $this->id)->sum('amount');
         });
+    }
+
+    /**
+     * Set the name & slug attributes
+     *
+     * @param mixed $name
+     * @return void
+     */
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = $name;
+        $this->attributes['slug'] = Str::slug($name);
     }
 }

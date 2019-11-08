@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="w-auto">
+<div class="w-3/4">
     <div class="card">
         <div class="card-header flex justify-between">
             <p class="text-3xl">Vendors</p>
@@ -16,7 +16,7 @@
                             <div class="mb-8">
                                 <div class="text-gray-700 font-bold text-2xl mb-2 block lg:flex items-center lg:justify-between">
                                     <div class="truncate pr-0 lg:pr-3">
-                                        <a href="{{ route('vendors.show', $vendor->id) }}" class="hover:underline hover:text-gray-800">
+                                        <a href="{{ route('vendors.show', $vendor->slug) }}" class="hover:underline hover:text-gray-800">
                                             {{ $vendor->name }}
                                         </a>
                                     </div>
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="lg:text-right">
-                                <a href="{{ route('vendors.edit', $vendor->id) }}" class="btn is-primary lg:is-xsmall block lg:inline lg:px-3 lg:py-1 lg:leading-normal lg:text-xs">
+                                <a href="{{ route('vendors.edit', $vendor->slug) }}" class="btn is-primary lg:is-xsmall block lg:inline lg:px-3 lg:py-1 lg:leading-normal lg:text-xs">
                                     Edit
                                 </a>
                             </div>

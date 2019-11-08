@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Str;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -35,6 +36,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the route key name.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
     /**
      * getter for whether or not the user has an avatar
@@ -87,5 +98,17 @@ class User extends Authenticatable
             $vendor->kid_transactions = $vendor->transactions()->where('kid_id', $this->id)->without('kid')->latest('updated_at')->get();
             $vendor->kid_transaction_totals = $vendor->kid_transactions->sum('amount');
         });
+    }
+
+    /**
+     * Set the name & slug attributes
+     *
+     * @param mixed $name
+     * @return void
+     */
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = $name;
+        $this->attributes['slug'] = Str::slug($name);
     }
 }

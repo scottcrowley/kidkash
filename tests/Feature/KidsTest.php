@@ -112,7 +112,7 @@ class KidsTest extends TestCase
     {
         $kid = createStates('App\User', 'kid');
 
-        $this->get(route('kids.edit', $kid->id))
+        $this->get(route('kids.edit', $kid->slug))
             ->assertRedirect(route('login'));
     }
 
@@ -122,7 +122,7 @@ class KidsTest extends TestCase
         $kid = createStates('App\User', 'kid');
         $this->signIn(createStates('App\User', 'kid'));
 
-        $this->get(route('kids.edit', $kid->id))
+        $this->get(route('kids.edit', $kid->slug))
             ->assertStatus(403);
     }
 
@@ -134,7 +134,7 @@ class KidsTest extends TestCase
 
         $kid = createStates('App\User', 'kid');
 
-        $this->get(route('kids.edit', $kid->id))
+        $this->get(route('kids.edit', $kid->slug))
             ->assertSee('Edit '.$kid->name)
             ->assertStatus(200);
     }
@@ -144,7 +144,7 @@ class KidsTest extends TestCase
     {
         $this->signIn($kid = createStates('App\User', 'kid'));
 
-        $this->get(route('kids.edit', $kid->id))
+        $this->get(route('kids.edit', $kid->slug))
             ->assertSee('Edit Your Profile')
             ->assertStatus(200);
     }
@@ -154,7 +154,7 @@ class KidsTest extends TestCase
     {
         $kid = createStates('App\User', 'kid');
 
-        $this->patch(route('kids.update', $kid->id), [])
+        $this->patch(route('kids.update', $kid->slug), [])
             ->assertRedirect(route('login'));
     }
 
@@ -165,7 +165,7 @@ class KidsTest extends TestCase
 
         $this->signIn(createStates('App\User', 'kid'));
 
-        $this->patch(route('kids.update', $kid->id), [])
+        $this->patch(route('kids.update', $kid->slug), [])
             ->assertStatus(403);
     }
 
@@ -182,7 +182,7 @@ class KidsTest extends TestCase
         $kid['password'] = 'newpassword';
         $kid['password_confirmation'] = 'newpassword';
 
-        $this->patch(route('kids.update', $kid['id']), $kid)
+        $this->patch(route('kids.update', $kid['slug']), $kid)
             ->assertRedirect(route('kids.index'));
 
         $this->assertDatabaseHas('users', ['email' => $kid['email']]);
@@ -207,7 +207,7 @@ class KidsTest extends TestCase
         $kid['password'] = 'newpassword';
         $kid['password_confirmation'] = 'newpassword';
 
-        $this->patch(route('kids.update', $kid['id']), $kid)
+        $this->patch(route('kids.update', $kid['slug']), $kid)
             ->assertRedirect(route('home'));
 
         $this->assertDatabaseHas('users', ['email' => $kid['email']]);
@@ -225,7 +225,7 @@ class KidsTest extends TestCase
     {
         $kid = createStates('App\User', 'kid');
 
-        $this->delete(route('kids.update', $kid->id))
+        $this->delete(route('kids.update', $kid->slug))
             ->assertRedirect(route('login'));
     }
 
@@ -236,7 +236,7 @@ class KidsTest extends TestCase
 
         $this->signIn(createStates('App\User', 'kid'));
 
-        $this->delete(route('kids.delete', $kid['id']))
+        $this->delete(route('kids.delete', $kid->slug))
             ->assertStatus(403);
     }
 
@@ -248,7 +248,7 @@ class KidsTest extends TestCase
 
         $kid = createStates('App\User', 'kid');
 
-        $this->delete(route('kids.delete', $kid['id']))
+        $this->delete(route('kids.delete', $kid->slug))
             ->assertRedirect(route('kids.index'));
 
         $this->assertDatabaseMissing('users', ['id' => $kid->id]);
@@ -259,7 +259,7 @@ class KidsTest extends TestCase
     {
         $this->signIn(createStates('App\User', 'kid'));
 
-        $this->delete(route('kids.delete', auth()->id()))
+        $this->delete(route('kids.delete', auth()->user()->slug))
             ->assertStatus(403);
     }
 
@@ -268,7 +268,7 @@ class KidsTest extends TestCase
     {
         $kid = createStates('App\User', 'kid');
 
-        $this->get(route('kids.show', $kid->id))
+        $this->get(route('kids.show', $kid->slug))
             ->assertRedirect(route('login'));
     }
 
@@ -279,7 +279,7 @@ class KidsTest extends TestCase
 
         $kid = createStates('App\User', 'kid');
 
-        $this->get(route('kids.show', $kid->id))
+        $this->get(route('kids.show', $kid->slug))
             ->assertStatus(403);
     }
 
@@ -291,7 +291,7 @@ class KidsTest extends TestCase
 
         $kid = createStates('App\User', 'kid');
 
-        $this->get(route('kids.show', $kid->id))
+        $this->get(route('kids.show', $kid->slug))
             ->assertSee($kid->name);
     }
 }

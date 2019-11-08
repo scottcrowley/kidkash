@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="w-auto">
+<div class="w-3/4">
     <div class="card">
         <div class="card-header flex justify-between">
             <p class="text-3xl">Transactions</p>

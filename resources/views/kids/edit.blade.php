@@ -12,8 +12,8 @@
         </div>
 
         <div class="card-body">
-            <avatar current-avatar-path="{{ $kid->avatar_path }}" id="{{ $kid->id }}" name="{{ $kid->name }}" is-kid="{{ $kid->is_kid }}" user-id="{{ auth()->user()->id }}"></avatar>
-            <form method="POST" action="{{ route('kids.update', $kid->id) }}" enctype="multipart/form-data">
+            <avatar :kid="{{ $kid }}" user-id="{{ auth()->user()->id }}"></avatar>
+            <form method="POST" action="{{ route('kids.update', $kid->slug) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
 

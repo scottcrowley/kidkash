@@ -8,7 +8,7 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('vendors.update', $vendor->id) }}">
+            <form method="POST" action="{{ route('vendors.update', $vendor->slug) }}">
                 @csrf
                 @method('PATCH')
 

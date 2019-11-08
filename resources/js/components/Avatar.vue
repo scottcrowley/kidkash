@@ -1,7 +1,7 @@
 <template>
     <div class="relative h-64 w-48 mb-6 mx-auto">
         <div class="h-full w-full overflow-hidden rounded-lg shadow-lg">
-            <img :src="avatarPath" :alt="name" class="w-full h-full object-cover" />
+            <img :src="avatarPath" :alt="kid.name" class="w-full h-full object-cover" />
         </div>
         <div v-if="canUpdate" class="absolute h-full top-0 w-full" @click.prevent.self="bgClick">
             <div class="">
@@ -11,7 +11,7 @@
                 </div>
                 <div v-if="isOpen" class="absolute bg-white bottom-0 leading-snug left-0 mb-3 ml-2 py-1 rounded text-sm border border-gray-400">
                     <a href="#" class="block px-2 py-1" @click.prevent="fileInput.click()">Upload new image</a>
-                    <a v-if="avatar != ''" href="#" class="block px-2 py-1" @click.prevent="deleteImage">Delete image</a>
+                    <a v-if="avatar != '' && this.avatar !== null" href="#" class="block px-2 py-1" @click.prevent="deleteImage">Delete image</a>
                 </div>
             </div>
         </div>
@@ -20,11 +20,11 @@
 
 <script>
     export default {
-        props: ['currentAvatarPath', 'id', 'name', 'isKid', 'userId'],
+        props: ['kid', 'userId'],
 
         data() {
             return {
-                avatar: this.currentAvatarPath,
+                avatar: this.kid.avatar_path,
                 isOpen: false,
                 fileInput: null,
                 selectedFile: null,
@@ -38,13 +38,13 @@
 
         computed: {
             avatarPath() {
-                return '/' + ((this.avatar != '') ? this.avatar : 'avatars/default.jpg');
+                return '/' + ((this.avatar != '' && this.avatar !== null) ? this.avatar : 'avatars/default.jpg');
             }
         },
 
         methods: {
             canUpdate() {
-                return ! this.isKid || this.id == this.userId;
+                return ! this.kid.is_kid || this.kid.id == this.userId;
             },
 
             listenForEsc() {
@@ -95,7 +95,7 @@
 
                 data.append('avatar', avatar);
 
-                axios.post(`/api/users/${this.id}/avatar`, data)
+                axios.post(`/api/users/${this.kid.slug}/avatar`, data)
                     .then(response => {
                         this.avatar = response.data['avatar_path'];
                         this.isOpen = false;
@@ -104,7 +104,7 @@
             },
             
             deleteImage() {
-                axios.delete(`/api/users/${this.id}/avatar`)
+                axios.delete(`/api/users/${this.kid.slug}/avatar`)
                     .then(response => {
                         this.avatar = '';
                         this.isOpen = false;

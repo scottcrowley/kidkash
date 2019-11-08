@@ -29,9 +29,7 @@ class VendorTest extends TestCase
 
         $vendor = create('App\Vendor');
 
-        $vendor->name = '';
-
-        $this->patch(route('vendors.update', $vendor->id), $vendor->toArray())
+        $this->patch(route('vendors.update', $vendor->slug), ['name' => ''])
             ->assertSessionHasErrors('name');
     }
 
@@ -60,7 +58,7 @@ class VendorTest extends TestCase
         $vendor = createRaw('App\Vendor');
         $vendor['name'] = 'New Vendor';
 
-        $this->patch(route('vendors.update', $vendor['id']), $vendor)
+        $this->patch(route('vendors.update', $vendor['slug']), $vendor)
             ->assertSessionHasErrors('name');
     }
 

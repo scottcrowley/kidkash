@@ -16,7 +16,7 @@
                         <div>{{ (($kid->vendor_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($kid->vendor_transaction_totals),2)) }}</div>
                     </div>
                 @empty
-                    <p>No Kids found</p>
+                    <p>No balances for any Kids found</p>
                 @endforelse
             </content-drawers>
             <content-drawers title="Transactions" :open-default="true">

@@ -34,7 +34,7 @@ class KidTest extends TestCase
 
         $kid->name = '';
 
-        $this->patch(route('kids.update', $kid->id), $kid->toArray())
+        $this->patch(route('kids.update', $kid->slug), $kid->toArray())
             ->assertSessionHasErrors('name');
     }
 
@@ -53,7 +53,7 @@ class KidTest extends TestCase
 
         $kid->email = '';
 
-        $this->patch(route('kids.update', $kid->id), $kid->toArray())
+        $this->patch(route('kids.update', $kid->slug), $kid->toArray())
             ->assertSessionHasErrors('email');
     }
 
@@ -94,7 +94,7 @@ class KidTest extends TestCase
         $kid['password'] = 'newpassword';
         $kid['password_confirmation'] = 'newpassword';
 
-        $this->patch(route('kids.update', $kid['id']), $kid)
+        $this->patch(route('kids.update', $kid['slug']), $kid)
             ->assertSessionHasErrors('current_password');
     }
 
@@ -108,7 +108,7 @@ class KidTest extends TestCase
         $kid['current_password'] = 'password';
         $kid['password'] = '';
 
-        $this->patch(route('kids.update', $kid['id']), $kid)
+        $this->patch(route('kids.update', $kid['slug']), $kid)
             ->assertSessionHasErrors('password');
     }
 
@@ -123,7 +123,7 @@ class KidTest extends TestCase
         $kid['password'] = 'newpassword';
         $kid['password_confirmation'] = '';
 
-        $this->patch(route('kids.update', $kid['id']), $kid)
+        $this->patch(route('kids.update', $kid['slug']), $kid)
             ->assertSessionHasErrors('password');
     }
 
@@ -138,7 +138,7 @@ class KidTest extends TestCase
         $kid['password'] = 'password';
         $kid['password_confirmation'] = 'password';
 
-        $this->patch(route('kids.update', $kid['id']), $kid)
+        $this->patch(route('kids.update', $kid['slug']), $kid)
             ->assertSessionHasErrors('password');
     }
 
