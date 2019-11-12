@@ -294,4 +294,43 @@ class KidsTest extends TestCase
         $this->get(route('kids.show', $kid->slug))
             ->assertSee($kid->name);
     }
+
+    /** @test */
+    public function an_authenticated_kid_may_not_see_sub_nav()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
+
+        $this->get(route('home'))
+            ->assertDontSee('Manage Kids');
+    }
+
+    /** @test */
+    public function an_authenticated_parent_can_see_sub_nav()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
+        $this->get(route('kids.index'))
+            ->assertSee('Manage Kids');
+    }
+
+    /** @test */
+    public function an_authenticated_kid_may_not_see_delete_button_on_edit_page()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
+
+        $this->get(route('kids.edit', auth()->user()->slug))
+            ->assertDontSee('delete');
+    }
+
+    /** @test */
+    public function an_authenticated_parent_can_see_delete_button_on_edit_page()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+        $kid = createStates('App\User', 'kid');
+
+        $this->get(route('kids.edit', $kid->slug))
+            ->assertSee('delete');
+    }
 }
