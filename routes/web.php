@@ -34,6 +34,17 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'adults',
+    'middleware' => ['auth', 'parent']
+], function () {
+    Route::get('', 'AdultsController@index')->name('adults.index');
+    Route::get('create', 'AdultsController@create')->name('adults.create');
+    Route::post('', 'AdultsController@store')->name('adults.store');
+    Route::get('{kid}', 'AdultsController@show')->name('adults.show');
+    Route::delete('{kid}', 'AdultsController@destroy')->name('adults.delete');
+});
+
+Route::group([
     'prefix' => 'vendors',
     'middleware' => ['auth', 'parent']
 ], function () {

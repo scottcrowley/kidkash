@@ -31,7 +31,7 @@ class Vendor extends Model
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'vendor_id')->with('kid')->latest('updated_at');
+        return $this->hasMany(Transaction::class, 'vendor_id')->with('owner')->latest('updated_at');
     }
 
     /**
@@ -45,24 +45,24 @@ class Vendor extends Model
     }
 
     /**
-     * A vendor has many related kids through transactions
+     * A vendor has many related owners through transactions
      *
      * @return hasManyThrough
      */
-    public function kids()
+    public function owners()
     {
-        return $this->hasManyThrough(User::class, Transaction::class, 'vendor_id', 'id', 'id', 'kid_id');
+        return $this->hasManyThrough(User::class, Transaction::class, 'vendor_id', 'id', 'id', 'user_id');
     }
 
     /**
-     * Get individual kids with related transactions and sum all transactions
+     * Get individual owners with related transactions and sum all transactions
      *
      * @return void
      */
-    public function getKidsListAttribute()
+    public function getOwnersListAttribute()
     {
-        return $this->kids->unique('id')->values()->each(function ($kid) {
-            $kid->vendor_transaction_totals = $kid->transactions()->where('vendor_id', $this->id)->sum('amount');
+        return $this->owners->unique('id')->values()->each(function ($owner) {
+            $owner->vendor_transaction_totals = $owner->transactions()->where('vendor_id', $this->id)->sum('amount');
         });
     }
 

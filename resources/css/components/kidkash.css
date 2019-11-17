@@ -27,7 +27,7 @@ select {
 .activity-label {
     @apply text-gray-700 text-xl;
 
-    & .activity-label-kid, & .activity-label-vendor, & .activity-label-amount {
+    & .activity-label-owner, & .activity-label-vendor, & .activity-label-amount {
         @apply font-semibold;
     }
 

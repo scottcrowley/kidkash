@@ -44,7 +44,7 @@ class TransactionsController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'kid_id' => ['required', 'exists:users,id'],
+            'user_id' => ['required', 'exists:users,id'],
             'vendor_id' => ['required', 'exists:vendors,id'],
             'type' => ['required', Rule::in(['add', 'use'])],
             'amount' => ['required', 'numeric'],
@@ -95,7 +95,7 @@ class TransactionsController extends Controller
     public function update(Request $request, Transaction $transaction)
     {
         $data = $request->validate([
-            'kid_id' => ['required', 'exists:users,id'],
+            'user_id' => ['required', 'exists:users,id'],
             'vendor_id' => ['required', 'exists:vendors,id'],
             'type' => ['required', Rule::in(['add', 'use'])],
             'amount' => ['required', 'numeric'],

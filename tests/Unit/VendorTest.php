@@ -72,13 +72,13 @@ class VendorTest extends TestCase
     }
 
     /** @test */
-    public function it_can_access_all_kids_with_related_transactions()
+    public function it_can_access_all_owners_with_related_transactions()
     {
         $vendor = create('App\Vendor');
         create('App\Transaction', ['vendor_id' => $vendor->id], 4);
 
-        $this->assertCount(4, $vendor->kids);
+        $this->assertCount(4, $vendor->owners);
 
-        $this->assertInstanceOf('App\User', $vendor->kids[0]);
+        $this->assertInstanceOf('App\User', $vendor->owners[0]);
     }
 }

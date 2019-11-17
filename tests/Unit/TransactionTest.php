@@ -10,12 +10,12 @@ class TransactionTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_can_access_the_related_kid()
+    public function it_can_access_the_related_owner()
     {
         $kid = createStates('App\User', 'kid');
-        $transaction = create('App\Transaction', ['kid_id' => $kid->id]);
+        $transaction = create('App\Transaction', ['user_id' => $kid->id]);
 
-        $this->assertEquals($kid->name, $transaction->kid->name);
+        $this->assertEquals($kid->name, $transaction->owner->name);
     }
 
     /** @test */
@@ -52,27 +52,27 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_kid_id_when_adding_a_new()
+    public function it_requires_a_user_id_when_adding_a_new()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
 
-        $transaction = makeRaw('App\Transaction', ['kid_id' => null]);
+        $transaction = makeRaw('App\Transaction', ['user_id' => null]);
 
         $this->post(route('transactions.store'), $transaction)
-            ->assertSessionHasErrors('kid_id');
+            ->assertSessionHasErrors('user_id');
     }
 
     /** @test */
-    public function it_requires_a_valid_kid_id_when_adding_a_new()
+    public function it_requires_a_valid_user_id_when_adding_a_new()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
 
-        $transaction = makeRaw('App\Transaction', ['kid_id' => 5]);
+        $transaction = makeRaw('App\Transaction', ['user_id' => 5]);
 
         $this->post(route('transactions.store'), $transaction)
-            ->assertSessionHasErrors('kid_id');
+            ->assertSessionHasErrors('user_id');
     }
 
     /** @test */

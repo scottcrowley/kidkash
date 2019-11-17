@@ -146,7 +146,7 @@ class KidTest extends TestCase
     public function it_can_access_all_of_its_transactions()
     {
         $kid = createStates('App\User', 'kid');
-        create('App\Transaction', ['kid_id' => $kid->id], 2);
+        create('App\Transaction', ['user_id' => $kid->id], 2);
 
         $this->assertCount(2, $kid->transactions);
     }
@@ -155,7 +155,7 @@ class KidTest extends TestCase
     public function it_can_access_all_vendors_used_in_transactions()
     {
         $kid = createStates('App\User', 'kid');
-        create('App\Transaction', ['kid_id' => $kid->id], 4);
+        create('App\Transaction', ['user_id' => $kid->id], 4);
 
         $this->assertCount(4, $kid->vendors);
 

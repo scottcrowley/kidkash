@@ -30,7 +30,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_all_kids()
+    public function an_authenticated_authorized_parent_may_view_all_kids()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -61,7 +61,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_the_create_page()
+    public function an_authenticated_authorized_parent_may_view_the_create_page()
     {
         $this->signIn($user = create('App\User'));
         config(['kidkash.parents' => [$user->email]]);
@@ -88,7 +88,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_add_a_new_kid()
+    public function an_authenticated_authorized_parent_may_add_a_new_kid()
     {
         $this->signIn(create('App\User'));
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -108,7 +108,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_must_an_authenticated_parent_to_view_the_edit_page()
+    public function a_user_must_an_authenticated_authorized_parent_to_view_the_edit_page()
     {
         $kid = createStates('App\User', 'kid');
 
@@ -127,7 +127,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_the_edit_page()
+    public function an_authenticated_authorized_parent_may_view_the_edit_page()
     {
         $this->signIn(create('App\User'));
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -170,7 +170,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_update_an_existing_kid()
+    public function an_authenticated_authorized_parent_may_update_an_existing_kid()
     {
         $this->signIn(create('App\User'));
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -241,7 +241,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_delete_a_kid()
+    public function an_authenticated_authorized_parent_may_delete_a_kid()
     {
         $this->signIn(create('App\User'));
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -284,7 +284,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_show_page()
+    public function an_authenticated_authorized_parent_may_view_show_page()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -305,7 +305,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_can_see_sub_nav()
+    public function an_authenticated_authorized_parent_can_see_sub_nav()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -324,7 +324,7 @@ class KidsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_can_see_delete_button_on_edit_page()
+    public function an_authenticated_authorized_parent_can_see_delete_button_on_edit_page()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -332,5 +332,24 @@ class KidsTest extends TestCase
 
         $this->get(route('kids.edit', $kid->slug))
             ->assertSee('delete');
+    }
+
+    /** @test */
+    public function an_authenticated_kid_is_redirected_to_their_own_dashboard_when_they_log_in()
+    {
+        $this->signIn(createStates('App\User', 'kid'));
+
+        $this->get(route('home'))
+            ->assertSee('Dashboard');
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_is_redirected_to_kids_index_page_when_they_log_in()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
+        $this->get(route('home'))
+            ->assertRedirect(route('kids.index'));
     }
 }

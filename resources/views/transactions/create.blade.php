@@ -10,16 +10,16 @@
                 @csrf
 
                 <div class="form-group row">
-                    <label for="kid_id" class="col-4 w-1/3 text-left md:text-right">Kid</label>
+                    <label for="user_id" class="col-4 w-1/3 text-left md:text-right">Kid</label>
 
                     <div class="col-6 w-2/3">
                         <div class="relative">
-                            <select name="kid_id" class="w-full" required>
+                            <select name="user_id" class="w-full" required>
                                 <option value=''>Choose a Kid</option>
                                 @forelse ($kids as $kid)
                                     <option 
                                         value="{{ $kid->id }}" 
-                                        {{ (old('kid_id') != '' && $kid->id == old('kid_id')) ? 'selected': '' }}
+                                        {{ (old('user_id') != '' && $kid->id == old('user_id')) ? 'selected': '' }}
                                     >{{ $kid->name }}</option>
                                 @empty
                                     <option value=''>No Kids in Database</option>
@@ -31,7 +31,7 @@
                                 </svg>
                             </div>
                         </div>
-                        @error('kid_id')
+                        @error('user_id')
                             <span class="alert-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

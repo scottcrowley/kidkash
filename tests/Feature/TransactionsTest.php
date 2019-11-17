@@ -34,7 +34,7 @@ class TransactionsTest extends TestCase
         $transaction = create('App\Transaction');
 
         $this->get(route('transactions.index'))
-            ->assertSee($transaction->kid->name);
+            ->assertSee($transaction->owner->name);
     }
 
     /** @test */
@@ -92,7 +92,7 @@ class TransactionsTest extends TestCase
             ->assertRedirect(route('transactions.index'));
 
         $this->assertDatabaseHas('transactions', [
-            'kid_id' => $transaction['kid_id'],
+            'user_id' => $transaction['user_id'],
             'vendor_id' => $transaction['vendor_id'],
         ]);
     }

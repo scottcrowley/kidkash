@@ -11,16 +11,16 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['kid_id', 'vendor_id', 'amount', 'description'];
+    protected $fillable = ['user_id', 'vendor_id', 'amount', 'description'];
 
     /**
-     * A transaction belongs to one kid (user)
+     * A transaction belongs to one owner (user)
      *
      * @return belongsTo
      */
-    public function kid()
+    public function owner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -56,20 +56,20 @@ class Transaction extends Model
 
     public function getActivityLabelAttribute()
     {
-        return '<span class="activity-label-kid">'.$this->kid->name.'</span>'.
+        return '<span class="activity-label-owner">'.$this->owner->name.'</span>'.
             '<span class="activity-label-type">'.(
                 ($this->type == 'add') ? ' added <span class="activity-label-amount">$ '.$this->modified_amount.'</span> to ' : ' used <span class="activity-label-amount">$ '.$this->modified_amount.'</span> from '
             ).'</span>'.
             '<span class="activity-label-vendor">'.$this->vendor->name.'</span>';
     }
 
-    public function getKidActivityLabelAttribute()
+    public function getOwnerActivityLabelAttribute()
     {
         return (($this->type == 'add') ? 'Added $ '.$this->modified_amount.' to ' : 'Used $ '.$this->modified_amount.' from ').$this->vendor->name;
     }
 
     public function getVendorActivityLabelAttribute()
     {
-        return $this->kid->name.(($this->type == 'add') ? ' added ' : ' used ').'$ '.$this->modified_amount;
+        return $this->owner->name.(($this->type == 'add') ? ' added ' : ' used ').'$ '.$this->modified_amount;
     }
 }

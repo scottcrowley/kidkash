@@ -21,7 +21,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (! auth()->user()->is_kid) {
+        if (
+            ! auth()->user()->is_kid &&
+            in_array(auth()->user()->email, config('kidkash.parents'))
+        ) {
             return redirect(route('kids.index'));
         }
 

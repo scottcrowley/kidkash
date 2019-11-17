@@ -13,7 +13,7 @@
                 @forelse ($user->vendors_list as $vendor)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700">
                         <div>{{ $vendor->name }}</div>
-                        <div>{{ (($vendor->kid_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->kid_transaction_totals),2)) }}</div>
+                        <div>{{ (($vendor->owner_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->owner_transaction_totals),2)) }}</div>
                     </div>
                 @empty
                     <p>No Vendors found</p>
