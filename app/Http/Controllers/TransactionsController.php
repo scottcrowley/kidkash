@@ -17,7 +17,7 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::latest()->with('kid')->with('vendor')->get();
+        $transactions = Transaction::latest()->with('owner')->with('vendor')->get();
 
         return view('transactions.index', compact('transactions'));
     }
@@ -30,9 +30,9 @@ class TransactionsController extends Controller
     public function create()
     {
         $vendors = Vendor::orderBy('name')->get();
-        $kids = User::where('is_kid', true)->orderBy('name')->get();
+        $owners = User::where('is_kid', true)->orderBy('name')->get();
 
-        return view('transactions.create', compact('vendors', 'kids'));
+        return view('transactions.create', compact('vendors', 'owners'));
     }
 
     /**
@@ -80,9 +80,9 @@ class TransactionsController extends Controller
     public function edit(Transaction $transaction)
     {
         $vendors = Vendor::orderBy('name')->get();
-        $kids = User::where('is_kid', true)->orderBy('name')->get();
+        $owners = User::where('is_kid', true)->orderBy('name')->get();
 
-        return view('transactions.edit', compact('transaction', 'vendors', 'kids'));
+        return view('transactions.edit', compact('transaction', 'vendors', 'owners'));
     }
 
     /**

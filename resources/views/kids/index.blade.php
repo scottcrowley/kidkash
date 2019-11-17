@@ -35,7 +35,7 @@
                                 <div class="flex flex-col lg:flex-row pt-2 pb-4">
                                     @forelse ($kid->transactions->take(3) as $transaction)
                                         <div class="bg-gray-200 rounded-full mb-2 lg:mb:0 lg:mr-2 px-3 py-1 text-sm font-semibold text-gray-700 text-center">
-                                            {!! $transaction->kid_activity_label !!}
+                                            {!! $transaction->owner_activity_label !!}
                                         </div>
                                     @empty
                                         <p>No transactions found</p>

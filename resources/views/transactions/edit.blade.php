@@ -11,22 +11,22 @@
                 @method('patch')
 
                 <div class="form-group row">
-                    <label for="user_id" class="col-4 w-1/3 text-left md:text-right">Kid</label>
+                    <label for="user_id" class="col-4 w-1/3 text-left md:text-right">Owner</label>
 
                     <div class="col-6 w-2/3">
                         <div class="relative">
                             <select name="user_id" class="w-full" required>
-                                <option value=''>Choose a Kid</option>
-                                @forelse ($kids as $kid)
+                                <option value=''>Choose an Owner</option>
+                                @forelse ($owners as $owner)
                                     <option 
-                                        value="{{ $kid->id }}" 
+                                        value="{{ $owner->id }}" 
                                         {{ (
-                                            (old('user_id') != '' && $kid->id == old('user_id')) || 
-                                            (old('user_id') == '' && $kid->id == $transaction->user_id)
+                                            (old('user_id') != '' && $owner->id == old('user_id')) || 
+                                            (old('user_id') == '' && $owner->id == $transaction->user_id)
                                         ) ? 'selected': '' }}
-                                    >{{ $kid->name }}</option>
+                                    >{{ $owner->name }}</option>
                                 @empty
-                                    <option value=''>No Kids in Database</option>
+                                    <option value=''>No owners in Database</option>
                                 @endforelse
                             </select>
                             <div class="select-menu-icon">

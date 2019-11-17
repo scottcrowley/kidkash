@@ -16,7 +16,7 @@
                             <div class="mb-8">
                                 <div class="mb-2 flex items-center">
                                     <div class="w-10 h-10 mr-3 overflow-hidden rounded-full border border-secondary-700">
-                                        <img src="/{{ $transaction->kid->avatar_path ?: 'storage/avatars/default.jpg' }}" class="w-full h-full object-cover" />
+                                        <img src="/{{ $transaction->owner->avatar_path ?: 'storage/avatars/default.jpg' }}" class="w-full h-full object-cover" />
                                     </div>
                                     <p class="activity-label flex-1">
                                         {!! $transaction->activity_label !!}

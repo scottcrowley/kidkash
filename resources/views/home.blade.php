@@ -21,7 +21,7 @@
             </content-drawers>
             <content-drawers title="Transactions">
                 @forelse ($user->transactions as $transaction)
-                    <div class="px-3 leading-loose text-base text-gray-700">{!! $transaction->kid_activity_label !!} {{ $transaction->updated_at->diffForHumans() }}</div>
+                    <div class="px-3 leading-loose text-base text-gray-700">{!! $transaction->owner_activity_label !!} {{ $transaction->updated_at->diffForHumans() }}</div>
                 @empty
                     <p>No Transactions found</p>
                 @endforelse

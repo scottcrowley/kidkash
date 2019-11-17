@@ -9,14 +9,14 @@
         </div>
 
         <div class="card-body" style="padding-left: 0; padding-right: 0;">
-            <content-drawers title="Kid Balances" :open-default="true">
-                @forelse ($vendor->kids_list as $kid)
+            <content-drawers title="User Balances" :open-default="true">
+                @forelse ($vendor->owners_list as $owner)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700">
-                        <div>{{ $kid->name }}</div>
-                        <div>{{ (($kid->vendor_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($kid->vendor_transaction_totals),2)) }}</div>
+                        <div>{{ $owner->name }}</div>
+                        <div>{{ (($owner->vendor_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($owner->vendor_transaction_totals),2)) }}</div>
                     </div>
                 @empty
-                    <p>No balances for any Kids found</p>
+                    <p>No balances for any Users found</p>
                 @endforelse
             </content-drawers>
             <content-drawers title="Transactions" :open-default="true">

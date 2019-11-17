@@ -28,7 +28,7 @@
                             </svg>
                         </a>
                         <div class="truncate">
-                            {!! $transaction->kid_activity_label !!} 
+                            {!! $transaction->owner_activity_label !!} 
                             {{ $transaction->updated_at->diffForHumans() . ($transaction->description != '' ? ' - '. $transaction->description : '') }}
                         </div>
                     </div>
