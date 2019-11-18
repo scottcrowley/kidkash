@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Card;
 use App\User;
 use App\Vendor;
 use App\Transaction;
@@ -57,5 +58,14 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'vendor_id' => factory('App\Vendor'),
         'amount' => 20,
         'description' => $faker->text(),
+    ];
+});
+
+$factory->define(Card::class, function (Faker $faker) {
+    return [
+        'owner_id' => factory('App\User'),
+        'vendor_id' => factory('App\Vendor'),
+        'number' => $faker->text(20),
+        'pin' => $faker->text(5),
     ];
 });
