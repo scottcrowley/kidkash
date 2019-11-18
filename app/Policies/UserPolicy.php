@@ -45,23 +45,23 @@ class UserPolicy
     /**
      * Determine whether the user can update the model.
      *
+     * @param  \App\User  $authUser
      * @param  \App\User  $user
-     * @param  \App\User  $kid
      * @return bool
      */
-    public function update(User $user, User $kid)
+    public function update(User $authUser, User $user)
     {
-        return $user->id == $kid->id;
+        return $authUser->id == $user->id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
+     * @param  \App\User  $authUser
      * @param  \App\User  $user
-     * @param  \App\User  $kid
      * @return bool
      */
-    public function delete(User $user, User $kid)
+    public function delete(User $authUser, User $user)
     {
         return true;
     }
@@ -74,6 +74,6 @@ class UserPolicy
      */
     protected function isParent($user)
     {
-        return (! $user->is_kid && in_array($user->email, config('kidkash.parents')));
+        return (in_array($user->email, config('kidkash.parents')));
     }
 }

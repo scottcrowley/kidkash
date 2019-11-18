@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_kid', 'avatar_path'
+        'name', 'email', 'password', 'avatar_path'
     ];
 
     /**
@@ -36,6 +36,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['is_authorized_parent'];
 
     /**
      * Get the route key name.
@@ -110,5 +117,15 @@ class User extends Authenticatable
     {
         $this->attributes['name'] = $name;
         $this->attributes['slug'] = Str::slug($name);
+    }
+
+    /**
+     * Checks to see if user is an authorized parent
+     *
+     * @return bool
+     */
+    public function getIsAuthorizedParentAttribute()
+    {
+        return (in_array($this->email, config('kidkash.parents')));
     }
 }

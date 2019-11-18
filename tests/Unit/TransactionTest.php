@@ -12,10 +12,10 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_can_access_the_related_owner()
     {
-        $kid = createStates('App\User', 'kid');
-        $transaction = create('App\Transaction', ['user_id' => $kid->id]);
+        $user = create('App\User');
+        $transaction = create('App\Transaction', ['user_id' => $user->id]);
 
-        $this->assertEquals($kid->name, $transaction->owner->name);
+        $this->assertEquals($user->name, $transaction->owner->name);
     }
 
     /** @test */

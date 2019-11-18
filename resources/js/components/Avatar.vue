@@ -1,7 +1,7 @@
 <template>
     <div class="relative h-64 w-48 mb-6 mx-auto">
         <div class="h-full w-full overflow-hidden rounded-lg shadow-lg">
-            <img :src="avatarPath" :alt="kid.name" class="w-full h-full object-cover" />
+            <img :src="avatarPath" :alt="user.name" class="w-full h-full object-cover" />
         </div>
         <div v-if="canUpdate" class="absolute h-full top-0 w-full" @click.prevent.self="bgClick">
             <div class="">
@@ -20,11 +20,11 @@
 
 <script>
     export default {
-        props: ['kid', 'userId'],
+        props: ['user', 'authenticatedId'],
 
         data() {
             return {
-                avatar: this.kid.avatar_path,
+                avatar: this.user.avatar_path,
                 isOpen: false,
                 fileInput: null,
                 selectedFile: null,
@@ -44,7 +44,7 @@
 
         methods: {
             canUpdate() {
-                return ! this.kid.is_kid || this.kid.id == this.userId;
+                return this.user.is_authorized_parent || this.user.id == this.authenticatedId;
             },
 
             listenForEsc() {
@@ -95,7 +95,7 @@
 
                 data.append('avatar', avatar);
 
-                axios.post(`/api/users/${this.kid.slug}/avatar`, data)
+                axios.post(`/api/users/${this.user.slug}/avatar`, data)
                     .then(response => {
                         this.avatar = response.data['avatar_path'];
                         this.isOpen = false;
@@ -104,7 +104,7 @@
             },
             
             deleteImage() {
-                axios.delete(`/api/users/${this.kid.slug}/avatar`)
+                axios.delete(`/api/users/${this.user.slug}/avatar`)
                     .then(response => {
                         this.avatar = '';
                         this.isOpen = false;

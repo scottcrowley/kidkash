@@ -17,16 +17,16 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_view_all_transactions()
+    public function an_authenticated_user_must_be_an_authorized_parent_to_view_all_transactions()
     {
-        $this->signIn(createStates('App\User', 'kid'));
+        $this->signIn();
 
         $this->get(route('transactions.index'))
             ->assertStatus(403);
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_all_transactions()
+    public function an_authenticated_authorized_parent_may_view_all_transactions()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -45,16 +45,16 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_view_create_page()
+    public function an_authenticated_user_must_be_an_authorized_parent_to_view_create_page()
     {
-        $this->signIn(createStates('App\User', 'kid'));
+        $this->signIn();
 
         $this->get(route('transactions.create'))
             ->assertStatus(403);
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_create_page()
+    public function an_authenticated_authorized_parent_may_view_create_page()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -71,16 +71,16 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_create_a_new_transaction()
+    public function an_authenticated_user_must_be_an_authorized_parent_to_create_a_new_transaction()
     {
-        $this->signIn(createStates('App\User', 'kid'));
+        $this->signIn();
 
         $this->post(route('transactions.store'), [])
             ->assertStatus(403);
     }
 
     /** @test */
-    public function an_authenticated_parent_may_create_a_new_transaction()
+    public function an_authenticated_authorized_parent_may_create_a_new_transaction()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -105,9 +105,9 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_view_edit_page()
+    public function an_authenticated_user_must_be_an_authorized_parent_to_view_edit_page()
     {
-        $this->signIn(createStates('App\User', 'kid'));
+        $this->signIn();
 
         $transaction = create('App\Transaction');
 
@@ -116,7 +116,7 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_view_edit_page()
+    public function an_authenticated_authorized_parent_may_view_edit_page()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -137,9 +137,9 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_update_an_existing_transaction()
+    public function an_authenticated_user_must_be_an_authorized_parent_to_update_an_existing_transaction()
     {
-        $this->signIn(createStates('App\User', 'kid'));
+        $this->signIn();
 
         $transaction = create('App\Transaction');
 
@@ -148,7 +148,7 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_update_an_existing_transaction()
+    public function an_authenticated_authorized_parent_may_update_an_existing_transaction()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
@@ -177,9 +177,9 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_user_must_be_a_parent_to_delete_an_existing_transaction()
+    public function an_authenticated_user_must_be_an_authorized_parent_to_delete_an_existing_transaction()
     {
-        $this->signIn(createStates('App\User', 'kid'));
+        $this->signIn();
 
         $transaction = create('App\Transaction');
 
@@ -188,7 +188,7 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_parent_may_delete_an_existing_transaction()
+    public function an_authenticated_authorized_parent_may_delete_an_existing_transaction()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);

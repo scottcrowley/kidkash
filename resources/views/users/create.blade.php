@@ -3,10 +3,10 @@
 @section('content')
 <div class="col-8">
     <div class="card">
-        <div class="card-header">Add a new Kid</div>
+        <div class="card-header">Add a new User</div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('kids.store') }}">
+            <form method="POST" action="{{ route('users.store') }}">
                 @csrf
 
                 <div class="form-group row">
@@ -62,7 +62,7 @@
                 <div class="form-group row mb-0">
                     <div class="offset-4 flex">
                         <button type="submit" class="btn is-primary">
-                            Add Kid
+                            Add User
                         </button>
                         <a href="{{ url()->previous() }}" class="btn ml-2 border border-secondary-300">
                             Cancel

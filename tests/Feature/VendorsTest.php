@@ -17,16 +17,7 @@ class VendorsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_kid_may_not_view_all_vendors()
-    {
-        $this->signIn(createStates('App\User', 'kid'));
-
-        $this->get(route('vendors.index'))
-            ->assertStatus(403);
-    }
-
-    /** @test */
-    public function an_authenticated_adult_may_not_view_all_vendors()
+    public function an_authenticated_unauthorized_user_may_not_view_all_vendors()
     {
         $this->signIn();
 
@@ -54,16 +45,7 @@ class VendorsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_kid_may_not_view_create_page()
-    {
-        $this->signIn(createStates('App\User', 'kid'));
-
-        $this->get(route('vendors.create'))
-            ->assertStatus(403);
-    }
-
-    /** @test */
-    public function an_authenticated_adult_may_not_view_create_page()
+    public function an_authenticated_unauthorized_user_may_not_view_create_page()
     {
         $this->signIn();
 
@@ -89,16 +71,7 @@ class VendorsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_kid_may_not_add_a_new_vendor()
-    {
-        $this->signIn(createStates('App\User', 'kid'));
-
-        $this->post(route('vendors.store'), [])
-            ->assertStatus(403);
-    }
-
-    /** @test */
-    public function an_authenticated_adult_may_not_add_a_new_vendor()
+    public function an_authenticated_unauthorized_user_may_not_add_a_new_vendor()
     {
         $this->signIn();
 
@@ -129,18 +102,7 @@ class VendorsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_kid_may_not_view_edit_page()
-    {
-        $this->signIn(createStates('App\User', 'kid'));
-
-        $vendor = create('App\Vendor');
-
-        $this->get(route('vendors.edit', $vendor->slug))
-            ->assertStatus(403);
-    }
-
-    /** @test */
-    public function an_authenticated_adult_may_not_view_edit_page()
+    public function an_authenticated_unauthorized_user_may_not_view_edit_page()
     {
         $this->signIn();
 
@@ -172,18 +134,7 @@ class VendorsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_kid_may_not_update_an_existing_vendor()
-    {
-        $this->signIn(createStates('App\User', 'kid'));
-
-        $vendor = create('App\Vendor');
-
-        $this->patch(route('vendors.update', $vendor->slug), $vendor->toArray())
-            ->assertStatus(403);
-    }
-
-    /** @test */
-    public function an_authenticated_adult_may_not_update_an_existing_vendor()
+    public function an_authenticated_unauthorized_user_may_not_update_an_existing_vendor()
     {
         $this->signIn();
 
@@ -218,18 +169,7 @@ class VendorsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_kid_may_not_delete_a_vendor()
-    {
-        $this->signIn(createStates('App\User', 'kid'));
-
-        $vendor = create('App\Vendor');
-
-        $this->delete(route('vendors.delete', $vendor->slug))
-            ->assertStatus(403);
-    }
-
-    /** @test */
-    public function an_authenticated_adult_may_not_delete_a_vendor()
+    public function an_authenticated_unauthorized_user_may_not_delete_a_vendor()
     {
         $this->signIn();
 
@@ -263,18 +203,7 @@ class VendorsTest extends TestCase
     }
 
     /** @test */
-    public function an_authenticated_kid_may_not_view_show_page()
-    {
-        $this->signIn(createStates('App\User', 'kid'));
-
-        $vendor = create('App\Vendor');
-
-        $this->get(route('vendors.show', $vendor->slug))
-            ->assertStatus(403);
-    }
-
-    /** @test */
-    public function an_authenticated_adult_may_not_view_show_page()
+    public function an_authenticated_unauthorized_user_may_not_view_show_page()
     {
         $this->signIn();
 

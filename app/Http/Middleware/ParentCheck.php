@@ -15,11 +15,7 @@ class ParentCheck
      */
     public function handle($request, Closure $next)
     {
-        if (! auth()->user()->is_kid
-            && in_array(
-                auth()->user()->email,
-                config('kidkash.parents')
-            )) {
+        if (in_array(auth()->user()->email, config('kidkash.parents'))) {
             return $next($request);
         }
 

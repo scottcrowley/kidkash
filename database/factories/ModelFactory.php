@@ -29,13 +29,8 @@ $factory->define(User::class, function (Faker $faker) {
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
         'avatar_path' => '',
-        'is_kid' => false
     ];
 });
-
-$factory->state(User::class, 'kid', [
-    'is_kid' => true
-]);
 
 $factory->state(User::class, 'withAvatar', function () {
     $file = UploadedFile::fake()->image('avatar.jpg');
@@ -58,7 +53,7 @@ $factory->define(Vendor::class, function (Faker $faker) {
 
 $factory->define(Transaction::class, function (Faker $faker) {
     return [
-        'user_id' => factory('App\User')->states('kid'),
+        'user_id' => factory('App\User'),
         'vendor_id' => factory('App\Vendor'),
         'amount' => 20,
         'description' => $faker->text(),

@@ -21,11 +21,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (
-            ! auth()->user()->is_kid &&
-            in_array(auth()->user()->email, config('kidkash.parents'))
-        ) {
-            return redirect(route('kids.index'));
+        if (auth()->user()->is_authorized_parent && url()->previous() == url(route('login'))) {
+            return redirect(route('users.index'));
         }
 
         return view('home', ['user' => auth()->user()]);

@@ -19,29 +19,18 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('kids/{user}/edit', 'KidsController@edit')->middleware('auth', 'authorized')->name('kids.edit');
-Route::patch('kids/{user}', 'KidsController@update')->middleware('auth', 'authorized')->name('kids.update');
+Route::get('users/{user}/edit', 'UsersController@edit')->middleware('auth', 'authorized')->name('users.edit');
+Route::patch('users/{user}', 'UsersController@update')->middleware('auth', 'authorized')->name('users.update');
 
 Route::group([
-    'prefix' => 'kids',
+    'prefix' => 'users',
     'middleware' => ['auth', 'parent']
 ], function () {
-    Route::get('', 'KidsController@index')->name('kids.index');
-    Route::get('create', 'KidsController@create')->name('kids.create');
-    Route::post('', 'KidsController@store')->name('kids.store');
-    Route::get('{kid}', 'KidsController@show')->name('kids.show');
-    Route::delete('{kid}', 'KidsController@destroy')->name('kids.delete');
-});
-
-Route::group([
-    'prefix' => 'adults',
-    'middleware' => ['auth', 'parent']
-], function () {
-    Route::get('', 'AdultsController@index')->name('adults.index');
-    Route::get('create', 'AdultsController@create')->name('adults.create');
-    Route::post('', 'AdultsController@store')->name('adults.store');
-    Route::get('{kid}', 'AdultsController@show')->name('adults.show');
-    Route::delete('{kid}', 'AdultsController@destroy')->name('adults.delete');
+    Route::get('', 'UsersController@index')->name('users.index');
+    Route::get('create', 'UsersController@create')->name('users.create');
+    Route::post('', 'UsersController@store')->name('users.store');
+    Route::get('{user}', 'UsersController@show')->name('users.show');
+    Route::delete('{user}', 'UsersController@destroy')->name('users.delete');
 });
 
 Route::group([

@@ -30,7 +30,7 @@ class TransactionsController extends Controller
     public function create()
     {
         $vendors = Vendor::orderBy('name')->get();
-        $owners = User::where('is_kid', true)->orderBy('name')->get();
+        $owners = User::orderBy('name')->get();
 
         return view('transactions.create', compact('vendors', 'owners'));
     }
@@ -80,7 +80,7 @@ class TransactionsController extends Controller
     public function edit(Transaction $transaction)
     {
         $vendors = Vendor::orderBy('name')->get();
-        $owners = User::where('is_kid', true)->orderBy('name')->get();
+        $owners = User::orderBy('name')->get();
 
         return view('transactions.edit', compact('transaction', 'vendors', 'owners'));
     }

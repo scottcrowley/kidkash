@@ -4,16 +4,16 @@
 <div class="col-8">
     <div class="card">
         <div class="card-header">
-            @if ($kid->id == auth()->user()->id)
+            @if ($user->id == auth()->user()->id)
                 Edit Your Profile
             @else
-                Edit {{ $kid->name }}'s Profile
+                Edit {{ $user->name }}'s Profile
             @endif
         </div>
 
         <div class="card-body">
-            <avatar :kid="{{ $kid }}" user-id="{{ auth()->user()->id }}"></avatar>
-            <form method="POST" action="{{ route('kids.update', $kid->slug) }}" enctype="multipart/form-data">
+            <avatar :user="{{ $user }}" authenticated-id="{{ auth()->user()->id }}"></avatar>
+            <form method="POST" action="{{ route('users.update', $user->slug) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PATCH')
 
@@ -21,7 +21,7 @@
                     <label for="name" class="col-4 text-left md:text-right">Name</label>
 
                     <div class="col-6">
-                        <input id="name" type="text" class="form-input @error('name') is-invalid @enderror" name="name" value="{{ old('name', $kid->name) }}" required autocomplete="name" autofocus>
+                        <input id="name" type="text" class="form-input @error('name') is-invalid @enderror" name="name" value="{{ old('name', $user->name) }}" required autocomplete="name" autofocus>
 
                         @error('name')
                             <span class="alert-danger" role="alert">
@@ -35,7 +35,7 @@
                     <label for="email" class="col-4 text-left md:text-right">E-Mail Address</label>
 
                     <div class="col-6">
-                        <input id="email" type="email" class="form-input @error('email') is-invalid @enderror" name="email" value="{{ old('email', $kid->email) }}" required autocomplete="email">
+                        <input id="email" type="email" class="form-input @error('email') is-invalid @enderror" name="email" value="{{ old('email', $user->email) }}" required autocomplete="email">
 
                         @error('email')
                             <span class="alert-danger" role="alert">
@@ -86,14 +86,14 @@
                         <button type="submit" class="btn is-primary">
                             Update
                         </button>
-                        <a href="{{ (auth()->user()->is_kid) ? route('home') : route('kids.index') }}" class="btn ml-2 border border-secondary-300">
+                        <a href="{{ (! auth()->user()->is_authorized_parent) ? route('home') : route('users.index') }}" class="btn ml-2 border border-secondary-300">
                             Done
                         </a>
-                        @can('delete', $kid)
+                        @can('delete', $user)
                             <div class="ml-auto">
-                                <delete-confirm-button label="delete" classes="btn btn-text" path="/kids/{{ $kid->id }}" redirect-path="/kids" class="inline">
+                                <delete-confirm-button label="delete" classes="btn btn-text" path="/users/{{ $user->id }}" redirect-path="/users" class="inline">
                                     <div slot="title">Are You Sure?</div>  
-                                    Are you sure you want to delete {{ $kid->name }} from the database?
+                                    Are you sure you want to delete {{ $user->name }} from the database?
                                 </delete-confirm-button>
                             </div>
                         @endcan

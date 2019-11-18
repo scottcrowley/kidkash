@@ -4,13 +4,13 @@
 <div class="w-3/4">
     <div class="card">
         <div class="card-header flex justify-between items-center">
-            <p class="text-3xl">{{ $kid->name }}</p>
-            <p class="text-2xl text-right">{{ (($kid->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($kid->transaction_totals),2)) }}</p>
+            <p class="text-3xl">{{ $user->name }}</p>
+            <p class="text-2xl text-right">{{ (($user->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($user->transaction_totals),2)) }}</p>
         </div>
 
         <div class="card-body" style="padding-left: 0; padding-right: 0;">
             <content-drawers title="Vendor Balances" :open-default="true">
-                @forelse ($kid->vendors_list as $vendor)
+                @forelse ($user->vendors_list as $vendor)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700">
                         <div>{{ $vendor->name }}</div>
                         <div>{{ (($vendor->owner_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->owner_transaction_totals),2)) }}</div>
@@ -20,7 +20,7 @@
                 @endforelse
             </content-drawers>
             <content-drawers title="Transactions" :open-default="true">
-                @forelse ($kid->transactions as $transaction)
+                @forelse ($user->transactions as $transaction)
                     <div class="px-3 leading-loose text-sm text-gray-700 flex items-center">
                         <a href="{{ route('transactions.edit', $transaction->id) }}" class="mr-2">
                             <svg class="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -37,7 +37,7 @@
                 @endforelse
             </content-drawers>
             <div class="mt-4 text-right mr-6">
-                <a href="{{ route('kids.index') }}" class="btn border border-secondary-300">Done</a>
+                <a href="{{ route('users.index') }}" class="btn border border-secondary-300">Done</a>
             </div>
         </div>
     </div>
