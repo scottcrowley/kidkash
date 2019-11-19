@@ -51,7 +51,7 @@ class Vendor extends Model
      */
     public function owners()
     {
-        return $this->hasManyThrough(User::class, Transaction::class, 'vendor_id', 'id', 'id', 'user_id');
+        return $this->hasManyThrough(User::class, Transaction::class, 'vendor_id', 'id', 'id', 'owner_id');
     }
 
     /**

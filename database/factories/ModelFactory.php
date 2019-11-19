@@ -54,7 +54,7 @@ $factory->define(Vendor::class, function (Faker $faker) {
 
 $factory->define(Transaction::class, function (Faker $faker) {
     return [
-        'user_id' => factory('App\User'),
+        'owner_id' => factory('App\User'),
         'vendor_id' => factory('App\Vendor'),
         'amount' => 20,
         'description' => $faker->text(),

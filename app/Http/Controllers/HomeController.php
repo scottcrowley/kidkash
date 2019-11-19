@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->is_authorized_parent && url()->previous() == url(route('login'))) {
+        if (auth()->user()->is_authorized_parent && (url()->previous() == url(route('login')) || url()->previous() == config('app.url'))) {
             return redirect(route('users.index'));
         }
 

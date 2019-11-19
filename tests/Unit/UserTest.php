@@ -144,42 +144,22 @@ class UserTest extends TestCase
     }
 
     /** @test */
-    public function it_can_access_all_of_its_transactions_when_its_a_kid()
+    public function it_can_access_all_of_its_transactions()
     {
         $user = create('App\User');
-        create('App\Transaction', ['user_id' => $user->id], 2);
+        create('App\Transaction', ['owner_id' => $user->id], 2);
 
         $this->assertCount(2, $user->transactions);
     }
 
     /** @test */
-    public function it_can_access_all_of_its_transactions_when_its_an_adult()
-    {
-        $adult = create('App\User');
-        create('App\Transaction', ['user_id' => $adult->id], 2);
-
-        $this->assertCount(2, $adult->transactions);
-    }
-
-    /** @test */
-    public function it_can_access_all_vendors_used_in_transactions_when_its_a_kid()
+    public function it_can_access_all_vendors_used_in_transactions()
     {
         $user = create('App\User');
-        create('App\Transaction', ['user_id' => $user->id], 4);
+        create('App\Transaction', ['owner_id' => $user->id], 4);
 
         $this->assertCount(4, $user->vendors);
 
         $this->assertInstanceOf('App\Vendor', $user->vendors[0]);
-    }
-
-    /** @test */
-    public function it_can_access_all_vendors_used_in_transactions_when_its_an_adult()
-    {
-        $adult = create('App\User');
-        create('App\Transaction', ['user_id' => $adult->id], 4);
-
-        $this->assertCount(4, $adult->vendors);
-
-        $this->assertInstanceOf('App\Vendor', $adult->vendors[0]);
     }
 }

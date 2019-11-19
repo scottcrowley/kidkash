@@ -71,7 +71,7 @@ class User extends Authenticatable
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'user_id')->latest('updated_at')->with('vendor');
+        return $this->hasMany(Transaction::class, 'owner_id')->latest('updated_at')->with('vendor');
     }
 
     /**
@@ -91,7 +91,7 @@ class User extends Authenticatable
      */
     public function vendors()
     {
-        return $this->hasManyThrough(Vendor::class, Transaction::class, 'user_id', 'id', 'id', 'vendor_id');
+        return $this->hasManyThrough(Vendor::class, Transaction::class, 'owner_id', 'id', 'id', 'vendor_id');
     }
 
     /**
@@ -102,7 +102,7 @@ class User extends Authenticatable
     public function getVendorsListAttribute()
     {
         return $this->vendors->unique('name')->each(function ($vendor) {
-            $vendor->owner_transactions = $vendor->transactions()->where('user_id', $this->id)->without('owner')->latest('updated_at')->get();
+            $vendor->owner_transactions = $vendor->transactions()->where('owner_id', $this->id)->without('owner')->latest('updated_at')->get();
             $vendor->owner_transaction_totals = $vendor->owner_transactions->sum('amount');
         });
     }

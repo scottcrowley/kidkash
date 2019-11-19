@@ -92,7 +92,7 @@ class TransactionsTest extends TestCase
             ->assertRedirect(route('transactions.index'));
 
         $this->assertDatabaseHas('transactions', [
-            'user_id' => $transaction['user_id'],
+            'owner_id' => $transaction['owner_id'],
             'vendor_id' => $transaction['vendor_id'],
         ]);
     }

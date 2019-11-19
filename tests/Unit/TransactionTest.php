@@ -13,7 +13,7 @@ class TransactionTest extends TestCase
     public function it_can_access_the_related_owner()
     {
         $user = create('App\User');
-        $transaction = create('App\Transaction', ['user_id' => $user->id]);
+        $transaction = create('App\Transaction', ['owner_id' => $user->id]);
 
         $this->assertEquals($user->name, $transaction->owner->name);
     }
@@ -52,27 +52,27 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
-    public function it_requires_a_user_id_when_adding_a_new()
+    public function it_requires_an_owner_id_when_adding_a_new()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
 
-        $transaction = makeRaw('App\Transaction', ['user_id' => null]);
+        $transaction = makeRaw('App\Transaction', ['owner_id' => null]);
 
         $this->post(route('transactions.store'), $transaction)
-            ->assertSessionHasErrors('user_id');
+            ->assertSessionHasErrors('owner_id');
     }
 
     /** @test */
-    public function it_requires_a_valid_user_id_when_adding_a_new()
+    public function it_requires_a_valid_owner_id_when_adding_a_new()
     {
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
 
-        $transaction = makeRaw('App\Transaction', ['user_id' => 5]);
+        $transaction = makeRaw('App\Transaction', ['owner_id' => 5]);
 
         $this->post(route('transactions.store'), $transaction)
-            ->assertSessionHasErrors('user_id');
+            ->assertSessionHasErrors('owner_id');
     }
 
     /** @test */

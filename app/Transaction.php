@@ -11,7 +11,7 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'vendor_id', 'amount', 'description'];
+    protected $fillable = ['owner_id', 'vendor_id', 'amount', 'description'];
 
     /**
      * A transaction belongs to one owner (user)
@@ -20,7 +20,7 @@ class Transaction extends Model
      */
     public function owner()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     /**
