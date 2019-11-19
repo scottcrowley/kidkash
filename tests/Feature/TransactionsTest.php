@@ -262,22 +262,22 @@ class TransactionsTest extends TestCase
         $this->signIn();
         config(['kidkash.parents' => [auth()->user()->email]]);
 
-        $transaction = createRaw('App\Transaction');
-        $transaction['amount'] = 50;
-        $transaction['type'] = 'add';
+        $transaction = create('App\Transaction');
+        $transaction->amount = 50;
+        $transaction->type = 'add';
 
-        $card = create('App\Card', ['owner_id' => $transaction['owner_id'], 'vendor_id' => $transaction['vendor_id']]);
+        $card = create('App\Card', ['owner_id' => $transaction->owner_id, 'vendor_id' => $transaction->vendor_id]);
 
-        $this->patch(route('transactions.update', $transaction['id']), $transaction + ['number' => $card->number, 'pin' => $card->pin]);
+        $this->patch(route('transactions.update', $transaction->id), $transaction->toArray() + ['number' => $card->number, 'pin' => $card->pin]);
 
         $this->assertDatabaseHas('transactions', [
-            'id' => $transaction['id'],
-            'amount' => $transaction['amount']
+            'id' => $transaction->id,
+            'amount' => $transaction->amount
         ]);
 
         $this->assertCount(1, Card::all());
 
-        $transaction = Transaction::find($transaction['id']);
+        $transaction = Transaction::find($transaction->id);
 
         $this->assertDatabaseHas('card_transaction', [
             'card_id' => $transaction->card->id,

@@ -11,18 +11,18 @@
                 @method('patch')
 
                 <div class="form-group row">
-                    <label for="user_id" class="col-4 w-1/3 text-left md:text-right">Owner</label>
+                    <label for="owner_id" class="col-4 w-1/3 text-left md:text-right">Owner</label>
 
                     <div class="col-6 w-2/3">
                         <div class="relative">
-                            <select name="user_id" class="w-full" required>
+                            <select name="owner_id" class="w-full" required>
                                 <option value=''>Choose an Owner</option>
                                 @forelse ($owners as $owner)
                                     <option 
                                         value="{{ $owner->id }}" 
                                         {{ (
-                                            (old('user_id') != '' && $owner->id == old('user_id')) || 
-                                            (old('user_id') == '' && $owner->id == $transaction->user_id)
+                                            (old('owner_id') != '' && $owner->id == old('owner_id')) || 
+                                            (old('owner_id') == '' && $owner->id == $transaction->owner_id)
                                         ) ? 'selected': '' }}
                                     >{{ $owner->name }}</option>
                                 @empty
@@ -35,7 +35,7 @@
                                 </svg>
                             </div>
                         </div>
-                        @error('user_id')
+                        @error('owner_id')
                             <span class="alert-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -78,34 +78,6 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="description" class="col-4 w-1/3 text-left md:text-right">Description</label>
-
-                    <div class="col-6 w-2/3">
-                        <textarea id="description" rows="4" name="description" class="form-input @error('description') is-invalid @enderror">{{ old('description', $transaction->description) }}</textarea>
-
-                        @error('description')
-                            <span class="alert-danger" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="amount" class="col-4 w-1/3 text-left md:text-right">Amount</label>
-
-                    <div class="col-6 w-2/3">
-                        <input id="amount" type="text" class="form-input @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount', $transaction->amount) }}" required>
-
-                        @error('amount')
-                            <span class="alert-danger" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="form-group row">
                     <label for="type" class="col-4 w-1/3 text-left md:text-right">Transaction Type</label>
 
                     <div class="col-6 w-2/3">
@@ -135,6 +107,62 @@
                         </div>
 
                         @error('type')
+                            <span class="alert-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="description" class="col-4 w-1/3 text-left md:text-right">Description</label>
+
+                    <div class="col-6 w-2/3">
+                        <textarea id="description" rows="4" name="description" class="form-input @error('description') is-invalid @enderror">{{ old('description', $transaction->description) }}</textarea>
+
+                        @error('description')
+                            <span class="alert-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="number" class="col-4 w-1/3 text-left md:text-right">Card Number</label>
+
+                    <div class="col-6 w-2/3">
+                        <input id="number" type="text" class="form-input @error('number') is-invalid @enderror" name="number" value="{{ old('number', ($transaction->card) ? $transaction->card->number : '') }}">
+
+                        @error('number')
+                            <span class="alert-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="pin" class="col-4 w-1/3 text-left md:text-right">Card Pin</label>
+
+                    <div class="col-6 w-2/3">
+                        <input id="pin" type="text" class="form-input @error('pin') is-invalid @enderror" name="pin" value="{{ old('pin', ($transaction->card) ? $transaction->card->pin : '') }}">
+
+                        @error('pin')
+                            <span class="alert-danger" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="amount" class="col-4 w-1/3 text-left md:text-right">Amount</label>
+
+                    <div class="col-6 w-2/3">
+                        <input id="amount" type="text" class="form-input @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount', abs($transaction->amount)) }}" required>
+
+                        @error('amount')
                             <span class="alert-danger" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
