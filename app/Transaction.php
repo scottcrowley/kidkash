@@ -34,6 +34,16 @@ class Transaction extends Model
     }
 
     /**
+     * A transaction can have one card
+     *
+     * @return hasOneThrough
+     */
+    public function card()
+    {
+        return $this->hasOneThrough(Card::class, CardTransaction::class, 'transaction_id', 'id', 'id', 'card_id');
+    }
+
+    /**
      * Format the amount attribute
      *
      * @param mixed $value

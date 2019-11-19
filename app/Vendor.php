@@ -35,13 +35,13 @@ class Vendor extends Model
     }
 
     /**
-     * Get the total for all transactions
+     * A vendor has many cards
      *
-     * @return void
+     * @return hasMany
      */
-    public function getTransactionTotalsAttribute()
+    public function cards()
     {
-        return number_format($this->transactions->sum('amount'), 2);
+        return $this->hasMany(Card::class, 'vendor_id')->with('owner');
     }
 
     /**
@@ -52,6 +52,16 @@ class Vendor extends Model
     public function owners()
     {
         return $this->hasManyThrough(User::class, Transaction::class, 'vendor_id', 'id', 'id', 'owner_id');
+    }
+
+    /**
+     * Get the total for all transactions
+     *
+     * @return void
+     */
+    public function getTransactionTotalsAttribute()
+    {
+        return number_format($this->transactions->sum('amount'), 2);
     }
 
     /**

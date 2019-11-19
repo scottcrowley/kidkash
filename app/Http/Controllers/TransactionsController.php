@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Card;
 use App\User;
 use App\Vendor;
 use App\Transaction;
@@ -53,11 +54,50 @@ class TransactionsController extends Controller
 
         $data['amount'] = ($data['type'] == 'add') ? abs($data['amount']) : -$data['amount'];
 
-        Transaction::create($data);
+        $transaction = Transaction::create($data);
+
+        if ($request->has('number')) {
+            $this->updateTransactionCard($request, $transaction);
+        }
 
         session()->flash('flash', ['message' => 'Transaction added successfully!', 'level' => 'success']);
 
         return redirect(route('transactions.index'));
+    }
+
+    /**
+     * Updates a card associated with this transaction
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Transaction $transaction
+     * @return void
+     */
+    public function updateTransactionCard($request, $transaction)
+    {
+        $transactionCard = $transaction->card;
+
+        if ($transactionCard) {
+            $transactionCard->transactions()->detach($transaction);
+        }
+
+        $card = Card::where([
+            ['number', '=', $request->number],
+            ['owner_id', '=', $transaction->owner_id],
+            ['vendor_id', '=', $transaction->vendor_id],
+        ])->first();
+
+        if (! $card) {
+            $cardData = $request->validate([
+                'owner_id' => ['required'],
+                'vendor_id' => ['required'],
+                'number' => ['required', 'string', 'unique:cards,number'],
+                'pin' => ['nullable', 'string'],
+            ]);
+
+            $card = Card::create($cardData);
+        }
+
+        $card->transactions()->attach($transaction);
     }
 
     /**
@@ -105,6 +145,10 @@ class TransactionsController extends Controller
         $data['amount'] = ($data['type'] == 'add') ? abs($data['amount']) : -$data['amount'];
 
         $transaction->update($data);
+
+        if ($request->has('number')) {
+            $this->updateTransactionCard($request, $transaction);
+        }
 
         session()->flash('flash', ['message' => 'Transaction updated successfully!', 'level' => 'success']);
 

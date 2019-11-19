@@ -6,6 +6,7 @@ use App\Card;
 use App\User;
 use App\Vendor;
 use App\Transaction;
+use App\CardTransaction;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
@@ -65,7 +66,15 @@ $factory->define(Card::class, function (Faker $faker) {
     return [
         'owner_id' => factory('App\User'),
         'vendor_id' => factory('App\Vendor'),
-        'number' => $faker->text(20),
+        'number' => $faker->unique()->text(20),
         'pin' => $faker->text(5),
+    ];
+});
+
+$factory->define(CardTransaction::class, function (Faker $faker) {
+    $card = factory('App\Card')->create();
+    return [
+        'card_id' => $card->id,
+        'transaction_id' => factory('App\Transaction')->create(['owner_id' => $card->owner_id, 'vendor_id' => $card->vendor_id]),
     ];
 });

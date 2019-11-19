@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Card;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -80,5 +81,15 @@ class VendorTest extends TestCase
         $this->assertCount(4, $vendor->owners);
 
         $this->assertInstanceOf('App\User', $vendor->owners[0]);
+    }
+
+    /** @test */
+    public function it_can_access_all_of_its_related_cards()
+    {
+        $vendor = create('App\Vendor');
+        create('App\Card', ['vendor_id' => $vendor->id], 5);
+
+        $this->assertCount(5, $vendor->cards);
+        $this->assertInstanceOf(Card::class, $vendor->cards[0]);
     }
 }
