@@ -30,10 +30,13 @@ class TransactionsController extends Controller
      */
     public function create()
     {
+        $transaction = new Transaction;
+
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
+        $cards = Card::with('owner')->with('vendor')->get();
 
-        return view('transactions.create', compact('vendors', 'owners'));
+        return view('transactions.create', compact('transaction', 'vendors', 'owners', 'cards'));
     }
 
     /**
@@ -56,9 +59,7 @@ class TransactionsController extends Controller
 
         $transaction = Transaction::create($data);
 
-        if ($request->has('number')) {
-            $this->updateTransactionCard($request, $transaction);
-        }
+        $this->updateTransactionCard($request, $transaction);
 
         session()->flash('flash', ['message' => 'Transaction added successfully!', 'level' => 'success']);
 
@@ -84,10 +85,16 @@ class TransactionsController extends Controller
      */
     public function edit(Transaction $transaction)
     {
+        $transaction->load('card');
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
+        $cards = Card::where([
+            ['owner_id', '=', $transaction->owner_id],
+            ['vendor_id', '=', $transaction->vendor_id],
+        ])
+            ->with('owner')->with('vendor')->get();
 
-        return view('transactions.edit', compact('transaction', 'vendors', 'owners'));
+        return view('transactions.edit', compact('transaction', 'vendors', 'owners', 'cards'));
     }
 
     /**
@@ -111,9 +118,7 @@ class TransactionsController extends Controller
 
         $transaction->update($data);
 
-        if ($request->has('number')) {
-            $this->updateTransactionCard($request, $transaction);
-        }
+        $this->updateTransactionCard($request, $transaction);
 
         session()->flash('flash', ['message' => 'Transaction updated successfully!', 'level' => 'success']);
 
@@ -154,23 +159,25 @@ class TransactionsController extends Controller
             $transactionCard->transactions()->detach($transaction);
         }
 
-        $card = Card::where([
-            ['number', '=', $request->number],
-            ['owner_id', '=', $transaction->owner_id],
-            ['vendor_id', '=', $transaction->vendor_id],
-        ])->first();
+        if ($request->number != '') {
+            $card = Card::where([
+                ['number', '=', $request->number],
+                ['owner_id', '=', $transaction->owner_id],
+                ['vendor_id', '=', $transaction->vendor_id],
+            ])->first();
 
-        if (! $card) {
-            $cardData = $request->validate([
-                'owner_id' => ['required'],
-                'vendor_id' => ['required'],
-                'number' => ['required', 'string', 'unique:cards,number'],
-                'pin' => ['nullable', 'string'],
-            ]);
+            if (! $card) {
+                $cardData = $request->validate([
+                    'owner_id' => ['required'],
+                    'vendor_id' => ['required'],
+                    'number' => ['required', 'string', 'unique:cards,number'],
+                    'pin' => ['nullable', 'string'],
+                ]);
 
-            $card = Card::create($cardData);
+                $card = Card::create($cardData);
+            }
+
+            $card->transactions()->attach($transaction);
         }
-
-        $card->transactions()->attach($transaction);
     }
 }

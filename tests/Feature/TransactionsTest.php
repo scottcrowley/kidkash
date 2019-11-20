@@ -322,6 +322,31 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
+    public function an_authenticated_authorized_parent_may_remove_a_card_from_an_existing_transaction()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
+        $transaction = create('App\Transaction');
+        $transaction->amount = 50;
+        $transaction->type = 'add';
+
+        $card = create('App\Card', ['owner_id' => $transaction->owner_id, 'vendor_id' => $transaction->vendor_id]);
+        $card->transactions()->attach($transaction);
+
+        $this->assertCount(1, CardTransaction::all());
+
+        $this->patch(route('transactions.update', $transaction->id), $transaction->toArray() + ['number' => '']);
+
+        $this->assertDatabaseHas('transactions', [
+            'id' => $transaction->id,
+            'amount' => $transaction->amount
+        ]);
+
+        $this->assertEmpty(CardTransaction::all());
+    }
+
+    /** @test */
     public function a_user_must_be_authenticated_to_delete_an_existing_transaction()
     {
         $transaction = create('App\Transaction');

@@ -8,6 +8,17 @@
         <div class="card-body">
             <form method="POST" action="{{ route('transactions.store') }}">
                 @csrf
+                <transaction-form 
+                    action="create"
+                    :transaction="{{ Session::hasOldInput() ? json_encode(Session::getOldInput()) : $transaction }}"
+                    :owners="{{ $owners }}"
+                    :vendors="{{ $vendors }}"
+                    :cards="{{ $cards }}"
+                    :errors="{{ $errors->toJson() }}"
+                ></transaction-form>
+            </form>
+            {{-- <form method="POST" action="{{ route('transactions.store') }}">
+                @csrf
 
                 <div class="form-group row">
                     <label for="owner_id" class="col-4 w-1/3 text-left md:text-right">Owner</label>
@@ -167,7 +178,7 @@
                         </a>
                     </div>
                 </div>
-            </form>
+            </form> --}}
         </div>
     </div>
 </div>

@@ -10,6 +10,19 @@
                 @csrf
                 @method('patch')
 
+                <transaction-form 
+                    action="update"
+                    :transaction="{{ Session::hasOldInput() ? json_encode(Session::getOldInput()) : $transaction }}"
+                    :owners="{{ $owners }}"
+                    :vendors="{{ $vendors }}"
+                    :cards="{{ $cards }}"
+                    :errors="{{ $errors->toJson() }}"
+                ></transaction-form>
+            </form>
+            {{-- <form method="POST" action="{{ route('transactions.update', $transaction->id) }}">
+                @csrf
+                @method('patch')
+
                 <div class="form-group row">
                     <label for="owner_id" class="col-4 w-1/3 text-left md:text-right">Owner</label>
 
@@ -186,7 +199,7 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            </form> --}}
         </div>
     </div>
 </div>
