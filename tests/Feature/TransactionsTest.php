@@ -138,7 +138,7 @@ class TransactionsTest extends TestCase
         $transaction = makeRaw('App\Transaction');
         $transaction['type'] = 'use';
 
-        $card = create('App\Card', ['owner_id' => $transaction['owner_id'], 'vendor_id' => $transaction['vendor_id']]);
+        $card = create('App\Card', ['vendor_id' => $transaction['vendor_id']]);
 
         $this->post(route('transactions.store'), $transaction + ['number' => $card->number, 'pin' => $card->pin]);
 
@@ -266,7 +266,7 @@ class TransactionsTest extends TestCase
         $transaction->amount = 50;
         $transaction->type = 'add';
 
-        $card = create('App\Card', ['owner_id' => $transaction->owner_id, 'vendor_id' => $transaction->vendor_id]);
+        $card = create('App\Card', ['vendor_id' => $transaction->vendor_id]);
 
         $this->patch(route('transactions.update', $transaction->id), $transaction->toArray() + ['number' => $card->number, 'pin' => $card->pin]);
 
@@ -295,12 +295,12 @@ class TransactionsTest extends TestCase
         $transaction->amount = 50;
         $transaction->type = 'add';
 
-        $originalCard = create('App\Card', ['owner_id' => $transaction->owner_id, 'vendor_id' => $transaction->vendor_id]);
+        $originalCard = create('App\Card', ['vendor_id' => $transaction->vendor_id]);
         $originalCard->transactions()->attach($transaction);
 
         $this->assertCount(1, CardTransaction::all());
 
-        $newCard = create('App\Card', ['owner_id' => $transaction->owner_id, 'vendor_id' => $transaction->vendor_id]);
+        $newCard = create('App\Card', ['vendor_id' => $transaction->vendor_id]);
 
         $this->patch(route('transactions.update', $transaction->id), $transaction->toArray() + ['number' => $newCard->number, 'pin' => $newCard->pin]);
 
@@ -331,7 +331,7 @@ class TransactionsTest extends TestCase
         $transaction->amount = 50;
         $transaction->type = 'add';
 
-        $card = create('App\Card', ['owner_id' => $transaction->owner_id, 'vendor_id' => $transaction->vendor_id]);
+        $card = create('App\Card', ['vendor_id' => $transaction->vendor_id]);
         $card->transactions()->attach($transaction);
 
         $this->assertCount(1, CardTransaction::all());
@@ -387,7 +387,7 @@ class TransactionsTest extends TestCase
         config(['kidkash.parents' => [auth()->user()->email]]);
 
         $transaction = create('App\Transaction');
-        $card = create('App\Card', ['owner_id' => $transaction->owner_id, 'vendor_id' => $transaction->vendor_id]);
+        $card = create('App\Card', ['vendor_id' => $transaction->vendor_id]);
         $card->transactions()->attach($transaction);
 
         $this->delete(route('transactions.delete', $transaction->id))

@@ -11,17 +11,7 @@ class Card extends Model
      *
      * @var array
      */
-    protected $fillable = ['owner_id', 'vendor_id', 'number', 'pin'];
-
-    /**
-     * A card belongs to one owner (user)
-     *
-     * @return belongsTo
-     */
-    public function owner()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $fillable = ['vendor_id', 'number', 'pin'];
 
     /**
      * A card belongs to one vendor

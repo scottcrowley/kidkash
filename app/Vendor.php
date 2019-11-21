@@ -41,7 +41,7 @@ class Vendor extends Model
      */
     public function cards()
     {
-        return $this->hasMany(Card::class, 'vendor_id')->with('owner');
+        return $this->hasMany(Card::class, 'vendor_id');
     }
 
     /**
@@ -92,7 +92,7 @@ class Vendor extends Model
     /**
      * Set the name & slug attributes
      *
-     * @param mixed $name
+     * @param string $name
      * @return void
      */
     public function setNameAttribute($name)

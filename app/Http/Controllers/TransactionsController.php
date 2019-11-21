@@ -18,7 +18,7 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::with('owner')->with('vendor')->latest()->paginate(5);
+        $transactions = Transaction::with('owner')->with('vendor')->latest()->paginate(10);
 
         return view('transactions.index', compact('transactions'));
     }
@@ -34,7 +34,7 @@ class TransactionsController extends Controller
 
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
-        $cards = Card::with('owner')->with('vendor')->get();
+        $cards = Card::with('vendor')->get();
 
         return view('transactions.create', compact('transaction', 'vendors', 'owners', 'cards'));
     }
@@ -89,10 +89,9 @@ class TransactionsController extends Controller
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
         $cards = Card::where([
-            ['owner_id', '=', $transaction->owner_id],
             ['vendor_id', '=', $transaction->vendor_id],
         ])
-            ->with('owner')->with('vendor')->get();
+            ->with('vendor')->get();
 
         return view('transactions.edit', compact('transaction', 'vendors', 'owners', 'cards'));
     }
@@ -162,13 +161,11 @@ class TransactionsController extends Controller
         if ($request->number != '') {
             $card = Card::where([
                 ['number', '=', $request->number],
-                ['owner_id', '=', $transaction->owner_id],
                 ['vendor_id', '=', $transaction->vendor_id],
             ])->first();
 
             if (! $card) {
                 $cardData = $request->validate([
-                    'owner_id' => ['required'],
                     'vendor_id' => ['required'],
                     'number' => ['required', 'string', 'unique:cards,number'],
                     'pin' => ['nullable', 'string'],

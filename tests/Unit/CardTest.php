@@ -11,15 +11,6 @@ class CardTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function it_can_access_details_about_its_owner()
-    {
-        $owner = create('App\User');
-        $card = create('App\Card', ['owner_id' => $owner->id]);
-
-        $this->assertEquals($owner->name, $card->owner->name);
-    }
-
-    /** @test */
     public function it_can_access_details_about_its_vendor()
     {
         $vendor = create('App\Vendor');
@@ -32,12 +23,12 @@ class CardTest extends TestCase
     public function it_can_access_details_about_all_its_transactions()
     {
         $transaction = create('App\Transaction');
-
-        $card = create('App\Card', ['owner_id' => $transaction->owner_id, 'vendor_id' => $transaction->vendor_id]);
+        $card = create('App\Card', ['vendor_id' => $transaction->vendor_id]);
 
         create('App\CardTransaction', ['card_id' => $card->id, 'transaction_id' => $transaction->id]);
 
         $this->assertCount(1, $card->transactions);
+
         $this->assertInstanceOf(Transaction::class, $card->transactions[0]);
     }
 }

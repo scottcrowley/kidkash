@@ -9,19 +9,17 @@ class CardsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param int $vendor
+     * @return Collection
      */
-    public function index($user, $vendor)
+    public function index($vendor)
     {
         $where = [];
-        if ($user) {
-            $where[] = ['owner_id', '=', $user];
-        }
         if ($vendor) {
             $where[] = ['vendor_id', '=', $vendor];
         }
 
-        $cards = Card::where($where)->with('owner')->with('vendor')->get();
+        $cards = Card::where($where)->with('vendor')->get();
 
         return $cards;
     }

@@ -5,7 +5,7 @@
 
             <div class="col-6 w-2/3">
                 <div class="relative">
-                    <select v-if="owners.length" name="owner_id" v-model="transactionData.owner_id" @change="updateCardList" class="w-full" :class="checkError('owner_id') ? 'is-invalid' : ''" required>
+                    <select v-if="owners.length" name="owner_id" v-model="transactionData.owner_id" class="w-full" :class="checkError('owner_id') ? 'is-invalid' : ''" required>
                         <option value="0">Choose an Owner</option>
                         <option 
                             v-for="owner in owners"
@@ -99,7 +99,7 @@
                         <option 
                             v-for="(card, index) in cardList"
                             :value="index" 
-                        >{{ card.vendor.name }} (ending in {{card.number.substr(-5)}}) - {{ card.owner.name }}</option>
+                        >{{ card.vendor.name }} (ending in {{card.number.substr(-5)}})</option>
                     </select>
                     <select v-else name="cards" class="w-full" v-model="cardSelected" @change="cardSelect">
                         <option value="">No Card</option>
@@ -225,15 +225,14 @@ export default {
             this.transactionData.number = card.number;
             this.transactionData.pin = card.pin;
 
-            this.updateSelects(card.owner_id, card.vendor_id);
+            this.updateSelects(card.vendor_id);
         },
-        updateSelects(owner, vendor) {
-            this.transactionData.owner_id = owner;
+        updateSelects(vendor) {
             this.transactionData.vendor_id = vendor;
             this.updateCardList();
         },
         updateCardList() {
-            axios.get(`/api/cards/${this.transactionData.owner_id}/${this.transactionData.vendor_id}`)
+            axios.get(`/api/cards/${this.transactionData.vendor_id}`)
                 .then(response => {
                     this.cardList = response.data;
 

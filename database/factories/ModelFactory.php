@@ -64,7 +64,6 @@ $factory->define(Transaction::class, function (Faker $faker) {
 
 $factory->define(Card::class, function (Faker $faker) {
     return [
-        'owner_id' => factory('App\User'),
         'vendor_id' => factory('App\Vendor'),
         'number' => $faker->unique()->text(20),
         'pin' => $faker->text(5),
@@ -75,6 +74,6 @@ $factory->define(CardTransaction::class, function (Faker $faker) {
     $card = factory('App\Card')->create();
     return [
         'card_id' => $card->id,
-        'transaction_id' => factory('App\Transaction')->create(['owner_id' => $card->owner_id, 'vendor_id' => $card->vendor_id]),
+        'transaction_id' => factory('App\Transaction')->create(['vendor_id' => $card->vendor_id]),
     ];
 });

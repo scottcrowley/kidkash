@@ -31,7 +31,7 @@ class TransactionTest extends TestCase
     public function it_can_access_an_associated_card()
     {
         $card = create('App\Card');
-        $transaction = create('App\Transaction', ['owner_id' => $card->owner_id, 'vendor_id' => $card->vendor_id]);
+        $transaction = create('App\Transaction', ['vendor_id' => $card->vendor_id]);
         create('App\CardTransaction', ['card_id' => $card->id, 'transaction_id' => $transaction->id]);
 
         $this->assertEquals($card->number, $transaction->card->number);
