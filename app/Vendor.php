@@ -31,7 +31,7 @@ class Vendor extends Model
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'vendor_id')->with('owner')->latest('updated_at');
+        return $this->hasMany(Transaction::class, 'vendor_id')->latest()->with('owner');
     }
 
     /**
@@ -71,9 +71,22 @@ class Vendor extends Model
      */
     public function getOwnersListAttribute()
     {
-        return $this->owners->unique('id')->values()->each(function ($owner) {
-            $owner->vendor_transaction_totals = $owner->transactions()->where('vendor_id', $this->id)->sum('amount');
+        $owners = [];
+
+        foreach ($this->transactions as $transaction) {
+            $id = $transaction->owner->id;
+            $owners[$id] = $transaction->owner;
+            if (! isset($owners[$id]->vendor_transactions)) {
+                $owners[$id]->vendor_transactions = collect([]);
+            }
+            $owners[$id]->vendor_transactions->push($transaction);
+        };
+
+        $owners = (collect($owners))->sortBy('name')->values()->each(function ($owner) {
+            $owner->vendor_transaction_totals = $owner->vendor_transactions->sum('amount');
         });
+
+        return $owners;
     }
 
     /**

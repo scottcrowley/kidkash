@@ -42,7 +42,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['is_authorized_parent'];
+    protected $appends = ['is_authorized_parent', 'has_avatar'];
 
     /**
      * Get the route key name.
@@ -71,17 +71,7 @@ class User extends Authenticatable
      */
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'owner_id')->latest('updated_at')->with('vendor');
-    }
-
-    /**
-     * Get the total for all transactions
-     *
-     * @return void
-     */
-    public function getTransactionTotalsAttribute()
-    {
-        return number_format($this->transactions->sum('amount'), 2);
+        return $this->hasMany(Transaction::class, 'owner_id')->latest()->with('vendor');
     }
 
     /**
@@ -95,16 +85,38 @@ class User extends Authenticatable
     }
 
     /**
-     * Get transactions for each vendor
+     * Get the total for all transactions
+     *
+     * @return void
+     */
+    public function getTransactionTotalsAttribute()
+    {
+        return number_format($this->transactions->sum('amount'), 2);
+    }
+
+    /**
+     * Get transactions for each associated vendor
      *
      * @return void
      */
     public function getVendorsListAttribute()
     {
-        return $this->vendors->unique('name')->each(function ($vendor) {
-            $vendor->owner_transactions = $vendor->transactions()->where('owner_id', $this->id)->without('owner')->latest('updated_at')->get();
+        $vendors = [];
+
+        foreach ($this->transactions as $transaction) {
+            $id = $transaction->vendor->id;
+            $vendors[$id] = $transaction->vendor;
+            if (! isset($vendors[$id]->owner_transactions)) {
+                $vendors[$id]->owner_transactions = collect([]);
+            }
+            $vendors[$id]->owner_transactions->push($transaction);
+        };
+
+        $vendors = (collect($vendors))->sortBy('name')->values()->each(function ($vendor) {
             $vendor->owner_transaction_totals = $vendor->owner_transactions->sum('amount');
         });
+
+        return $vendors;
     }
 
     /**

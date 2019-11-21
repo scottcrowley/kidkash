@@ -85,7 +85,7 @@ class TransactionsController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        $transaction->load('card');
+        $transaction->load('card')->append('number')->append('pin');
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
         $cards = Card::where([

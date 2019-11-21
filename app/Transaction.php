@@ -18,7 +18,7 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $appends = ['type', 'number', 'pin'];
+    protected $appends = ['type'];
 
     /**
      * A transaction belongs to one owner (user)
@@ -113,7 +113,7 @@ class Transaction extends Model
     {
         return '<span class="activity-label-owner">'.$this->owner->name.'</span>'.
             '<span class="activity-label-type">'.(
-                ($this->type == 'add') ? ' added <span class="activity-label-amount">$ '.$this->modified_amount.'</span> to ' : ' used <span class="activity-label-amount">$ '.$this->modified_amount.'</span> from '
+                ($this->type == 'add') ? ' added <span class="activity-label-amount">$'.$this->modified_amount.'</span> to ' : ' used <span class="activity-label-amount">$'.$this->modified_amount.'</span> from '
             ).'</span>'.
             '<span class="activity-label-vendor">'.$this->vendor->name.'</span>';
     }
@@ -125,7 +125,7 @@ class Transaction extends Model
      */
     public function getOwnerActivityLabelAttribute()
     {
-        return (($this->type == 'add') ? 'Added $ '.$this->modified_amount.' to ' : 'Used $ '.$this->modified_amount.' from ').$this->vendor->name;
+        return (($this->type == 'add') ? 'Added $ '.$this->modified_amount.' to ' : 'Used $'.$this->modified_amount.' from ').$this->vendor->name;
     }
 
     /**
@@ -135,6 +135,6 @@ class Transaction extends Model
      */
     public function getVendorActivityLabelAttribute()
     {
-        return $this->owner->name.(($this->type == 'add') ? ' added ' : ' used ').'$ '.$this->modified_amount;
+        return $this->owner->name.(($this->type == 'add') ? ' added ' : ' used ').'$'.$this->modified_amount;
     }
 }

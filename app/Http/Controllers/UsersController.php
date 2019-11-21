@@ -18,7 +18,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::where('id', '!=', auth()->user()->id)->orderBy('name')->get();
+        $users = User::where('id', '!=', auth()->user()->id)->with('transactions')->orderBy('name')->get();
 
         return view('users.index', compact('users'));
     }
