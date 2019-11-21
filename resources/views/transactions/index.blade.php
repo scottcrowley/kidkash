@@ -10,6 +10,12 @@
 
         <div class="card-body">
             <div class="mx-6 mt-8">
+                <div class="mb-6 flex items-center">
+                    <div class="text-gray-600 text-sm">
+                        {{ $transactions->total() }} Transactions found
+                    </div>
+                    {{  $transactions->links() }}
+                </div>
                 @forelse ($transactions as $transaction)
                     <div class="max-w-sm w-full lg:max-w-3xl mb-12 mx-auto shadow-lg rounded">
                         <div class="bg-white rounded-b rounded-l lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal">
