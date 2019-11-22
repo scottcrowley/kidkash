@@ -18,9 +18,18 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::where('id', '!=', auth()->user()->id)->with('transactions')->orderBy('name')->get();
+        // $users = User::where('id', '!=', auth()->user()->id)->with('transactions')->orderBy('name')->get();
+        $users = User::with('transactions')->orderBy('name')->get();
 
-        return view('users.index', compact('users'));
+        $allTotals = $users->sum('transaction_totals');
+
+        $users = $users->filter(function ($user) {
+            return $user->id != auth()->user()->id;
+        });
+
+        // $allTotals = User::with('transactions')->get()->sum('transaction_totals');
+
+        return view('users.index', compact('users', 'allTotals'));
     }
 
     /**

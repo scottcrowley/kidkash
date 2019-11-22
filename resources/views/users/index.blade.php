@@ -13,6 +13,9 @@
         </div>
 
         <div class="card-body">
+            <div class="text-3xl font-bold text-blue-700 text-center">
+                All User Totals: $ {{ (number_format($allTotals,2)) }}
+            </div>
             <div class="mx-6 mt-8">
                 @forelse ($users as $user)
                     <div class="max-w-sm w-full lg:max-w-3xl lg:flex mb-12 mx-auto shadow-lg rounded">
