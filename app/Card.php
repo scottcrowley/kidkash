@@ -32,4 +32,14 @@ class Card extends Model
     {
         return $this->belongsToMany(Transaction::class)->using(CardTransaction::class);
     }
+
+    /**
+     * Get balance of card
+     *
+     * @return float
+     */
+    public function getBalanceAttribute()
+    {
+        return $this->transactions->sum('amount');
+    }
 }

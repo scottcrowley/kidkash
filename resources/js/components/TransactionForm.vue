@@ -158,17 +158,28 @@
                 <a href="/transactions" class="btn ml-2 border border-secondary-300">
                     Cancel
                 </a>
+                <div class="ml-auto" v-if="action == 'update'">
+                    <delete-confirm-button label="Delete Transaction" classes="btn btn-text" :path="'/transactions/'+ transactionData.id" redirect-path="/transactions" class="inline">
+                        <div slot="title">Are You Sure?</div>  
+                        Are you sure you want to delete this transaction from the database?
+                    </delete-confirm-button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import DeleteConfirmButton from './DeleteConfirmButton';
+
 export default {
     props: [
         'action', 'transaction', 'owners', 'vendors', 'cards', 'errors'
 
     ],
+    components: {
+        DeleteConfirmButton,
+    },
     data() {
         return {
             transactionData: this.transaction,

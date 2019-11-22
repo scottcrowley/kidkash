@@ -25,7 +25,12 @@
                         <div class="bg-white rounded-b rounded-l lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-around leading-normal">
                             <div class="mb-8">
                                 <div class="text-gray-700 font-bold text-2xl mb-2 block lg:flex items-center lg:justify-between">
-                                    <div class="truncate pr-0 lg:pr-3">
+                                    <div class="truncate pr-0 lg:pr-3 flex items-center">
+                                        <a href="{{ $vendor->url }}" class="text-gray-700 hover:text-gray-900 mr-1">
+                                            <svg class="fill-current h-5 w-5 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+                                                <path d="M75.1,58.8h5.4v16.3c0,3-2.4,5.4-5.4,5.4H20.9c-3,0-5.4-2.4-5.4-5.4V20.9c0-3,2.4-5.4,5.4-5.4 h16.3v5.4H20.9v54.2h54.2V58.8z M48,15.5l12.2,12.2L42.6,45.3l8.1,8.1l17.6-17.6L80.5,48V15.5H48z"/>
+                                            </svg>
+                                        </a>
                                         <a href="{{ route('vendors.show', $vendor->slug) }}" class="hover:underline hover:text-gray-800">
                                             {{ $vendor->name }}
                                         </a>

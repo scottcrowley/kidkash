@@ -57,17 +57,17 @@ class Vendor extends Model
     /**
      * Get the total for all transactions
      *
-     * @return void
+     * @return float
      */
     public function getTransactionTotalsAttribute()
     {
-        return number_format($this->transactions->sum('amount'), 2);
+        return $this->transactions->sum('amount');
     }
 
     /**
      * Get individual owners with related transactions and sum all transactions
      *
-     * @return void
+     * @return \Illuminate\Support\Collection
      */
     public function getOwnersListAttribute()
     {
@@ -87,6 +87,16 @@ class Vendor extends Model
         });
 
         return $owners;
+    }
+
+    /**
+     * Get all cards associated with transactions
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getCardsListAttribute()
+    {
+        return $this->cards->load('transactions');
     }
 
     /**

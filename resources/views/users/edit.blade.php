@@ -95,9 +95,9 @@
                         </a>
                         @can('delete', $user)
                             <div class="ml-auto">
-                                <delete-confirm-button label="delete" classes="btn btn-text" path="/users/{{ $user->id }}" redirect-path="/users" class="inline">
+                                <delete-confirm-button label="Delete User" classes="btn btn-text" path="/users/{{ $user->id }}" redirect-path="/users" class="inline">
                                     <div slot="title">Are You Sure?</div>  
-                                    Are you sure you want to delete {{ $user->name }} from the database?
+                                    Are you sure you want to delete {{ $user->name }} from the database? This will delete all transactions associated with them.
                                 </delete-confirm-button>
                             </div>
                         @endcan

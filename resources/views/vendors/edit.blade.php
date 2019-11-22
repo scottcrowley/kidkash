@@ -53,7 +53,7 @@
                             Cancel
                         </a>
                         <div class="ml-auto">
-                            <delete-confirm-button label="delete" classes="btn btn-text" path="/vendors/{{ $vendor->id }}" redirect-path="/vendors" class="inline">
+                            <delete-confirm-button label="Delete Vendor" classes="btn btn-text" path="/vendors/{{ $vendor->id }}" redirect-path="/vendors" class="inline">
                                 <div slot="title">Are You Sure?</div>  
                                 Are you sure you want to delete {{ $vendor->name }} from the database?
                             </delete-confirm-button>

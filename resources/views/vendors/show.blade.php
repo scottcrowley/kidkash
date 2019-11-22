@@ -23,7 +23,17 @@
                     <p>No balances for any Users found</p>
                 @endforelse
             </content-drawers>
-            <content-drawers title="Transactions" :open-default="true">
+            <content-drawers title="Card Balances" :open-default="true">
+                @forelse ($vendor->cards_list as $card)
+                    <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700">
+                        <div>{{ $card->number }}</div>
+                        <div>{{ (($card->balance < 0) ? '- ' : '').' $ '.(number_format(abs($card->balance),2)) }}</div>
+                    </div>
+                @empty
+                    <p>No Cards found</p>
+                @endforelse
+            </content-drawers>
+            <content-drawers title="Transactions" :open-default="false">
                 @forelse ($vendor->transactions as $transaction)
                     <div class="px-3 leading-loose text-sm text-gray-700 flex items-center">
                         <a href="{{ route('transactions.edit', $transaction->id) }}" class="mr-2">

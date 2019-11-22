@@ -87,17 +87,17 @@ class User extends Authenticatable
     /**
      * Get the total for all transactions
      *
-     * @return void
+     * @return float
      */
     public function getTransactionTotalsAttribute()
     {
-        return number_format($this->transactions->sum('amount'), 2);
+        return $this->transactions->sum('amount');
     }
 
     /**
      * Get transactions for each associated vendor
      *
-     * @return void
+     * @return \Illuminate\Support\Collection
      */
     public function getVendorsListAttribute()
     {
@@ -105,8 +105,10 @@ class User extends Authenticatable
 
         foreach ($this->transactions as $transaction) {
             $id = $transaction->vendor->id;
-            $vendors[$id] = $transaction->vendor;
-            if (! isset($vendors[$id]->owner_transactions)) {
+            if (! isset($vendors[$id])) {
+                $vendors[$id] = $transaction->vendor;
+            }
+            if (! $vendors[$id]->owner_transactions) {
                 $vendors[$id]->owner_transactions = collect([]);
             }
             $vendors[$id]->owner_transactions->push($transaction);
@@ -117,6 +119,35 @@ class User extends Authenticatable
         });
 
         return $vendors;
+    }
+
+    /**
+     * Get all cards associated with transactions
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getCardsListAttribute()
+    {
+        $cards = [];
+        $transactions = $this->transactions->load('card');
+        foreach ($transactions as $transaction) {
+            if (! $transaction->card) {
+                continue;
+            }
+
+            $id = $transaction->card->id;
+            if (! isset($cards[$id])) {
+                $cards[$id] = $transaction->card;
+            }
+            $cards[$id]->card_balance =
+                ($cards[$id]->card_balance) ?
+                    $cards[$id]->card_balance + $transaction->amount : $transaction->amount;
+            $cards[$id]->vendor_name = $transaction->vendor->name;
+        }
+
+        $cards = (collect($cards))->sortBy('vendor_name')->values()->groupBy('vendor_name');
+
+        return $cards;
     }
 
     /**
