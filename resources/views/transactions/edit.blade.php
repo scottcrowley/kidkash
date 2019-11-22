@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Edit Transaction - KidKash
+@endsection
+
 @section('content')
 <div class="col-10">
     <div class="card">

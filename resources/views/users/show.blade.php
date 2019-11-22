@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    User Detail - KidKash
+@endsection
+
 @section('content')
 <div class="w-3/4">
     <div class="card">

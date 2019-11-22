@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Add Vendor - KidKash
+@endsection
+
 @section('content')
 <div class="col-8">
     <div class="card">
