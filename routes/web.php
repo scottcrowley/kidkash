@@ -58,6 +58,14 @@ Route::group([
     Route::delete('{transaction}', 'TransactionsController@destroy')->name('transactions.delete');
 });
 
-Route::get('api/cards/{vendor}', 'CardsController@index')->middleware('auth', 'authorized')->name('api.cards.list');
+Route::group([
+    'prefix' => 'cards',
+    'middleware' => ['auth', 'parent']
+], function () {
+    Route::get('', 'CardsController@index')->name('cards.index');
+    Route::get('{card}', 'CardsController@show')->name('cards.show');
+});
+
+Route::get('api/cards/{vendor}', 'CardsController@vendorCards')->middleware('auth', 'authorized')->name('api.cards.vendor');
 Route::post('api/users/{user}/avatar', 'UserAvatarsController@store')->middleware('auth', 'authorized')->name('api.users.avatar.add');
 Route::delete('api/users/{user}/avatar', 'UserAvatarsController@destroy')->middleware('auth', 'authorized')->name('api.users.avatar.delete');

@@ -12,4 +12,24 @@ class CardTransaction extends Pivot
      * @var boolean
      */
     public $timestamps = false;
+
+    /**
+     * A card transaction belongs to one card
+     *
+     * @return belongsTo
+     */
+    public function card()
+    {
+        return $this->belongsTo(Card::class)->with('vendor');
+    }
+
+    /**
+     * A card transaction belongs to one transaction
+     *
+     * @return belongsTo
+     */
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class)->with('vendor')->with('owner');
+    }
 }

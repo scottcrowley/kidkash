@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
 @section('title')
-    Vendor Detail - KidKash
+    Card Detail - KidKash
 @endsection
 
 @section('content')
 <div class="w-3/4">
     <div class="card">
         <div class="card-header flex justify-between items-center">
-            <p class="text-3xl">{{ $vendor->name }}</p>
-            <p class="text-2xl text-right">{{ (($vendor->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->transaction_totals),2)) }}</p>
+            <p class="text-3xl">{{ $card->number }}</p>
+            {{-- <p class="text-2xl text-right">{{ (($vendor->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->transaction_totals),2)) }}</p> --}}
         </div>
 
         <div class="card-body" style="padding-left: 0; padding-right: 0;">
-            <content-drawers title="User Balances" :open-default="true">
+            {{-- <content-drawers title="User Balances" :open-default="true">
                 @forelse ($vendor->owners_list as $owner)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700 hover:bg-gray-200 hover:text-gray-800">
                         <div>
@@ -30,11 +30,7 @@
             <content-drawers title="Card Balances" :open-default="true">
                 @forelse ($vendor->cards_list as $card)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700 hover:bg-gray-200 hover:text-gray-800">
-                        <div>
-                            <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">
-                                {{ $card->number }}
-                            </a>
-                        </div>
+                        <div>{{ $card->number }}</div>
                         <div>{{ (($card->balance < 0) ? '- ' : '').' $ '.(number_format(abs($card->balance),2)) }}</div>
                     </div>
                 @empty
@@ -57,9 +53,9 @@
                 @empty
                     <p>No Transactions found</p>
                 @endforelse
-            </content-drawers>
+            </content-drawers> --}}
             <div class="mt-4 text-right mr-6">
-                <a href="{{ route('vendors.index') }}" class="btn border border-secondary-300">Done</a>
+                <a href="{{ url()->previous() }}" class="btn border border-secondary-300">Done</a>
             </div>
         </div>
     </div>
