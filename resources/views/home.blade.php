@@ -45,8 +45,18 @@
             </content-drawers>
             <content-drawers title="Transactions" :open-default="false">
                 @forelse ($user->transactions as $transaction)
-                    <div class="px-3 leading-loose text-base text-gray-700 hover:bg-gray-200 hover:text-gray-800">
-                        {!! $transaction->owner_activity_label !!} {{ $transaction->updated_at->diffForHumans() }}
+                    <div class="px-3 leading-loose text-sm text-gray-700 flex items-center hover:bg-gray-200 hover:text-gray-800">
+                        @can('delete', $user)
+                            <a href="{{ route('transactions.edit', $transaction->id) }}" class="mr-2">
+                                <svg class="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <path d="M12.3 3.7l4 4L4 20H0v-4L12.3 3.7zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"/>
+                                </svg>
+                            </a>
+                        @endcan
+                        <div class="truncate">
+                            {!! $transaction->owner_activity_label !!} 
+                            {{ $transaction->updated_at->diffForHumans() . ($transaction->description != '' ? ' - '. $transaction->description : '') }}
+                        </div>
                     </div>
                 @empty
                     <p>No Transactions found</p>

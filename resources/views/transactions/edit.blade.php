@@ -21,6 +21,7 @@
                     :vendors="{{ $vendors }}"
                     :cards="{{ $cards }}"
                     :errors="{{ $errors->toJson() }}"
+                    redirect-path="{{ url()->previous() }}"
                 ></transaction-form>
             </form>
         </div>

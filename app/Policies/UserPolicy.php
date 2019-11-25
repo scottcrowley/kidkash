@@ -28,7 +28,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return false;
     }
 
     /**
@@ -39,7 +39,7 @@ class UserPolicy
      */
     public function viewNav(User $user)
     {
-        return true;
+        return false;
     }
 
     /**
@@ -63,7 +63,7 @@ class UserPolicy
      */
     public function delete(User $authUser, User $user)
     {
-        return true;
+        return false;
     }
 
     /**

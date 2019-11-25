@@ -45,7 +45,7 @@
                                             {!! $transaction->owner_activity_label !!}
                                         </div>
                                     @empty
-                                        <p>No transactions found</p>
+                                        <p>None</p>
                                     @endforelse
                                 </div>
                             </div>

@@ -155,7 +155,7 @@
         <div class="form-group row mb-0">
             <div class="offset-4 flex">
                 <button type="submit" class="btn is-primary" v-text="submitLabel"></button>
-                <a href="/transactions" class="btn ml-2 border border-secondary-300">
+                <a :href="redirectPath" class="btn ml-2 border border-secondary-300">
                     Cancel
                 </a>
                 <div class="ml-auto" v-if="action == 'update'">
@@ -174,7 +174,7 @@ import DeleteConfirmButton from './DeleteConfirmButton';
 
 export default {
     props: [
-        'action', 'transaction', 'owners', 'vendors', 'cards', 'errors'
+        'action', 'transaction', 'owners', 'vendors', 'cards', 'errors', 'redirectPath'
 
     ],
     components: {
