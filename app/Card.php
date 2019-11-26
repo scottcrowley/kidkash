@@ -42,4 +42,29 @@ class Card extends Model
     {
         return $this->transactions->sum('amount');
     }
+
+    /**
+     * Gets all owners associated with the card
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getOwnersAttribute()
+    {
+        return $this->transactions->pluck('owner')->unique()->each(function ($owner) {
+            $owner->card_transactions = $this->transactions()->where('owner_id', $owner->id)->get();
+            $owner->card_transaction_totals = $owner->card_transactions->sum('amount');
+        });
+    }
+
+    /**
+     * Gets a string version of the owner names
+     *
+     * @return string
+     */
+    public function getOwnerNamesAttribute()
+    {
+        $names = $this->owners->pluck('name');
+
+        return $names->join(', ', ' & ');
+    }
 }

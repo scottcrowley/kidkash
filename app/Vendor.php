@@ -65,6 +65,16 @@ class Vendor extends Model
     }
 
     /**
+     * Get the total for all transactions
+     *
+     * @return float
+     */
+    public function getCardBalanceTotalsAttribute()
+    {
+        return $this->cards->sum('balance');
+    }
+
+    /**
      * Get individual owners with related transactions and sum all transactions
      *
      * @return \Illuminate\Support\Collection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Card;
+use App\Vendor;
 
 class CardsController extends Controller
 {
@@ -13,9 +14,9 @@ class CardsController extends Controller
      */
     public function index()
     {
-        $cards = Card::with('transactions')->with('vendor')->paginate(20);
+        $vendors = Vendor::with('cards')->with('cards.transactions.owner')->orderBy('name')->get()->values();
 
-        return view('cards.index', compact('cards'));
+        return view('cards.index', compact('vendors'));
     }
 
     /**
@@ -26,6 +27,7 @@ class CardsController extends Controller
      */
     public function show(Card $card)
     {
+        $card->load('vendor')->load('transactions.owner');
         return view('cards.show', compact('card'));
     }
 
