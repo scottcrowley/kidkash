@@ -17,6 +17,8 @@
     },
     "require-dev": {
         "facade/ignition": "^1.4",
+        "facade/ignition-code-editor": "^1.0",
+        "facade/ignition-tinker-tab": "^1.0",
         "fzaninotto/faker": "^1.4",
         "laravel/telescope": "^2.1",
         "laravel/ui": "^1.0",
