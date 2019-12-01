@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8b4ee53b29c8e6dac92283624ca6ff2a",
+    "content-hash": "dda95ca5034e82e7f65f60a5a687e5e9",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -757,36 +757,36 @@
         },
         {
             "name": "laravel/tinker",
-            "version": "v1.0.10",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/tinker.git",
-                "reference": "ad571aacbac1539c30d480908f9d0c9614eaf1a7"
+                "reference": "6c2f1a1873180f3ecece0ba34ff9146847bf8dec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/tinker/zipball/ad571aacbac1539c30d480908f9d0c9614eaf1a7",
-                "reference": "ad571aacbac1539c30d480908f9d0c9614eaf1a7",
+                "url": "https://api.github.com/repos/laravel/tinker/zipball/6c2f1a1873180f3ecece0ba34ff9146847bf8dec",
+                "reference": "6c2f1a1873180f3ecece0ba34ff9146847bf8dec",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "~5.1|^6.0",
-                "illuminate/contracts": "~5.1|^6.0",
-                "illuminate/support": "~5.1|^6.0",
-                "php": ">=5.5.9",
-                "psy/psysh": "0.7.*|0.8.*|0.9.*",
-                "symfony/var-dumper": "~3.0|~4.0"
+                "illuminate/console": "^6.0|^7.0",
+                "illuminate/contracts": "^6.0|^7.0",
+                "illuminate/support": "^6.0|^7.0",
+                "php": "^7.2",
+                "psy/psysh": "^0.9",
+                "symfony/var-dumper": "^4.0|^5.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0|~5.0"
+                "phpunit/phpunit": "^8.0"
             },
             "suggest": {
-                "illuminate/database": "The Illuminate Database package (~5.1)."
+                "illuminate/database": "The Illuminate Database package (^6.0|^7.0)."
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "2.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -816,7 +816,7 @@
                 "laravel",
                 "psysh"
             ],
-            "time": "2019-08-07T15:10:45+00:00"
+            "time": "2019-11-26T17:57:28+00:00"
         },
         {
             "name": "league/flysystem",
@@ -3528,67 +3528,6 @@
             "time": "2019-08-30T14:06:08+00:00"
         },
         {
-            "name": "facade/ignition-tinker-tab",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/facade/ignition-tinker-tab.git",
-                "reference": "e90033a29820a90865153af959cac53f309d3a7c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/facade/ignition-tinker-tab/zipball/e90033a29820a90865153af959cac53f309d3a7c",
-                "reference": "e90033a29820a90865153af959cac53f309d3a7c",
-                "shasum": ""
-            },
-            "require": {
-                "facade/ignition": "^1.0",
-                "illuminate/support": "^5.8|^6.0",
-                "laravel/tinker": "^1.0",
-                "php": "^7.2",
-                "spatie/laravel-web-tinker": "^1.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Facade\\IgnitionTinkerTab\\TinkerTabServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Facade\\IgnitionTinkerTab\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Use tinker on the Ignition error page",
-            "homepage": "https://github.com/facade/ignition-tinker-tab",
-            "keywords": [
-                "Tinker",
-                "debug",
-                "development",
-                "facade",
-                "laravel",
-                "web-tinker"
-            ],
-            "time": "2019-08-31T00:54:31+00:00"
-        },
-        {
             "name": "filp/whoops",
             "version": "2.5.0",
             "source": {
@@ -5422,68 +5361,6 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
-        },
-        {
-            "name": "spatie/laravel-web-tinker",
-            "version": "1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-web-tinker.git",
-                "reference": "8dbecfbfc6b47b8bda504414bd4d7ac198b115f4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-web-tinker/zipball/8dbecfbfc6b47b8bda504414bd4d7ac198b115f4",
-                "reference": "8dbecfbfc6b47b8bda504414bd4d7ac198b115f4",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/cookie": "^5.8|^6.0",
-                "illuminate/session": "^5.8|^6.0",
-                "illuminate/support": "^5.8|^6.0",
-                "laravel/tinker": "^1.0",
-                "php": "^7.2"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^3.8|^4.0",
-                "phpunit/phpunit": "^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Spatie\\WebTinker\\WebTinkerServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\WebTinker\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Freek Van der Herten",
-                    "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Artisan Tinker in your browser",
-            "homepage": "https://github.com/spatie/laravel-web-tinker",
-            "keywords": [
-                "Tinker",
-                "debug",
-                "development",
-                "laravel",
-                "spatie",
-                "web-tinker"
-            ],
-            "time": "2019-10-16T13:38:28+00:00"
         },
         {
             "name": "theseer/tokenizer",
