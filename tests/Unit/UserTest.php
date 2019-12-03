@@ -162,4 +162,81 @@ class UserTest extends TestCase
 
         $this->assertInstanceOf('App\Vendor', $user->vendors[0]);
     }
+
+    /** @test */
+    public function it_can_calculate_all_transaction_totals()
+    {
+        $user = create('App\User');
+        create('App\Transaction', ['owner_id' => $user->id, 'amount' => 10], 4);
+        create('App\Transaction', ['owner_id' => $user->id, 'amount' => -5], 2);
+
+        $this->assertEquals(30, $user->transaction_totals);
+    }
+
+    /** @test */
+    public function it_can_access_a_list_of_all_vendors_with_balances_from_related_transactions()
+    {
+        $user = create('App\User');
+        $zeroBalanceVendor = create('App\Vendor');
+
+        create('App\Transaction', ['owner_id' => $user->id], 4);
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $zeroBalanceVendor->id, 'amount' => 10]);
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $zeroBalanceVendor->id, 'amount' => -10]);
+        create('App\Transaction');
+
+        $this->assertCount(4, $user->vendors_list);
+    }
+
+    /** @test */
+    public function it_can_access_the_transaction_totals_for_each_venodor_with_related_transactions()
+    {
+        $user = create('App\User');
+        $zeroBalanceVendor = create('App\Vendor');
+        $vendor = create('App\Vendor');
+
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor->id, 'amount' => 10], 4);
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $zeroBalanceVendor->id, 'amount' => 10]);
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $zeroBalanceVendor->id, 'amount' => -10]);
+
+        $this->assertEquals(40, $user->vendors_list->sum('owner_transaction_totals'));
+        $this->assertEmpty($user->vendors_list->where('id', $zeroBalanceVendor->id));
+    }
+
+    /** @test */
+    public function it_can_access_a_list_of_all_cards_with_balances()
+    {
+        $user = create('App\User');
+        $vendor = create('App\Vendor');
+        $vendor2 = create('App\Vendor');
+        $cardWithBalance = create('App\Card', ['vendor_id' => $vendor->id]);
+        $cardWithZeroBalance = create('App\Card', ['vendor_id' => $vendor2->id]);
+
+        $transaction1 = create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor->id]);
+        create('App\CardTransaction', ['card_id' => $cardWithBalance->id, 'transaction_id' => $transaction1->id]);
+        $transaction2 = create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor2->id, 'amount' => 10]);
+        create('App\CardTransaction', ['card_id' => $cardWithZeroBalance->id, 'transaction_id' => $transaction2->id]);
+        $transaction3 = create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor2->id, 'amount' => -10]);
+        create('App\CardTransaction', ['card_id' => $cardWithZeroBalance->id, 'transaction_id' => $transaction3->id]);
+
+        $this->assertCount(1, $user->cards_list);
+    }
+
+    /** @test */
+    public function it_can_access_the_card_balance_for_each_card_with_related_transactions()
+    {
+        $user = create('App\User');
+        $vendor = create('App\Vendor');
+        $cardWithBalance = create('App\Card', ['vendor_id' => $vendor->id]);
+        $cardWithZeroBalance = create('App\Card', ['vendor_id' => $vendor->id]);
+
+        $transaction1 = create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor->id]);
+        create('App\CardTransaction', ['card_id' => $cardWithBalance->id, 'transaction_id' => $transaction1->id]);
+        $transaction2 = create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor->id, 'amount' => 10]);
+        create('App\CardTransaction', ['card_id' => $cardWithZeroBalance->id, 'transaction_id' => $transaction2->id]);
+        $transaction3 = create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor->id, 'amount' => -10]);
+        create('App\CardTransaction', ['card_id' => $cardWithZeroBalance->id, 'transaction_id' => $transaction3->id]);
+
+        $this->assertCount(1, $user->cards_list[$vendor->name]);
+        $this->assertEquals($transaction1->amount, $user->cards_list[$vendor->name]->sum('card_balance'));
+    }
 }

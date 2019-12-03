@@ -114,9 +114,15 @@ class User extends Authenticatable
             $vendors[$id]->owner_transactions->push($transaction);
         };
 
-        $vendors = (collect($vendors))->sortBy('name')->values()->each(function ($vendor) {
-            $vendor->owner_transaction_totals = $vendor->owner_transactions->sum('amount');
-        });
+        $vendors = (collect($vendors))
+            ->filter(function ($vendor) {
+                return $vendor->owner_transactions->sum('amount') > 0;
+            })
+            ->sortBy('name')
+            ->values()
+            ->each(function ($vendor) {
+                $vendor->owner_transaction_totals = $vendor->owner_transactions->sum('amount');
+            });
 
         return $vendors;
     }
@@ -145,7 +151,18 @@ class User extends Authenticatable
             $cards[$id]->vendor_name = $transaction->vendor->name;
         }
 
-        $cards = (collect($cards))->sortBy('vendor_name')->values()->groupBy('vendor_name');
+        $cards = (collect($cards))
+            ->sortBy('vendor_name')
+            ->values()
+            ->groupBy('vendor_name')
+            ->filter(function ($vendor) {
+                return $vendor->sum('card_balance') > 0;
+            })
+            ->map(function ($vendor) {
+                return $vendor->filter(function ($card) {
+                    return $card->card_balance > 0;
+                });
+            });
 
         return $cards;
     }
