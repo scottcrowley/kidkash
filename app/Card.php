@@ -30,7 +30,7 @@ class Card extends Model
      */
     public function transactions()
     {
-        return $this->belongsToMany(Transaction::class)->using(CardTransaction::class);
+        return $this->belongsToMany(Transaction::class)->using(CardTransaction::class)->latest();
     }
 
     /**
@@ -51,7 +51,7 @@ class Card extends Model
     public function getOwnersAttribute()
     {
         return $this->transactions->pluck('owner')->unique()->each(function ($owner) {
-            $owner->card_transactions = $this->transactions()->where('owner_id', $owner->id)->get();
+            $owner->card_transactions = $this->transactions->where('owner_id', $owner->id);
             $owner->card_transaction_totals = $owner->card_transactions->sum('amount');
         });
     }

@@ -14,7 +14,9 @@
 
         <div class="card-body" style="padding-left: 0; padding-right: 0;">
             <div class="mb-2 text-xl font-semibold text-center">
-                {{ $card->vendor->name }}
+                    <a href="{{ route('vendors.show', $card->vendor->slug) }}" class="hover:underline hover:text-gray-800">
+                        {{ $card->vendor->name }}
+                    </a>
             </div>
             <content-drawers title="User Balances" :open-default="true">
                 @forelse ($card->owners as $owner)

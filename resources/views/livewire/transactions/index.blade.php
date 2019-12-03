@@ -6,7 +6,8 @@
                 <select wire:model="perPage" class="w-full">
                     <option>5</option>
                     <option>10</option>
-                    <option>25</option>
+                    <option>20</option>
+                    <option>30</option>
                 </select>
                 <div class="select-menu-icon">
                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

@@ -16,7 +16,11 @@
             <content-drawers title="Vendor Balances" :open-default="true">
                 @forelse ($user->vendors_list as $vendor)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700 hover:bg-gray-200 hover:text-gray-800">
-                        <div>{{ $vendor->name }}</div>
+                        <div>
+                            <a href="{{ route('vendors.show', $vendor->slug) }}" class="hover:underline hover:text-gray-800">
+                                {{ $vendor->name }}
+                            </a>
+                        </div>
                         <div>{{ (($vendor->owner_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->owner_transaction_totals),2)) }}</div>
                     </div>
                 @empty
@@ -33,7 +37,11 @@
                         <div class="mt-2">
                             @foreach ($cards as $card)
                                 <div class="flex items-center justify-between pl-4 pr-8 py-2 text-sm hover:bg-gray-200 hover:text-gray-800">
-                                    <div>{{ $card->number }}</div>
+                                    <div>
+                                        <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">
+                                            {{ $card->number }}
+                                        </a>
+                                    </div>
                                     <div>{{ (($card->card_balance < 0) ? '- ' : '').' $ '.(number_format(abs($card->card_balance),2)) }}</div>
                                 </div>
                             @endforeach
