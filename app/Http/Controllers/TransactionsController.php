@@ -32,8 +32,7 @@ class TransactionsController extends Controller
 
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
-        $cards = Card::with('vendor')->get();
-
+        $cards = Card::with('vendor')->get()->sortBy('vendor.name')->values();
         return view('transactions.create', compact('transaction', 'vendors', 'owners', 'cards'));
     }
 
@@ -89,7 +88,7 @@ class TransactionsController extends Controller
         $cards = Card::where([
             ['vendor_id', '=', $transaction->vendor_id],
         ])
-            ->with('vendor')->get();
+            ->with('vendor')->get()->sortBy('vendor.name')->values();
 
         return view('transactions.edit', compact('transaction', 'vendors', 'owners', 'cards'));
     }

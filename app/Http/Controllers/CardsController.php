@@ -44,7 +44,7 @@ class CardsController extends Controller
             $where[] = ['vendor_id', '=', $vendor];
         }
 
-        $cards = Card::where($where)->with('vendor')->get();
+        $cards = Card::where($where)->with('vendor')->get()->sortBy('vendor.name')->values();
 
         return $cards;
     }
