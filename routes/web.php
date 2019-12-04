@@ -59,6 +59,14 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'transfers',
+    'middleware' => ['auth', 'parent']
+], function () {
+    Route::get('create', 'TransferController@create')->name('transfers.create');
+    Route::post('', 'TransferController@store')->name('transfers.store');
+});
+
+Route::group([
     'prefix' => 'cards',
     'middleware' => ['auth', 'parent']
 ], function () {

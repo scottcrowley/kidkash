@@ -11,9 +11,12 @@
 @section('content')
 <div class="w-3/4">
     <div class="card">
-        <div class="card-header flex justify-between">
+        <div class="card-header flex justify-between items-center">
             <p class="text-3xl">Transactions</p>
-            <a href="{{ route('transactions.create') }}" class="btn is-primary is-xsmall self-center">Create New</a>
+            <div>
+                <a href="{{ route('transactions.create') }}" class="btn is-primary is-xsmall self-center">Create New</a>
+                <a href="{{ route('transfers.create') }}" class="btn is-primary is-xsmall self-center">Transfer</a>
+            </div>
         </div>
 
         <div class="card-body">
