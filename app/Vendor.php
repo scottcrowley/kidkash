@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Vendor extends Model
 {
+    use Searchable;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -119,5 +122,19 @@ class Vendor extends Model
     {
         $this->attributes['name'] = $name;
         $this->attributes['slug'] = Str::slug($name);
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        $array['owners'] = $this->owners;
+
+        return $array;
     }
 }
