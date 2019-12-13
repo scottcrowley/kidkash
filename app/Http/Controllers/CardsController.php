@@ -7,6 +7,8 @@ use App\Vendor;
 
 class CardsController extends Controller
 {
+    use CardHelpers;
+
     /**
      * Display a listing of the resource.
      *
@@ -34,18 +36,11 @@ class CardsController extends Controller
     /**
      * Display all cards for a given vendor. Used in api call
      *
-     * @param int $vendor
+     * @param string $vendors
      * @return Collection
      */
-    public function vendorCards($vendor)
+    public function vendorsCards($vendors)
     {
-        $where = [];
-        if ($vendor) {
-            $where[] = ['vendor_id', '=', $vendor];
-        }
-
-        $cards = Card::where($where)->with('vendor')->get()->sortBy('vendor.name')->values();
-
-        return $cards;
+        return $this->getActiveCardList($vendors);
     }
 }

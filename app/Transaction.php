@@ -51,6 +51,36 @@ class Transaction extends Model
     }
 
     /**
+     * A from transaction can have one transfer
+     *
+     * @return hasOne
+     */
+    public function transferFrom()
+    {
+        return $this->hasOne(Transfer::class, 'from_transaction_id');
+    }
+
+    /**
+     * A from transaction can have one transfer
+     *
+     * @return hasOne
+     */
+    public function transferTo()
+    {
+        return $this->hasOne(Transfer::class, 'to_transaction_id');
+    }
+
+    /**
+     * Check to see if transaction is part of transfer
+     *
+     * @return bool
+     */
+    public function getHasTransferAttribute()
+    {
+        return ($this->transferFrom || $this->transferTo);
+    }
+
+    /**
      * Format the amount attribute
      *
      * @param mixed $value

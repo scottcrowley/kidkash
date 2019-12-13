@@ -11,6 +11,8 @@ use Illuminate\Validation\Rule;
 
 class TransactionsController extends Controller
 {
+    use CardHelpers;
+
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +34,8 @@ class TransactionsController extends Controller
 
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
-        $cards = Card::with('vendor')->get()->sortBy('vendor.name')->values();
+        $cards = $this->getActiveCardList();
+
         return view('transactions.create', compact('transaction', 'vendors', 'owners', 'cards'));
     }
 
@@ -85,10 +88,7 @@ class TransactionsController extends Controller
         $transaction->load('card')->append('number')->append('pin');
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
-        $cards = Card::where([
-            ['vendor_id', '=', $transaction->vendor_id],
-        ])
-            ->with('vendor')->get()->sortBy('vendor.name')->values();
+        $cards = $this->getActiveCardList($transaction->vendor_id);
 
         return view('transactions.edit', compact('transaction', 'vendors', 'owners', 'cards'));
     }

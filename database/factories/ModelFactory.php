@@ -5,6 +5,7 @@
 use App\Card;
 use App\User;
 use App\Vendor;
+use App\Transfer;
 use App\Transaction;
 use App\CardTransaction;
 use Illuminate\Support\Str;
@@ -75,5 +76,12 @@ $factory->define(CardTransaction::class, function (Faker $faker) {
     return [
         'card_id' => $card->id,
         'transaction_id' => factory('App\Transaction')->create(['vendor_id' => $card->vendor_id]),
+    ];
+});
+
+$factory->define(Transfer::class, function (Faker $faker) {
+    return [
+        'from_transaction_id' => factory('App\Transaction'),
+        'to_transaction_id' => factory('App\Transaction'),
     ];
 });

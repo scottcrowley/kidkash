@@ -1,11 +1,19 @@
 <template>
     <div>
         <div class="form-group row">
-            <label for="owner_id" class="col-4 w-1/3 text-left md:text-right">From</label>
+            <label for="owner_id" class="col-4 w-1/3 text-left md:text-right">Transfer From</label>
 
             <div class="col-6 w-2/3">
                 <div class="relative">
-                    <select v-if="owners.length" name="owner_id" v-model="transactionData.owner_id" class="w-full" :class="checkError('owner_id') ? 'is-invalid' : ''" required>
+                    <select 
+                        v-if="owners.length" 
+                        v-model="fromTransactionData.owner_id" 
+                        @change="selectOwner"
+                        name="owner_id" 
+                        class="w-full" 
+                        :class="checkError('owner_id') ? 'is-invalid' : ''" 
+                        required
+                    >
                         <option value="0">Choose an Owner</option>
                         <option 
                             v-for="owner in owners"
@@ -28,22 +36,58 @@
         </div>
 
         <div class="form-group row">
+            <label for="owner_id" class="col-4 w-1/3 text-left md:text-right">Transfer To</label>
+
+            <div class="col-6 w-2/3">
+                <div class="relative">
+                    <select 
+                        v-model="toTransactionData.owner_id" 
+                        name="owner_id" 
+                        class="w-full" 
+                        :class="toDisabled ? 'disabled' : ''" 
+                        :disabled="toDisabled"
+                        required
+                    >
+                        <option value="0">Choose an Owner</option>
+                        <option 
+                            v-for="owner in toOwners"
+                            :value="owner.id" 
+                        >{{ owner.name }}</option>
+                    </select>
+                    <div class="select-menu-icon">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" :class="toDisabled ? 'text-secondary-400' : ''">
+                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                        </svg>
+                    </div>
+                </div>
+                <span class="alert-danger" role="alert" v-if="checkError('owner_id')">
+                    <strong v-text="errors.owner_id[0]"></strong>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group row">
             <label for="vendor_id" class="col-4 w-1/3 text-left md:text-right">Vendor</label>
 
             <div class="col-6 w-2/3">
                 <div class="relative">
-                    <select v-if="vendors.length" name="vendor_id" v-model="transactionData.vendor_id" @change="updateCardList" class="w-full" :class="checkError('vendor_id') ? 'is-invalid' : ''" required>
+                    <select 
+                        v-model="fromTransactionData.vendor_id" 
+                        @change="updateCardList" 
+                        name="vendor_id" 
+                        class="w-full" 
+                        :class="vendorDisabled ? 'disabled' : ''" 
+                        :disabled="vendorDisabled"
+                        required
+                    >
                         <option value="0">Choose a Vendor</option>
                         <option 
-                            v-for="vendor in vendors"
+                            v-for="vendor in vendorsList"
                             :value="vendor.id" 
                         >{{ vendor.name }}</option>
                     </select>
-                    <select v-else name="vendor_id" class="w-full" :class="checkError('vendor_id') ? 'is-invalid' : ''" required>
-                        <option value="">No Vendors in Database</option>
-                    </select>
                     <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" :class="vendorDisabled ? 'text-secondary-400' : ''">
                             <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                         </svg>
                     </div>
@@ -55,32 +99,10 @@
         </div>
 
         <div class="form-group row">
-            <label for="type" class="col-4 w-1/3 text-left md:text-right">Transaction Type</label>
-
-            <div class="col-6 w-2/3">
-                <div class="relative">
-                    <select name="type" v-model="transactionData.type" class="w-full" :class="checkError('owner_id') ? 'is-invalid' : ''" required>
-                        <option value="0">Choose a Type</option>
-                        <option value="add">Adding Money</option>
-                        <option value="use">Using Money</option>
-                    </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
-                </div>
-                <span class="alert-danger" role="alert" v-if="checkError('type')">
-                    <strong v-text="errors.type[0]"></strong>
-                </span>
-            </div>
-        </div>
-
-        <div class="form-group row">
             <label for="description" class="col-4 w-1/3 text-left md:text-right">Description</label>
 
             <div class="col-6 w-2/3">
-                <textarea rows="4" name="description" v-model="transactionData.description" :class="checkError('description') ? 'is-invalid' : ''" class="form-input"></textarea>
+                <textarea rows="4" name="description" v-model="fromTransactionData.description" :class="checkError('description') ? 'is-invalid' : ''" class="form-input"></textarea>
 
                 <span class="alert-danger" role="alert" v-if="checkError('description')">
                     <strong v-text="errors.description[0]"></strong>
@@ -93,20 +115,23 @@
 
             <div class="col-6 w-2/3">
                 <div class="relative">
-                    <select name="cards" class="w-full"  v-if="cardList.length" v-model="cardSelected" @change="cardSelect">
+                    <select 
+                        v-model="cardSelected" 
+                        @change="cardSelect"
+                        name="cards" 
+                        class="w-full"  
+                        :class="cardsDisabled ? 'disabled' : ''" 
+                        :disabled="cardsDisabled"
+                    >
                         <option value="">No Card</option>
                         <option value="new">New Card</option>
                         <option 
                             v-for="(card, index) in cardList"
                             :value="index" 
-                        >{{ card.vendor.name }} (ending in {{card.number.substr(-5)}})</option>
-                    </select>
-                    <select v-else name="cards" class="w-full" v-model="cardSelected" @change="cardSelect">
-                        <option value="">No Card</option>
-                        <option value="new">New Card</option>
+                        >{{ card.vendor.name }} (ending in {{card.number.substr(-5)}}) ${{ card.balance.toFixed(2) }}</option>
                     </select>
                     <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" :class="cardsDisabled ? 'text-secondary-400' : ''">
                             <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
                         </svg>
                     </div>
@@ -114,12 +139,12 @@
             </div>
         </div>
 
-        <div v-show="showCardNumber">
+        <div v-show="showNewCard" class="ml-8">
             <div class="form-group row">
                 <label for="number" class="col-4 w-1/3 text-left md:text-right">Card Number</label>
 
                 <div class="col-6 w-2/3">
-                    <input type="text" name="number" v-model="transactionData.number" :class="checkError('number') ? 'is-invalid' : ''" class="form-input">
+                    <input type="text" name="number" v-model="fromTransactionData.number" :class="checkError('number') ? 'is-invalid' : ''" class="form-input">
 
                     <span class="alert-danger" role="alert" v-if="checkError('number')">
                         <strong v-text="errors.number[0]"></strong>
@@ -131,7 +156,7 @@
                 <label for="pin" class="col-4 w-1/3 text-left md:text-right">Card Pin</label>
 
                 <div class="col-6 w-2/3">
-                    <input type="text" name="pin" v-model="transactionData.pin" :class="checkError('pin') ? 'is-invalid' : ''" class="form-input">
+                    <input type="text" name="pin" v-model="fromTransactionData.pin" :class="checkError('pin') ? 'is-invalid' : ''" class="form-input">
 
                     <span class="alert-danger" role="alert" v-if="checkError('pin')">
                         <strong v-text="errors.vendor_id[0]"></strong>
@@ -144,7 +169,7 @@
             <label for="amount" class="col-4 w-1/3 text-left md:text-right">Amount</label>
 
             <div class="col-6 w-2/3">
-                <input type="number" min="0.01" step="0.01" name="amount" v-model="transactionData.amount" :class="checkError('amount') ? 'is-invalid' : ''" class="form-input" required>
+                <input type="number" min="0.01" step="0.01" name="amount" v-model="fromTransactionData.amount" :class="checkError('amount') ? 'is-invalid' : ''" class="form-input" required>
 
                 <span class="alert-danger" role="alert" v-if="checkError('amount')">
                     <strong v-text="errors.amount[0]"></strong>
@@ -159,9 +184,9 @@
                     Cancel
                 </a>
                 <div class="ml-auto" v-if="action == 'update'">
-                    <delete-confirm-button label="Delete Transaction" classes="btn btn-text" :path="'/transactions/'+ transactionData.id" redirect-path="/transactions" class="inline">
+                    <delete-confirm-button label="Delete Transaction" classes="btn btn-text" :path="'/transfers/'+ transfer.id" redirect-path="/transactions" class="inline">
                         <div slot="title">Are You Sure?</div>  
-                        Are you sure you want to delete this transaction from the database?
+                        Are you sure you want to delete this transfer from the database?
                     </delete-confirm-button>
                 </div>
             </div>
@@ -174,7 +199,7 @@ import DeleteConfirmButton from './DeleteConfirmButton';
 
 export default {
     props: [
-        'action', 'transaction', 'owners', 'vendors', 'cards', 'errors', 'redirectPath'
+        'action', 'fromTransaction', 'toTransaction', 'transfer', 'owners', 'vendors', 'cards', 'errors', 'redirectPath'
 
     ],
     components: {
@@ -182,26 +207,38 @@ export default {
     },
     data() {
         return {
-            transactionData: this.transaction,
-            cardList: this.cards,
-            showCardNumber: false,
+            fromTransactionData: this.fromTransaction,
+            toTransactionData: this.toTransaction,
+            transferData: this.transfer,
+            cardList: [],
+            toOwners: [],
+            vendorsList: [],
+            showNewCard: false,
             cardSelected: '',
+            toDisabled: true,
+            vendorDisabled: true,
+            cardsDisabled: true,
+            vendorIds: '',
         }
     },
     computed: {
         submitLabel() {
             return (this.action == 'update') ? 'Update Transfer' : 'Add Transfer' 
-        }
+        },
     },
     created () {
         this.checkSelectedCard();
 
-        if (this.transactionData.amount < 0 && this.transactionData.type == 'use') {
-            this.transactionData.amount = Math.abs(this.transactionData.amount);
+        if (this.fromTransactionData.amount < 0 && this.fromTransactionData.type == 'use') {
+            this.fromTransactionData.amount = Math.abs(this.fromTransactionData.amount);
         }
         
-        this.transactionData.owner_id = (this.action != 'update' && ! this.transactionData.owner_id) ? 0 : this.transactionData.owner_id;
-        this.transactionData.vendor_id = (this.action != 'update' && ! this.transactionData.vendor_id) ? 0 : this.transactionData.vendor_id;
+        this.fromTransactionData.owner_id = (this.action != 'update' && ! this.fromTransactionData.owner_id) ? 0 : this.fromTransactionData.owner_id;
+        this.toTransactionData.owner_id = (this.action != 'update' && ! this.toTransactionData.owner_id) ? 0 : this.toTransactionData.owner_id;
+        this.fromTransactionData.vendor_id = (this.action != 'update' && ! this.fromTransactionData.vendor_id) ? 0 : this.fromTransactionData.vendor_id;
+        this.toTransactionData.vendor_id = (this.action != 'update' && ! this.toTransactionData.vendor_id) ? 0 : this.toTransactionData.vendor_id;
+
+        this.updateSelects();
     },
     methods: {
         checkError(field) {
@@ -215,7 +252,7 @@ export default {
 
             if (this.cardList.length) {
                 this.cardList.forEach((card, index) => {
-                    if (card.number == this.transactionData.number) {
+                    if (card.number == this.fromTransactionData.number) {
                         this.cardSelected = index;
                     }
                 });
@@ -223,9 +260,9 @@ export default {
         },
         cardSelect(e) {
             let value = e.target.value;
-            this.transactionData.number = '';
-            this.transactionData.pin = '';
-            this.showCardNumber = (value == 'new') ? true : false;
+            this.resetCard();
+
+            this.showNewCard = (value == 'new') ? true : false;
 
             if (value == 'new' || value == '') {
                 return;
@@ -233,23 +270,71 @@ export default {
 
             let card = this.cardList[value];
             
-            this.transactionData.number = card.number;
-            this.transactionData.pin = card.pin;
+            this.fromTransactionData.number = card.number;
+            this.fromTransactionData.pin = card.pin;
 
-            this.updateSelects(card.vendor_id);
+            this.updateCardSelect(card.vendor_id);
         },
-        updateSelects(vendor) {
-            this.transactionData.vendor_id = vendor;
+        updateCardSelect(vendor) {
+            this.fromTransactionData.vendor_id = vendor;
             this.updateCardList();
         },
         updateCardList() {
-            axios.get(`/api/cards/${this.transactionData.vendor_id}`)
+            let vendors = (this.fromTransactionData.vendor_id > 0) ? this.fromTransactionData.vendor_id : this.vendorIds;
+            axios.get(`/api/cards/${vendors}`)
                 .then(response => {
                     this.cardList = response.data;
 
                     this.checkSelectedCard();
                 });
-        }
+        },
+        updateSelects() {
+            this.toDisabled = this.fromTransactionData.owner_id == 0;
+            this.vendorDisabled = this.fromTransactionData.owner_id == 0;
+            this.cardsDisabled = this.fromTransactionData.owner_id == 0;
+        },
+        selectOwner(e) {
+            let owner = e.target.value;
+            this.toTransactionData.owner_id = 0;
+            this.fromTransactionData.vendor_id = 0;
+            this.resetCard();
+
+            if (owner == 0) {
+                this.updateSelects();
+                return;
+            }
+            this.updateToOwners(owner);
+        },
+        updateToOwners(owner) {
+            axios.get(`/api/users/${owner}`)
+                .then(response => {
+                    this.toOwners = response.data;
+                    this.updateVendors(owner);
+
+                });
+        },
+        updateVendors(owner) {
+            axios.get(`/api/users/${owner}/vendors`)
+                .then(response => {
+                    let vendorIds = [];
+                    this.vendorsList = response.data;
+                    if (!this.vendorsList.length) {
+                        return;
+                    }
+                    this.vendorsList.forEach((vendor, index) => {
+                        vendorIds.push(vendor.id);
+                    });
+                    this.vendorIds = vendorIds.join(',');
+
+                    this.updateCardList();
+                    this.updateSelects();
+                });
+        },
+        resetCard() {
+            this.cardSelected = '';
+            this.fromTransactionData.number = '';
+            this.fromTransactionData.pin = '';
+        },
     },
 }
 </script>

@@ -114,7 +114,7 @@
             </div>
         </div>
 
-        <div v-show="showCardNumber">
+        <div v-show="showNewCard" class="ml-8">
             <div class="form-group row">
                 <label for="number" class="col-4 w-1/3 text-left md:text-right">Card Number</label>
 
@@ -184,7 +184,7 @@ export default {
         return {
             transactionData: this.transaction,
             cardList: this.cards,
-            showCardNumber: false,
+            showNewCard: false,
             cardSelected: '',
         }
     },
@@ -225,7 +225,7 @@ export default {
             let value = e.target.value;
             this.transactionData.number = '';
             this.transactionData.pin = '';
-            this.showCardNumber = (value == 'new') ? true : false;
+            this.showNewCard = (value == 'new') ? true : false;
 
             if (value == 'new' || value == '') {
                 return;

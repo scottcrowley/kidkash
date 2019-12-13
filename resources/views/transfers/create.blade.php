@@ -14,7 +14,9 @@
                 @csrf
                 <transfer-form 
                     action="create"
-                    :transaction="{{ Session::hasOldInput() ? json_encode(Session::getOldInput()) : $transaction }}"
+                    :from-transaction="{{ Session::hasOldInput() ? json_encode(Session::getOldInput()) : $fromTransaction }}"
+                    :to-transaction="{{ Session::hasOldInput() ? json_encode(Session::getOldInput()) : $toTransaction }}"
+                    :transfer="{{ Session::hasOldInput() ? json_encode(Session::getOldInput()) : $transfer }}"
                     :owners="{{ $owners }}"
                     :vendors="{{ $vendors }}"
                     :cards="{{ $cards }}"

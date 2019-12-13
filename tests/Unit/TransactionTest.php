@@ -108,4 +108,43 @@ class TransactionTest extends TestCase
         $this->post(route('transactions.store'), $transaction)
             ->assertSessionHasErrors('amount');
     }
+
+    /** @test */
+    public function it_can_determine_if_it_is_a_transfer()
+    {
+        $this->withoutExceptionHandling();
+        $vendor = create('App\Vendor');
+        $fromTransaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
+        $toTransaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
+
+        $this->assertFalse($fromTransaction->has_transfer);
+        $this->assertFalse($toTransaction->has_transfer);
+
+        create('App\Transfer', ['from_transaction_id' => $fromTransaction->id, 'to_transaction_id' => $toTransaction->id]);
+
+        $this->assertTrue($fromTransaction->fresh()->has_transfer);
+        $this->assertTrue($toTransaction->fresh()->has_transfer);
+    }
+
+    /** @test */
+    public function it_can_access_details_about_a_transfer_from()
+    {
+        $vendor = create('App\Vendor');
+        $fromTransaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
+        $toTransaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
+        $transfer = create('App\Transfer', ['from_transaction_id' => $fromTransaction->id, 'to_transaction_id' => $toTransaction->id]);
+
+        $this->assertEquals($transfer->id, $fromTransaction->transferFrom->id);
+    }
+
+    /** @test */
+    public function it_can_access_details_about_a_transfer_to()
+    {
+        $vendor = create('App\Vendor');
+        $fromTransaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
+        $toTransaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
+        $transfer = create('App\Transfer', ['from_transaction_id' => $fromTransaction->id, 'to_transaction_id' => $toTransaction->id]);
+
+        $this->assertEquals($transfer->id, $toTransaction->transferTo->id);
+    }
 }

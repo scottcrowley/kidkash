@@ -151,4 +151,31 @@ class UsersController extends Controller
 
         return redirect(route('users.index'));
     }
+
+    /**
+     * Display all users. Used in api call
+     *
+     * @param int $excludeUser
+     * @return Collection
+     */
+    public function usersList($excludeUser = null)
+    {
+        $where = [];
+
+        if ($excludeUser) {
+            $where[] = ['id', '!=', $excludeUser];
+        }
+
+        return User::where($where)->orderBy('name')->get();
+    }
+
+    /**
+     * Display a vendors list for a given user. Used in api call
+     *
+     * @return Collection
+     */
+    public function vendorsList($user)
+    {
+        return User::find($user)->vendors_list;
+    }
 }

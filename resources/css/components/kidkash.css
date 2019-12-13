@@ -9,7 +9,7 @@
 }
 
 select {
-    @apply block appearance-none bg-white border border-secondary-400 text-secondary-800 text-sm py-2 pl-2 pr-8 rounded leading-tight shadow;
+    @apply block appearance-none bg-white border border-secondary-400 text-secondary-800 text-sm py-2 pl-2 pr-8 rounded leading-tight shadow cursor-pointer;
     
     &:focus {
         @apply outline-none bg-white shadow-outline;
@@ -17,6 +17,14 @@ select {
 
     &:hover {
         @apply border-secondary-600;
+    }
+
+    &.disabled {
+        @apply border-secondary-300 text-secondary-400 cursor-default;
+    }
+
+    &.disabled:hover {
+        @apply border-secondary-300;
     }
 }
 

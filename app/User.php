@@ -122,6 +122,7 @@ class User extends Authenticatable
             ->values()
             ->each(function ($vendor) {
                 $vendor->owner_transaction_totals = $vendor->owner_transactions->sum('amount');
+                $vendor = $vendor->makeHidden(['owner_transactions']);
             });
 
         return $vendors;

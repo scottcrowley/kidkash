@@ -354,4 +354,86 @@ class UsersTest extends TestCase
         $this->get(route('users.edit', $user->slug))
             ->assertSee('delete');
     }
+
+    /** @test */
+    public function a_user_must_be_authenticated_to_retrieve_a_list_of_all_users_through_api()
+    {
+        $this->get(route('api.users.list'))
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_user_must_be_an_authorized_parent_to_retrieve_a_list_of_all_users_through_api()
+    {
+        $this->signIn();
+
+        $this->json('get', route('api.users.list'))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_retrieve_a_list_of_all_users_through_api()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
+        $user = create('App\User');
+
+        $response = $this->json('get', route('api.users.list'));
+        $users = $response->getData();
+
+        $this->assertCount(2, $users);
+        $this->assertEquals(auth()->user()->id, $users[0]->id);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_retrieve_a_list_of_users_excluding_a_given_user_through_api()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
+        $user = create('App\User');
+
+        $response = $this->json('get', route('api.users.list', $user->id));
+        $users = $response->getData();
+
+        $this->assertCount(1, $users);
+    }
+
+    /** @test */
+    public function a_user_must_be_authenticated_to_retrieve_a_users_vendors_list_through_api()
+    {
+        $user = create('App\User');
+        $this->get(route('api.users.vendors', $user->id))
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_user_must_be_an_authorized_parent_to_retrieve_a_users_vendors_list_through_api()
+    {
+        $this->signIn();
+        $user = create('App\User');
+
+        $this->json('get', route('api.users.vendors', $user->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_retrieve_a_users_vendors_list_through_api()
+    {
+        $this->signIn();
+        config(['kidkash.parents' => [auth()->user()->email]]);
+
+        $user = create('App\User');
+
+        $vendor = create('App\Vendor');
+
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor->id], 2);
+        create('App\Transaction', ['owner_id' => $user->id], 2);
+
+        $response = $this->json('get', route('api.users.vendors', $user->id));
+        $vendorsList = $response->getData();
+
+        $this->assertCount(3, $vendorsList);
+    }
 }
