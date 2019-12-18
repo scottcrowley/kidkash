@@ -383,7 +383,6 @@ class UsersTest extends TestCase
         $users = $response->getData();
 
         $this->assertCount(2, $users);
-        $this->assertEquals(auth()->user()->id, $users[0]->id);
     }
 
     /** @test */
