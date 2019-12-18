@@ -69,7 +69,7 @@ class VendorsController extends Controller
                 }
             ]);
         } else {
-            $vendor->load('transactions', 'cards');
+            $vendor->load('transactions', 'cards.transactions.owner');
         }
 
         return view('vendors.show', compact('vendor', 'user'));

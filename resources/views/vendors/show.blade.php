@@ -34,6 +34,9 @@
                             <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">
                                 {{ $card->number }}
                             </a>
+                            @if (!$user)
+                                <span class="text-sm ml-1">({{ $card->owner_names }})</span>
+                            @endif
                         </div>
                         <div>{{ (($card->balance < 0) ? '- ' : '').' $ '.(number_format(abs($card->balance),2)) }}</div>
                     </div>
@@ -48,6 +51,9 @@
                             <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">
                                 {{ $card->number }}
                             </a>
+                            @if (!$user)
+                                <span class="text-sm ml-1">({{ $card->owner_names }})</span>
+                            @endif
                         </div>
                         <div>{{ (($card->balance < 0) ? '- ' : '').' $ '.(number_format(abs($card->balance),2)) }}</div>
                     </div>
