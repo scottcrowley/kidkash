@@ -75,7 +75,7 @@ class Vendor extends Model
     }
 
     /**
-     * Get individual owners with related transactions and sum all transactions
+     * Get individual owners with related transactions and has a balance
      *
      * @return \Illuminate\Support\Collection
      */
@@ -92,21 +92,51 @@ class Vendor extends Model
             $owners[$id]->vendor_transactions->push($transaction);
         };
 
-        $owners = (collect($owners))->sortBy('name')->values()->each(function ($owner) {
-            $owner->vendor_transaction_totals = $owner->vendor_transactions->sum('amount');
-        });
+        $owners = (collect($owners))
+            ->filter(function ($owner) {
+                return $owner->vendor_transactions->sum('amount') > 0;
+            })
+            ->sortBy('name')
+            ->values()
+            ->each(
+                function ($owner) {
+                    $owner->vendor_transaction_totals = $owner->vendor_transactions->sum('amount');
+                }
+            );
 
         return $owners;
     }
 
     /**
-     * Get all cards associated with transactions
+     * Get all cards associated with transactions and has a balance
      *
      * @return \Illuminate\Support\Collection
      */
     public function getCardsListAttribute()
     {
-        return $this->cards->load('transactions');
+        return $this->cards
+            ->filter(
+                function ($card) {
+                    return $card->transactions->isNotEmpty() && $card->balance > 0;
+                }
+            )
+            ->values();
+    }
+
+    /**
+     * Get all cards associated with transactions with a zero balance
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getEmptyCardsListAttribute()
+    {
+        return $this->cards
+            ->filter(
+                function ($card) {
+                    return $card->transactions->isNotEmpty() && $card->balance <= 0;
+                }
+            )
+            ->values();
     }
 
     /**

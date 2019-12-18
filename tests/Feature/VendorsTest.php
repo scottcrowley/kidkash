@@ -222,5 +222,15 @@ class VendorsTest extends TestCase
     public function an_authenticated_authorized_parent_may_display_vendor_details_for_a_given_user()
     {
         $this->signInParent();
+
+        $vendor = create('App\Vendor');
+        $user = create('App\User');
+        $user2 = create('App\User');
+
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $user->id, 'amount' => '50']);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $user2->id]);
+        $this->get(route('vendors.show', [$vendor->slug, 'user' => $user->slug]))
+            ->assertSee($user->name)
+            ->assertDontSee($user2->name);
     }
 }

@@ -8,7 +8,7 @@
 <div class="w-3/4">
     <div class="card">
         <div class="card-header flex justify-between items-center">
-            <p class="text-3xl">{{ $vendor->name }}</p>
+            <p class="text-3xl">{{ (($user) ? $user->name.'\'s ' : '').$vendor->name }}</p>
             <p class="text-2xl text-right">{{ (($vendor->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->transaction_totals),2)) }}</p>
         </div>
 
@@ -27,8 +27,22 @@
                     <p>No balances for any Users found</p>
                 @endforelse
             </content-drawers>
-            <content-drawers title="Card Balances" :open-default="true">
+            <content-drawers title="Cards With Balances" :open-default="{{ $vendor->cards_list->isNotEmpty() ? 'true' : 'false' }}">
                 @forelse ($vendor->cards_list as $card)
+                    <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700 hover:bg-gray-200 hover:text-gray-800">
+                        <div>
+                            <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">
+                                {{ $card->number }}
+                            </a>
+                        </div>
+                        <div>{{ (($card->balance < 0) ? '- ' : '').' $ '.(number_format(abs($card->balance),2)) }}</div>
+                    </div>
+                @empty
+                    <p>No Cards found</p>
+                @endforelse
+            </content-drawers>
+            <content-drawers title="Empty Cards" :open-default="false">
+                @forelse ($vendor->empty_cards_list as $card)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700 hover:bg-gray-200 hover:text-gray-800">
                         <div>
                             <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">
@@ -59,7 +73,7 @@
                 @endforelse
             </content-drawers>
             <div class="mt-4 text-right mr-6">
-                <a href="{{ route('vendors.index') }}" class="btn border border-secondary-300">Done</a>
+                <a href="{{ ($user && auth()->user()->id == $user->id) ? route('home') : (($user) ? route('users.show', $user->slug) : route('vendors.index')) }}" class="btn border border-secondary-300">Done</a>
             </div>
         </div>
     </div>

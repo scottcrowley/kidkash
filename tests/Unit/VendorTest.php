@@ -88,4 +88,50 @@ class VendorTest extends TestCase
         $this->assertCount(5, $vendor->cards);
         $this->assertInstanceOf(Card::class, $vendor->cards[0]);
     }
+
+    /** @test */
+    public function it_can_access_a_list_of_its_cards_with_balances()
+    {
+        $vendor = create('App\Vendor');
+        create('App\Card', ['vendor_id' => $vendor->id]);
+        $cardWithBalance = create('App\Card', ['vendor_id' => $vendor->id]);
+
+        $transaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
+        create('App\CardTransaction', ['card_id' => $cardWithBalance->id, 'transaction_id' => $transaction->id]);
+
+        $this->assertCount(1, $vendor->fresh()->cards_list);
+        $this->assertEquals($cardWithBalance->number, $vendor->cards_list[0]->number);
+    }
+
+    /** @test */
+    public function it_can_access_a_list_of_its_cards_with_a_zero_balance()
+    {
+        $vendor = create('App\Vendor');
+        $cardWithBalance = create('App\Card', ['vendor_id' => $vendor->id]);
+        $cardWithoutBalance = create('App\Card', ['vendor_id' => $vendor->id]);
+
+        $transaction = create('App\Transaction', ['vendor_id' => $vendor->id]);
+        create('App\CardTransaction', ['card_id' => $cardWithBalance->id, 'transaction_id' => $transaction->id]);
+        $transaction = create('App\Transaction', ['vendor_id' => $vendor->id, 'amount' => 20]);
+        create('App\CardTransaction', ['card_id' => $cardWithoutBalance->id, 'transaction_id' => $transaction->id]);
+        $transaction = create('App\Transaction', ['vendor_id' => $vendor->id, 'amount' => -20]);
+        create('App\CardTransaction', ['card_id' => $cardWithoutBalance->id, 'transaction_id' => $transaction->id]);
+
+        $this->assertCount(1, $vendor->fresh()->empty_cards_list);
+        $this->assertEquals($cardWithoutBalance->number, $vendor->empty_cards_list[0]->number);
+    }
+
+    /** @test */
+    public function it_can_access_a_list_of_owners_with_associated_transactions()
+    {
+        $vendor = create('App\Vendor');
+        $userWithBalance = create('App\User');
+        $userWithoutBalance = create('App\User');
+
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithBalance->id]);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithoutBalance->id, 'amount' => 20]);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithoutBalance->id, 'amount' => -20]);
+
+        $this->assertCount(1, $vendor->fresh()->owners_list);
+    }
 }

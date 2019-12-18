@@ -17,7 +17,7 @@
                 @forelse ($user->vendors_list as $vendor)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700 hover:bg-gray-200 hover:text-gray-800">
                         <div>
-                            <a href="{{ route('vendors.show', $vendor->slug) }}" class="hover:underline hover:text-gray-800">
+                            <a href="{{ route('vendors.show', [$vendor->slug, 'user' => $user->slug]) }}" class="hover:underline hover:text-gray-800">
                                 {{ $vendor->name }}
                             </a>
                         </div>
@@ -27,7 +27,7 @@
                     <p>No Vendors found</p>
                 @endforelse
             </content-drawers>
-            <content-drawers title="Card Balances" :open-default="true">
+            <content-drawers title="Card Balances" :open-default="{{ $user->cards_list->isNotEmpty() ? 'true' : 'false' }}">
                 @forelse ($user->cards_list as $vendor => $cards)
                     <div class="mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700">
                         <div class="flex items-center justify-between">

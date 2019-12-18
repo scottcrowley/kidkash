@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -56,7 +57,22 @@ class VendorsController extends Controller
      */
     public function show(Vendor $vendor)
     {
-        return view('vendors.show', compact('vendor'));
+        $user = (request()->has('user')) ?
+            User::whereSlug(request('user'))->first() : null;
+        if ($user) {
+            $vendor->load([
+                'transactions' => function ($query) use ($user) {
+                    $query->where('owner_id', '=', $user->id);
+                },
+                'cards.transactions' => function ($query) use ($user) {
+                    $query->where('owner_id', '=', $user->id);
+                }
+            ]);
+        } else {
+            $vendor->load('transactions', 'cards');
+        }
+
+        return view('vendors.show', compact('vendor', 'user'));
     }
 
     /**
