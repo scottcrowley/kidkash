@@ -238,7 +238,7 @@ export default {
         this.fromTransactionData.vendor_id = (this.action != 'update' && ! this.fromTransactionData.vendor_id) ? 0 : this.fromTransactionData.vendor_id;
         this.toTransactionData.vendor_id = (this.action != 'update' && ! this.toTransactionData.vendor_id) ? 0 : this.toTransactionData.vendor_id;
 
-        this.updateSelects();
+        this.updateSelectsState();
     },
     methods: {
         checkError(field) {
@@ -288,7 +288,7 @@ export default {
                     this.checkSelectedCard();
                 });
         },
-        updateSelects() {
+        updateSelectsState() {
             this.toDisabled = this.fromTransactionData.owner_id == 0;
             this.vendorDisabled = this.fromTransactionData.owner_id == 0;
             this.cardsDisabled = this.fromTransactionData.owner_id == 0;
@@ -300,7 +300,7 @@ export default {
             this.resetCard();
 
             if (owner == 0) {
-                this.updateSelects();
+                this.updateSelectsState();
                 return;
             }
             this.updateToOwners(owner);
@@ -327,7 +327,7 @@ export default {
                     this.vendorIds = vendorIds.join(',');
 
                     this.updateCardList();
-                    this.updateSelects();
+                    this.updateSelectsState();
                 });
         },
         resetCard() {
