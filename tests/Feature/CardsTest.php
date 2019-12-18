@@ -28,8 +28,7 @@ class CardsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_all_cards()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $cardTransaction = create('App\CardTransaction');
 
@@ -58,8 +57,7 @@ class CardsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_show_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $cardTransaction = create('App\CardTransaction');
 
@@ -88,8 +86,7 @@ class CardsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_retrieve_a_list_of_all_cards_with_balances_for_a_vendor_through_api()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = create('App\Vendor');
 

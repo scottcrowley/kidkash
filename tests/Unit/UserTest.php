@@ -23,8 +23,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_requires_a_name()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = make('App\User', ['name' => '']);
 
@@ -42,8 +41,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_requires_an_email()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = make('App\User', ['email' => '']);
 
@@ -61,8 +59,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_requires_a_password()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = make('App\User', ['password' => '']);
 
@@ -73,8 +70,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_requires_a_password_confirmation()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = makeRaw('App\User');
 
@@ -87,8 +83,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_requires_a_valid_current_password_when_updating_to_a_new_password()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = createRaw('App\User');
         $user['current_password'] = 'wrong';
@@ -102,8 +97,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_requires_a_new_password_when_updating_to_a_new_password()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = createRaw('App\User');
         $user['current_password'] = 'password';
@@ -116,8 +110,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_requires_a_new_password_confirmation_when_updating_to_a_new_password()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = createRaw('App\User');
         $user['current_password'] = 'password';
@@ -131,8 +124,7 @@ class UserTest extends TestCase
     /** @test */
     public function it_requires_a_different_new_password_when_updating_to_a_new_password()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = createRaw('App\User');
         $user['current_password'] = 'password';

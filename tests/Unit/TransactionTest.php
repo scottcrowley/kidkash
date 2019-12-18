@@ -40,8 +40,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_requires_a_vendor_id_when_adding_a_new()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction', ['vendor_id' => null]);
 
@@ -52,8 +51,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_requires_a_valid_vendor_id_when_adding_a_new()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction', ['vendor_id' => 5]);
 
@@ -64,8 +62,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_requires_an_owner_id_when_adding_a_new()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction', ['owner_id' => null]);
 
@@ -76,8 +73,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_requires_a_valid_owner_id_when_adding_a_new()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction', ['owner_id' => 5]);
 
@@ -88,8 +84,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_requires_a_type_when_adding_a_new()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction', ['type' => '']);
 
@@ -100,8 +95,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function it_requires_an_amount_when_adding_a_new()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction', ['amount' => '']);
 

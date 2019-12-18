@@ -17,4 +17,11 @@ abstract class TestCase extends BaseTestCase
 
         return $this;
     }
+
+    protected function signInParent($user = null)
+    {
+        $this->signIn();
+
+        config(['kidkash.parents' => [auth()->user()->email]]);
+    }
 }

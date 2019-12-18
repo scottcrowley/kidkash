@@ -34,8 +34,7 @@ class AvatarsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_add_an_avatar_to_a_users_profile()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 
@@ -69,8 +68,7 @@ class AvatarsTest extends TestCase
     /** @test */
     public function a_valid_avatar_must_be_provided()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 
@@ -104,8 +102,7 @@ class AvatarsTest extends TestCase
     {
         Storage::fake('public');
 
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = factory('App\User')->states('withAvatar')->create();
 

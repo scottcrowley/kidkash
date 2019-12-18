@@ -30,8 +30,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_is_redirected_to_users_index_page_when_they_log_in()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $this->get(route('home'))
             ->assertRedirect(route('users.index'));
@@ -56,8 +55,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_all_users()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 
@@ -84,8 +82,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_the_create_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $this->get(route('users.create'))
             ->assertStatus(200)
@@ -111,8 +108,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_add_a_new_user()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = makeRaw('App\User');
         $user['password'] = 'password';
@@ -150,8 +146,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_the_edit_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 
@@ -193,8 +188,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_update_an_existing_user()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = createRaw('App\User');
         $user['name'] = 'John Doe';
@@ -264,8 +258,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_delete_a_user()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 
@@ -307,8 +300,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_show_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 
@@ -328,8 +320,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_can_see_sub_nav()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $this->get(route('users.index'))
             ->assertSee('Manage Users');
@@ -347,8 +338,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_can_see_delete_button_on_edit_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
         $user = create('App\User');
 
         $this->get(route('users.edit', $user->slug))
@@ -374,8 +364,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_retrieve_a_list_of_all_users_through_api()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 
@@ -388,8 +377,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_retrieve_a_list_of_users_excluding_a_given_user_through_api()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 
@@ -420,8 +408,7 @@ class UsersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_retrieve_a_users_vendors_list_through_api()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $user = create('App\User');
 

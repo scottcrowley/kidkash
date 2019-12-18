@@ -28,8 +28,7 @@ class VendorsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_all_vendors()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = create('App\Vendor');
 
@@ -56,8 +55,7 @@ class VendorsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_create_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $this->get(route('vendors.create'))
             ->assertSee('Add a new Vendor');
@@ -82,8 +80,7 @@ class VendorsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_add_a_new_vendor()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = makeRaw('App\Vendor');
 
@@ -115,8 +112,7 @@ class VendorsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_edit_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = create('App\Vendor');
 
@@ -147,8 +143,7 @@ class VendorsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_update_an_existing_vendor()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = createRaw('App\Vendor');
         $vendor['name'] = 'New Vendor Name';
@@ -182,8 +177,7 @@ class VendorsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_delete_a_vendor()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = create('App\Vendor');
 
@@ -216,12 +210,17 @@ class VendorsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_show_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = create('App\Vendor');
 
         $this->get(route('vendors.show', $vendor->slug))
             ->assertSee($vendor->name);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_display_vendor_details_for_a_given_user()
+    {
+        $this->signInParent();
     }
 }

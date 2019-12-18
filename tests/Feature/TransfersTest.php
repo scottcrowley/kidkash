@@ -28,8 +28,7 @@ class TransfersTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_create_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $this->get(route('transfers.create'))
             ->assertSee('Add a new Transfer Transaction');
@@ -42,14 +41,14 @@ class TransfersTest extends TestCase
             ->assertRedirect(route('login'));
     }
 
-    /** @test */
-    public function an_authenticated_user_must_be_an_authorized_parent_to_create_a_new_transfer()
-    {
-        $this->signIn();
+    // /** @test */
+    // public function an_authenticated_user_must_be_an_authorized_parent_to_create_a_new_transfer()
+    // {
+    //     $this->signIn();
 
-        $this->post(route('transfers.store'), [])
-            ->assertStatus(403);
-    }
+    //     $this->post(route('transfers.store'), [])
+    //         ->assertStatus(403);
+    // }
 
     // /** @test */
     // public function an_authenticated_authorized_parent_may_create_a_new_transfer_without_a_card()

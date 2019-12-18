@@ -13,8 +13,7 @@ class VendorTest extends TestCase
     /** @test */
     public function it_requires_a_name_when_adding_new()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = makeRaw('App\Vendor', ['name' => '']);
 
@@ -25,8 +24,7 @@ class VendorTest extends TestCase
     /** @test */
     public function it_requires_a_name_when_updating_existing()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $vendor = create('App\Vendor');
 
@@ -37,8 +35,7 @@ class VendorTest extends TestCase
     /** @test */
     public function it_requires_a_unique_name_when_adding_new()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         create('App\Vendor', ['name' => 'New Vendor']);
 
@@ -51,8 +48,7 @@ class VendorTest extends TestCase
     /** @test */
     public function it_requires_a_unique_name_when_updating_existing()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         create('App\Vendor', ['name' => 'New Vendor']);
 

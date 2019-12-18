@@ -31,8 +31,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_all_transactions()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = create('App\Transaction');
 
@@ -59,8 +58,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_create_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $this->get(route('transactions.create'))
             ->assertSee('Add a new Transaction');
@@ -85,8 +83,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_create_a_new_transaction_without_a_card()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction');
         $transaction['type'] = 'use';
@@ -103,8 +100,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_create_a_new_transaction_with_a_new_card()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction');
         $transaction['type'] = 'use';
@@ -132,8 +128,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_create_a_new_transaction_with_an_existing_card()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = makeRaw('App\Transaction');
         $transaction['type'] = 'use';
@@ -178,8 +173,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_view_edit_page()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = create('App\Transaction');
 
@@ -210,8 +204,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_update_an_existing_transaction_without_a_card()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = createRaw('App\Transaction');
         $transaction['amount'] = 50;
@@ -229,8 +222,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_update_an_existing_transaction_with_a_new_card()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = createRaw('App\Transaction');
         $transaction['amount'] = 50;
@@ -259,8 +251,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_update_an_existing_transaction_with_an_existing_card()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = create('App\Transaction');
         $transaction->amount = 50;
@@ -288,8 +279,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_update_an_existing_transaction_with_a_card_already_attached()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = create('App\Transaction');
         $transaction->amount = 50;
@@ -324,8 +314,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_remove_a_card_from_an_existing_transaction()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = create('App\Transaction');
         $transaction->amount = 50;
@@ -369,8 +358,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_delete_an_existing_transaction()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = create('App\Transaction');
 
@@ -383,8 +371,7 @@ class TransactionsTest extends TestCase
     /** @test */
     public function an_authenticated_authorized_parent_may_delete_an_existing_transaction_with_an_associated_card()
     {
-        $this->signIn();
-        config(['kidkash.parents' => [auth()->user()->email]]);
+        $this->signInParent();
 
         $transaction = create('App\Transaction');
         $card = create('App\Card', ['vendor_id' => $transaction->vendor_id]);
