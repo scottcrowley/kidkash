@@ -169,7 +169,7 @@
             <label for="amount" class="col-4 w-1/3 text-left md:text-right">Amount</label>
 
             <div class="col-6 w-2/3">
-                <input type="number" min="0.01" step="0.01" name="amount" v-model="fromTransactionData.amount" :class="checkError('amount') ? 'is-invalid' : ''" class="form-input" required>
+                <input type="number" min="0.01" step="0.01" name="amount" v-model="fromTransactionData.amount" :class="checkError('amount') ? 'is-invalid' : ''" class="form-input" autocomplete="off" required>
 
                 <span class="alert-danger" role="alert" v-if="checkError('amount')">
                     <strong v-text="errors.amount[0]"></strong>
@@ -273,15 +273,18 @@ export default {
             this.fromTransactionData.number = card.number;
             this.fromTransactionData.pin = card.pin;
 
-            this.updateCardSelect(card.vendor_id);
-        },
-        updateCardSelect(vendor) {
-            this.fromTransactionData.vendor_id = vendor;
-            this.updateCardList();
+            if (this.fromTransactionData.vendor_id != card.vendor_id) {
+                this.fromTransactionData.vendor_id = card.vendor_id;
+                this.updateCardList();
+                return;
+            }
+            this.checkSelectedCard();
         },
         updateCardList() {
             let vendors = (this.fromTransactionData.vendor_id > 0) ? this.fromTransactionData.vendor_id : this.vendorIds;
-            axios.get(`/api/cards/${vendors}`)
+            let endpoint = '/api/cards/' + vendors + ((this.fromTransactionData.owner_id > 0) ? '/' + this.fromTransactionData.owner_id : '');
+
+            axios.get(endpoint)
                 .then(response => {
                     this.cardList = response.data;
 

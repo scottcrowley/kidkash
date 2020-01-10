@@ -144,7 +144,7 @@
             <label for="amount" class="col-4 w-1/3 text-left md:text-right">Amount</label>
 
             <div class="col-6 w-2/3">
-                <input type="number" min="0.01" step="0.01" name="amount" v-model="transactionData.amount" :class="checkError('amount') ? 'is-invalid' : ''" class="form-input" required>
+                <input type="number" min="0.01" step="0.01" name="amount" v-model="transactionData.amount" :class="checkError('amount') ? 'is-invalid' : ''" class="form-input" autocomplete="off" required>
 
                 <span class="alert-danger" role="alert" v-if="checkError('amount')">
                     <strong v-text="errors.amount[0]"></strong>
