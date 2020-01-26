@@ -28,4 +28,24 @@ class TransfersController extends Controller
 
         return view('transfers.create', compact('fromTransaction', 'toTransaction', 'transfer', 'vendors', 'owners', 'cards'));
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        // $data = $request->validate([
+        //     'name' => ['required', 'string', 'max:255', 'unique:vendors'],
+        //     'url' => ['nullable', 'string', 'max:255'],
+        // ]);
+
+        // Vendor::create($data);
+
+        // session()->flash('flash', ['message' => $data['name'].' added successfully!', 'level' => 'success']);
+
+        // return redirect(route('vendors.index'));
+    }
 }
