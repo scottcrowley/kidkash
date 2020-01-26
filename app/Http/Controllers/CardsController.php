@@ -43,4 +43,20 @@ class CardsController extends Controller
     {
         return $this->getActiveCardList($vendors);
     }
+
+    /**
+     * Display all cards for a given vendor & user. Used in api call
+     *
+     * @param string $vendors
+     * @param int $user
+     * @return Collection
+     */
+    public function userCards($vendors, $user)
+    {
+        $vendorCards = $this->vendorsCards($vendors);
+
+        return $vendorCards->filter(function ($card) use ($user) {
+            return ($card->transactions->where('owner_id', '=', $user)->isNotEmpty());
+        })->values();
+    }
 }

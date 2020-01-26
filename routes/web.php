@@ -75,6 +75,7 @@ Route::group([
 });
 
 Route::get('api/cards/{vendors}', 'CardsController@vendorsCards')->middleware('auth', 'parent')->name('api.cards.vendor');
+Route::get('api/cards/{vendors}/{user?}', 'CardsController@userCards')->middleware('auth', 'parent')->name('api.cards.user');
 Route::get('api/users/{user}/vendors', 'UsersController@vendorsList')->middleware('auth', 'parent')->name('api.users.vendors');
 Route::get('api/users/{excludeUser?}', 'UsersController@usersList')->middleware('auth', 'parent')->name('api.users.list');
 Route::post('api/users/{user}/avatar', 'UserAvatarsController@store')->middleware('auth', 'authorized')->name('api.users.avatar.add');
