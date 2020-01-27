@@ -37,10 +37,13 @@
                         <div class="mt-2">
                             @foreach ($cards as $card)
                                 <div class="flex items-center justify-between pl-4 pr-8 py-2 text-sm hover:bg-gray-200 hover:text-gray-800">
-                                    <div>
+                                    <div class="flex items-center">
                                         <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">
                                             {{ $card->number }}
                                         </a>
+                                        @if ($card->expiration)
+                                            <span class="ml-2 text-sm {{ $card->expiration_alert }}">{{ 'Exp: '.$card->expiration->format('M Y') }}</span>
+                                        @endif
                                     </div>
                                     <div>{{ (($card->card_balance < 0) ? '- ' : '').' $ '.(number_format(abs($card->card_balance),2)) }}</div>
                                 </div>

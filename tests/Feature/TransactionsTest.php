@@ -312,6 +312,45 @@ class TransactionsTest extends TestCase
     }
 
     /** @test */
+    public function an_expiration_date_is_correctly_formatted_when_transaction_is_provided_a_new_card()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signInParent();
+
+        $transaction = create('App\Transaction');
+
+        $dates = [
+            '' => null,
+            '04/2020' => '2020-04-30',
+            '04/20' => '2020-04-30',
+            '04-05-2020' => '2020-04-05',
+            '4-5-2020' => '2020-04-05',
+            '04-20' => '2020-04-30',
+            '04.05.2020' => '2020-04-05',
+            '4.5.2020' => '2020-04-05',
+            '04.20' => '2020-04-30',
+            '04 05 2020' => '2020-04-05',
+            '4 5 2020' => '2020-04-05',
+            '04 20' => '2020-04-30',
+        ];
+
+        foreach ($dates as $test => $result) {
+            $this->json(
+                'patch',
+                route('transactions.update', $transaction->id),
+                $transaction->toArray() + ['number' => '555555555', 'pin' => '1234', 'expiration' => $test]
+            )->assertStatus(200);
+
+            $card = Card::first();
+
+            $this->assertEquals($card->expiration, $result);
+
+            $card->delete();
+        }
+    }
+
+    /** @test */
     public function an_authenticated_authorized_parent_may_remove_a_card_from_an_existing_transaction()
     {
         $this->signInParent();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Card;
 use App\User;
 use App\Vendor;
+use Carbon\Carbon;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -85,7 +86,7 @@ class TransactionsController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        $transaction->load('card')->append('number')->append('pin');
+        $transaction->load('card')->append('number')->append('pin')->append('expiration');
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
         $cards = $this->getActiveCardList($transaction->vendor_id);
@@ -117,6 +118,10 @@ class TransactionsController extends Controller
         $this->updateTransactionCard($request, $transaction);
 
         session()->flash('flash', ['message' => 'Transaction updated successfully!', 'level' => 'success']);
+
+        if (request()->wantsJson()) {
+            return response([], 200);
+        }
 
         return redirect(route('transactions.index'));
     }
@@ -163,15 +168,65 @@ class TransactionsController extends Controller
 
             if (! $card) {
                 $cardData = $request->validate([
-                    'vendor_id' => ['required'],
+                    'vendor_id' => ['required', 'exists:vendors,id'],
                     'number' => ['required', 'string', 'unique:cards,number'],
                     'pin' => ['nullable', 'string'],
+                    'expiration' => ['nullable', 'string'],
                 ]);
+
+                $cardData['expiration'] = (isset($cardData['expiration'])) ?
+                    $this->normalizeDate($cardData['expiration']) : null;
 
                 $card = Card::create($cardData);
             }
 
             $card->transactions()->attach($transaction);
         }
+    }
+
+    protected function normalizeDate($date)
+    {
+        if ($date == '') {
+            return null;
+        }
+
+        $date = str_replace(['-', ' ', '.'], '/', $date);
+
+        $dateArray = collect(explode('/', $date));
+
+        $partCount = $dateArray->count();
+        if (! $partCount) {
+            return null;
+        }
+
+        $tmpDate = '';
+
+        foreach ($dateArray as $pos => $part) {
+            $tmpDate .= ($pos != 0) ? '/' : '';
+            if (
+                ($pos == 0 || ($pos == 1 && $partCount == 3)) &&
+                substr($part, 0, 1) != '0' && intval($part) < 10
+            ) {
+                $tmpDate .= '0';
+            }
+
+            if (
+                (($pos == 1 && $partCount == 2) || $pos == 3) &&
+                strlen($dateArray->last()) == 2
+            ) {
+                $tmpDate .= substr(now()->year, 0, 2);
+            }
+            $tmpDate .= $part;
+            $pos++;
+        }
+
+        $format = ($partCount == 2) ? 'm/Y' : 'm/d/Y';
+        $result = Carbon::createFromFormat($format, $tmpDate);
+
+        if ($partCount == 2) {
+            $result = $result->endOfMonth();
+        }
+
+        return $result->format('Y-m-d');
     }
 }

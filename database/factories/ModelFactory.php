@@ -68,14 +68,15 @@ $factory->define(Card::class, function (Faker $faker) {
         'vendor_id' => factory('App\Vendor'),
         'number' => $faker->unique()->text(20),
         'pin' => $faker->text(5),
+        'expiration' => now()->add('2 months 3 days'),
     ];
 });
 
 $factory->define(CardTransaction::class, function (Faker $faker) {
-    $card = factory('App\Card')->create();
+    $vendor = factory('App\Vendor')->create();
     return [
-        'card_id' => $card->id,
-        'transaction_id' => factory('App\Transaction')->create(['vendor_id' => $card->vendor_id]),
+        'card_id' => factory('App\Card')->create(['vendor_id' => $vendor->id]),
+        'transaction_id' => factory('App\Transaction')->create(['vendor_id' => $vendor->id]),
     ];
 });
 

@@ -112,6 +112,16 @@ class Transaction extends Model
     }
 
     /**
+     * getter for formatted expiration date
+     *
+     * @return float
+     */
+    public function getExpirationAttribute()
+    {
+        return ($this->card) ? $this->card->expiration : '';
+    }
+
+    /**
      * custom getter for transaction type
      *
      * @return string

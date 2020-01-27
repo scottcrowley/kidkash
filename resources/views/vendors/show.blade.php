@@ -37,6 +37,9 @@
                             @if (!$user)
                                 <span class="text-sm ml-1">({{ $card->owner_names }})</span>
                             @endif
+                            @if ($card->expiration)
+                                <span class="text-sm ml-1 {{ $card->expiration_alert }}">{{ 'Exp: '.$card->expiration->format('M Y') }}</span>
+                            @endif
                         </div>
                         <div>{{ (($card->balance < 0) ? '- ' : '').' $ '.(number_format(abs($card->balance),2)) }}</div>
                     </div>

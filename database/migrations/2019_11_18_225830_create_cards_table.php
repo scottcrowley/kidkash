@@ -18,6 +18,7 @@ class CreateCardsTable extends Migration
             $table->unsignedBigInteger('vendor_id');
             $table->string('number')->unique();
             $table->string('pin')->nullable();
+            $table->date('expiration')->nullable();
             $table->timestamps();
 
             $table->foreign('vendor_id')

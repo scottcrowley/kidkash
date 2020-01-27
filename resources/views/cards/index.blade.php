@@ -33,6 +33,10 @@
                                             <div class="truncate pr-3 flex">
                                                 <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">{{ $card->number }}</a>
                                                 <span class="text-sm ml-1">({{ $card->owner_names }})</span>
+                                                
+                                                @if ($card->expiration)
+                                                    <span class="text-sm ml-1 {{ $card->expiration_alert }}">{{ 'Exp: '.$card->expiration->format('M Y') }}</span>
+                                                @endif
                                             </div>
                                             <p class="text-right mt-0">
                                                 <span>$ {{ number_format($card->balance, 2) }}</span>

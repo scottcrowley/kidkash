@@ -11,7 +11,21 @@ class Card extends Model
      *
      * @var array
      */
-    protected $fillable = ['vendor_id', 'number', 'pin'];
+    protected $fillable = ['vendor_id', 'number', 'pin', 'expiration'];
+
+    /**
+     * Indicates fields that should be cast to a date.
+     *
+     * @var array
+     */
+    public $dates = ['expiration'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = ['expiration' => 'datetime:M Y'];
 
     /**
      * A card belongs to one vendor
@@ -44,6 +58,20 @@ class Card extends Model
     }
 
     /**
+     * Get expiration alert class
+     *
+     * @return float
+     */
+    public function getExpirationAlertAttribute()
+    {
+        if ($this->expiration) {
+            return $this->generateExpirationAlertClass();
+        }
+
+        return '';
+    }
+
+    /**
      * Gets all owners associated with the card
      *
      * @return \Illuminate\Support\Collection
@@ -66,5 +94,17 @@ class Card extends Model
         $names = $this->owners->pluck('name');
 
         return $names->join(', ', ' & ');
+    }
+
+    protected function generateExpirationAlertClass()
+    {
+        $diff = now()->diffInDays($this->expiration);
+
+        if ($diff <= 30) {
+            return 'danger font-semibold';
+        } elseif ($diff > 30 && $diff <= 90) {
+            return 'warning';
+        }
+        return '';
     }
 }

@@ -8,12 +8,17 @@
 <div class="w-3/4">
     <div class="card">
         <div class="card-header flex justify-between items-center">
-            <p class="text-2xl">{{ $card->number }}</p>
+            <p class="text-2xl flex items-center">
+                {{ $card->number }}
+                @if ($card->expiration)
+                    <span class="ml-2 text-base {{ $card->expiration_alert }}">{{ 'Exp: '.$card->expiration->format('M Y') }}</span>
+                @endif
+            </p>
             <p class="text-2xl text-right">$ {{ number_format($card->balance, 2) }}</p>
         </div>
 
         <div class="card-body" style="padding-left: 0; padding-right: 0;">
-            <div class="mb-2 text-xl font-semibold text-center">
+            <div class="mb-2 text-2xl font-semibold text-center">
                     <a href="{{ route('vendors.show', $card->vendor->slug) }}" class="hover:underline hover:text-gray-800">
                         {{ $card->vendor->name }}
                     </a>

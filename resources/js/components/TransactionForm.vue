@@ -5,14 +5,14 @@
 
             <div class="col-6 w-2/3">
                 <div class="relative">
-                    <select v-if="owners.length" name="owner_id" v-model="transactionData.owner_id" class="w-full" :class="checkError('owner_id') ? 'is-invalid' : ''" required>
+                    <select v-if="owners.length" name="owner_id" v-model="transactionData.owner_id" class="w-full" :class="checkFieldError('owner_id') ? 'is-invalid' : ''" required>
                         <option value="0">Choose an Owner</option>
                         <option 
                             v-for="owner in owners"
                             :value="owner.id" 
                         >{{ owner.name }}</option>
                     </select>
-                    <select v-else name="owner_id" class="w-full" :class="checkError('owner_id') ? 'is-invalid' : ''" required>
+                    <select v-else name="owner_id" class="w-full" :class="checkFieldError('owner_id') ? 'is-invalid' : ''" required>
                         <option value="">No Owners in Database</option>
                     </select>
                     <div class="select-menu-icon">
@@ -21,7 +21,7 @@
                         </svg>
                     </div>
                 </div>
-                <span class="alert-danger" role="alert" v-if="checkError('owner_id')">
+                <span class="alert-danger" role="alert" v-if="checkFieldError('owner_id')">
                     <strong v-text="errors.owner_id[0]"></strong>
                 </span>
             </div>
@@ -32,14 +32,14 @@
 
             <div class="col-6 w-2/3">
                 <div class="relative">
-                    <select v-if="vendors.length" name="vendor_id" v-model="transactionData.vendor_id" @change="updateCardList" class="w-full" :class="checkError('vendor_id') ? 'is-invalid' : ''" required>
+                    <select v-if="vendors.length" name="vendor_id" v-model="transactionData.vendor_id" @change="updateCardList" class="w-full" :class="checkFieldError('vendor_id') ? 'is-invalid' : ''" required>
                         <option value="0">Choose a Vendor</option>
                         <option 
                             v-for="vendor in vendors"
                             :value="vendor.id" 
                         >{{ vendor.name }}</option>
                     </select>
-                    <select v-else name="vendor_id" class="w-full" :class="checkError('vendor_id') ? 'is-invalid' : ''" required>
+                    <select v-else name="vendor_id" class="w-full" :class="checkFieldError('vendor_id') ? 'is-invalid' : ''" required>
                         <option value="">No Vendors in Database</option>
                     </select>
                     <div class="select-menu-icon">
@@ -48,7 +48,7 @@
                         </svg>
                     </div>
                 </div>
-                <span class="alert-danger" role="alert" v-if="checkError('vendor_id')">
+                <span class="alert-danger" role="alert" v-if="checkFieldError('vendor_id')">
                     <strong v-text="errors.vendor_id[0]"></strong>
                 </span>
             </div>
@@ -59,7 +59,7 @@
 
             <div class="col-6 w-2/3">
                 <div class="relative">
-                    <select name="type" v-model="transactionData.type" class="w-full" :class="checkError('owner_id') ? 'is-invalid' : ''" required>
+                    <select name="type" v-model="transactionData.type" class="w-full" :class="checkFieldError('owner_id') ? 'is-invalid' : ''" required>
                         <option value="0">Choose a Type</option>
                         <option value="add">Adding Money</option>
                         <option value="use">Using Money</option>
@@ -70,7 +70,7 @@
                         </svg>
                     </div>
                 </div>
-                <span class="alert-danger" role="alert" v-if="checkError('type')">
+                <span class="alert-danger" role="alert" v-if="checkFieldError('type')">
                     <strong v-text="errors.type[0]"></strong>
                 </span>
             </div>
@@ -80,9 +80,9 @@
             <label for="description" class="col-4 w-1/3 text-left md:text-right">Description</label>
 
             <div class="col-6 w-2/3">
-                <textarea rows="4" name="description" v-model="transactionData.description" :class="checkError('description') ? 'is-invalid' : ''" class="form-input"></textarea>
+                <textarea rows="4" name="description" v-model="transactionData.description" :class="checkFieldError('description') ? 'is-invalid' : ''" class="form-input"></textarea>
 
-                <span class="alert-danger" role="alert" v-if="checkError('description')">
+                <span class="alert-danger" role="alert" v-if="checkFieldError('description')">
                     <strong v-text="errors.description[0]"></strong>
                 </span>
             </div>
@@ -99,7 +99,7 @@
                         <option 
                             v-for="(card, index) in cardList"
                             :value="index" 
-                        >{{ card.vendor.name }} (ending in {{card.number.substr(-5)}})</option>
+                        >{{ card.vendor.name }} (ending in {{card.number.substr(-4)}} {{ (card.expiration != null ? 'Exp: '+card.expiration : '') }})</option>
                     </select>
                     <select v-else name="cards" class="w-full" v-model="cardSelected" @change="cardSelect">
                         <option value="">No Card</option>
@@ -119,9 +119,9 @@
                 <label for="number" class="col-4 w-1/3 text-left md:text-right">Card Number</label>
 
                 <div class="col-6 w-2/3">
-                    <input type="text" name="number" v-model="transactionData.number" :class="checkError('number') ? 'is-invalid' : ''" class="form-input">
+                    <input type="text" name="number" v-model="transactionData.number" :class="checkFieldError('number') ? 'is-invalid' : ''" class="form-input" autocomplete="off">
 
-                    <span class="alert-danger" role="alert" v-if="checkError('number')">
+                    <span class="alert-danger" role="alert" v-if="checkFieldError('number')">
                         <strong v-text="errors.number[0]"></strong>
                     </span>
                 </div>
@@ -131,10 +131,22 @@
                 <label for="pin" class="col-4 w-1/3 text-left md:text-right">Card Pin</label>
 
                 <div class="col-6 w-2/3">
-                    <input type="text" name="pin" v-model="transactionData.pin" :class="checkError('pin') ? 'is-invalid' : ''" class="form-input">
+                    <input type="text" name="pin" v-model="transactionData.pin" :class="checkFieldError('pin') ? 'is-invalid' : ''" class="form-input" autocomplete="off">
 
-                    <span class="alert-danger" role="alert" v-if="checkError('pin')">
-                        <strong v-text="errors.vendor_id[0]"></strong>
+                    <span class="alert-danger" role="alert" v-if="checkFieldError('pin')">
+                        <strong v-text="errors.pin[0]"></strong>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="expiration" class="col-4 w-1/3 text-left md:text-right">Expiration (mm/yyyy)</label>
+
+                <div class="col-6 w-2/3">
+                    <input type="text" name="expiration" v-model="transactionData.expiration" :class="checkFieldError('expiration') ? 'is-invalid' : ''" class="form-input" autocomplete="off">
+
+                    <span class="alert-danger" role="alert" v-if="checkFieldError('expiration')">
+                        <strong v-text="errors.expiration[0]"></strong>
                     </span>
                 </div>
             </div>
@@ -144,9 +156,9 @@
             <label for="amount" class="col-4 w-1/3 text-left md:text-right">Amount</label>
 
             <div class="col-6 w-2/3">
-                <input type="number" min="0.01" step="0.01" name="amount" v-model="transactionData.amount" :class="checkError('amount') ? 'is-invalid' : ''" class="form-input" autocomplete="off" required>
+                <input type="number" min="0.01" step="0.01" name="amount" v-model="transactionData.amount" :class="checkFieldError('amount') ? 'is-invalid' : ''" class="form-input" autocomplete="off" required>
 
-                <span class="alert-danger" role="alert" v-if="checkError('amount')">
+                <span class="alert-danger" role="alert" v-if="checkFieldError('amount')">
                     <strong v-text="errors.amount[0]"></strong>
                 </span>
             </div>
@@ -196,6 +208,8 @@ export default {
     created () {
         this.checkSelectedCard();
 
+        this.showNewCard = this.errorExists();
+
         if (this.transactionData.amount < 0 && this.transactionData.type == 'use') {
             this.transactionData.amount = Math.abs(this.transactionData.amount);
         }
@@ -204,11 +218,11 @@ export default {
         this.transactionData.vendor_id = (this.action != 'update' && ! this.transactionData.vendor_id) ? 0 : this.transactionData.vendor_id;
     },
     methods: {
-        checkError(field) {
-            if (typeof this.errors === 'object' && this.errors !== null && this.errors[field]) {
-                return true;
-            }
-            return false;
+        errorExists() {
+            return (typeof this.errors === 'object' && this.errors !== null && Object.keys(this.errors).length > 0);
+        },
+        checkFieldError(field) {
+            return (this.errorExists() && this.errors[field]);
         },
         checkSelectedCard() {
             this.cardSelected = '';
