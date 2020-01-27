@@ -343,8 +343,8 @@ class TransactionsTest extends TestCase
             )->assertStatus(200);
 
             $card = Card::first();
-
-            $this->assertEquals($card->expiration, $result);
+            $expiration = $card->expiration ? $card->expiration->format('Y-m-d') : null;
+            $this->assertEquals($expiration, $result);
 
             $card->delete();
         }
