@@ -59,7 +59,7 @@ Visit: http://kidkash.test/register to register a new parent user account. It is
 
 #### Step 8
 
-Once you've created a parent account and have signed in, you can create accounts for your kid by clicking on the `Manage Kids` menu button or by visiting http://kidkash.test/kids. Photos can be uploaded for each kid, after they have been created by visiting their edit page.
+Once you've created a parent account and have signed in, you can create accounts for anyone else by clicking on the `Manage Users` menu button or by visiting http://kidkash.test/users. Photos can be uploaded for each user, after they have been created by visiting their edit page.
 
 You should also add some vendors (i.e. Amazon, Cash, etc.) by either clicking on the `Manage Vendors` menu button or by visiting http://kidkash.test/vendors.
 
