@@ -7,7 +7,7 @@
 @section('content')
 <div class="col-10">
     <div class="card">
-        <div class="card-header">Edit a Transaction</div>
+        <div class="card-header font-semibold">Edit a Transaction</div>
 
         <div class="card-body">
             <form method="POST" action="{{ route('transactions.update', $transaction->id) }}">

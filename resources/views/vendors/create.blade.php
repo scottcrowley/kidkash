@@ -7,7 +7,7 @@
 @section('content')
 <div class="col-8">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header font-semibold">
             Add a new Vendor
         </div>
 

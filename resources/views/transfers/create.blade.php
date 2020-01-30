@@ -7,7 +7,7 @@
 @section('content')
 <div class="col-10">
     <div class="card">
-        <div class="card-header">Add a new Transfer Transaction</div>
+        <div class="card-header font-semibold">Add a new Transfer Transaction</div>
 
         <div class="card-body">
             <form method="POST" action="{{ route('transfers.store') }}">

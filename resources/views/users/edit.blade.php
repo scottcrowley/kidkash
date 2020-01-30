@@ -7,7 +7,7 @@
 @section('content')
 <div class="col-8">
     <div class="card">
-        <div class="card-header">
+        <div class="card-header font-semibold">
             @if ($user->id == auth()->user()->id)
                 Edit Your Profile
             @else

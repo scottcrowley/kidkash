@@ -7,7 +7,7 @@
 @section('content')
 <div class="col-8">
     <div class="card">
-        <div class="card-header">Add a new User</div>
+        <div class="card-header font-semibold">Add a new User</div>
 
         <div class="card-body">
             <form method="POST" action="{{ route('users.store') }}">
