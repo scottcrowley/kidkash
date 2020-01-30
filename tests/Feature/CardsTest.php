@@ -121,7 +121,7 @@ class CardsTest extends TestCase
         $this->signInParent();
 
         $card = create('App\Card');
-        $card->number = '555555555';
+        $card->pin = '555';
         $cardData = $card->toArray();
         $cardData['expiration'] = $card->expiration->format('m/d/Y');
 

@@ -30,7 +30,12 @@
                                     </div>
                                     @foreach ($vendor->cards as $card)
                                         <div class="text-gray-700 font-semibold text-sm lg:text-base mb-2 py-1 px-3 flex items-center justify-between hover:bg-gray-200 hover:text-gray-800">
-                                            <div class="truncate pr-3 flex">
+                                            <div class="truncate pr-3 flex items-center">
+                                                <a href="{{ route('cards.edit', $card->id) }}" class="mr-2">
+                                                    <svg class="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                                        <path d="M12.3 3.7l4 4L4 20H0v-4L12.3 3.7zm1.4-1.4L16 0l4 4-2.3 2.3-4-4z"/>
+                                                    </svg>
+                                                </a>
                                                 <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">{{ $card->number }}</a>
                                                 <span class="text-sm ml-1">({{ $card->owner_names }})</span>
                                                 

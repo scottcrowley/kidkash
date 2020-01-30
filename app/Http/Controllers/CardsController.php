@@ -59,7 +59,7 @@ class CardsController extends Controller
     public function update(Request $request, Card $card)
     {
         $data = $request->validate([
-            'number' => ['required', 'string', 'max:255', Rule::unique('cards')->ignore($card->number)],
+            'number' => ['required', 'string', 'max:255', Rule::unique('cards')->ignore($card->id)],
             'pin' => ['nullable', 'string', 'max:255'],
             'expiration' => ['nullable', 'date'],
         ]);
