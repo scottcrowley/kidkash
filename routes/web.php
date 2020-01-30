@@ -72,6 +72,9 @@ Route::group([
 ], function () {
     Route::get('', 'CardsController@index')->name('cards.index');
     Route::get('{card}', 'CardsController@show')->name('cards.show');
+    Route::get('{card}/edit', 'CardsController@edit')->name('cards.edit');
+    Route::patch('{card}', 'CardsController@update')->name('cards.update');
+    Route::delete('{card}', 'CardsController@destroy')->name('cards.delete');
 });
 
 Route::get('api/cards/{vendors}', 'CardsController@vendorsCards')->middleware('auth', 'parent')->name('api.cards.vendor');

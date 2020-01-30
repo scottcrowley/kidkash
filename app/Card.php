@@ -25,7 +25,7 @@ class Card extends Model
      *
      * @var array
      */
-    protected $casts = ['expiration' => 'datetime:M Y'];
+    protected $casts = ['expiration' => 'date:M Y'];
 
     /**
      * A card belongs to one vendor

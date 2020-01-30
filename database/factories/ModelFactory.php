@@ -68,7 +68,7 @@ $factory->define(Card::class, function (Faker $faker) {
         'vendor_id' => factory('App\Vendor'),
         'number' => $faker->unique()->text(20),
         'pin' => $faker->text(5),
-        'expiration' => now()->add('2 months 3 days'),
+        'expiration' => now()->add('2 months 3 days')->format('Y-m-d'),
     ];
 });
 

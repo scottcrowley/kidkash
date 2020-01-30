@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Vendor;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CardsController extends Controller
 {
@@ -22,6 +24,20 @@ class CardsController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Card  $transaction
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Card $card)
+    {
+        $card->load('transactions')->load('vendor');
+        $allVendors = Vendor::orderBy('name')->get();
+
+        return view('cards.edit', compact('card', 'allVendors'));
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\card  $card
@@ -31,6 +47,50 @@ class CardsController extends Controller
     {
         $card->load('vendor')->load('transactions.owner');
         return view('cards.show', compact('card'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Card  $card
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Card $card)
+    {
+        $data = $request->validate([
+            'number' => ['required', 'string', 'max:255', Rule::unique('cards')->ignore($card->number)],
+            'pin' => ['nullable', 'string', 'max:255'],
+            'expiration' => ['nullable', 'date'],
+        ]);
+
+        $data['expiration'] = (isset($data['expiration'])) ?
+            $this->normalizeDate($data['expiration']) : null;
+
+        $card->update($data);
+
+        session()->flash('flash', ['message' => $card->number.' was successfully updated!', 'level' => 'success']);
+
+        return redirect(route('cards.index'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Card  $card
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Card $card)
+    {
+        $card->delete();
+
+        session()->flash('flash', ['message' => $card->number.' was successfully deleted from the database!', 'level' => 'success']);
+
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+
+        return redirect(route('cards.index'));
     }
 
     /**

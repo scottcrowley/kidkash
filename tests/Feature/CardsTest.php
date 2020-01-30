@@ -66,6 +66,105 @@ class CardsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_must_be_authenticated_to_view_edit_page()
+    {
+        $card = create('App\Card');
+        $this->get(route('cards.edit', $card->id))
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_user_must_be_an_authorized_parent_to_view_edit_page()
+    {
+        $this->signIn();
+        $card = create('App\Card');
+
+        $this->get(route('cards.edit', $card->id))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_view_edit_page()
+    {
+        $this->signInParent();
+
+        $card = create('App\Card');
+
+        $this->get(route('cards.edit', $card->id))
+            ->assertOk()
+            ->assertSee($card->number);
+    }
+
+    /** @test */
+    public function a_user_must_be_authenticated_to_update_an_existing_card()
+    {
+        $card = create('App\Card');
+
+        $this->patch(route('cards.update', $card->id), $card->toArray())
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_unauthorized_user_may_not_update_an_existing_card()
+    {
+        $this->signIn();
+
+        $card = create('App\Card');
+
+        $this->patch(route('cards.update', $card->id), $card->toArray())
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_update_an_existing_card()
+    {
+        $this->signInParent();
+
+        $card = create('App\Card');
+        $card->number = '555555555';
+        $cardData = $card->toArray();
+        $cardData['expiration'] = $card->expiration->format('m/d/Y');
+
+        $this->patch(route('cards.update', $card->id), $cardData)
+            ->assertRedirect(route('cards.index'));
+
+        $this->assertDatabaseHas('cards', ['number' => $card->number]);
+    }
+
+    /** @test */
+    public function a_user_must_be_authenticated_to_delete_an_existing_card()
+    {
+        $card = create('App\Card');
+
+        $this->patch(route('cards.delete', $card->id), $card->toArray())
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_unauthorized_user_may_not_delete_an_existing_card()
+    {
+        $this->signIn();
+
+        $card = create('App\Card');
+
+        $this->patch(route('cards.delete', $card->id), $card->toArray())
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_delete_an_existing_card()
+    {
+        $this->signInParent();
+
+        $card = create('App\Card');
+
+        $this->delete(route('cards.delete', $card->id))
+            ->assertRedirect(route('cards.index'));
+
+        $this->assertDatabaseMissing('cards', ['id' => $card->id]);
+    }
+
+    /** @test */
     public function a_user_must_be_authenticated_to_retrieve_a_list_of_all_cards_for_a_vendor_through_api()
     {
         $vendor = create('App\Vendor');
