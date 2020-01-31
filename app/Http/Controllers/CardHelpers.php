@@ -73,8 +73,13 @@ trait CardHelpers
         $dateArray = collect(explode('/', $date));
 
         $partCount = $dateArray->count();
+        $shortDate = ($partCount == 2);
         if (! $partCount) {
             return null;
+        }
+
+        if ($shortDate) {
+            $dateArray->splice(1, 0, ['01']);
         }
 
         $tmpDate = '';
@@ -82,27 +87,22 @@ trait CardHelpers
         foreach ($dateArray as $pos => $part) {
             $tmpDate .= ($pos != 0) ? '/' : '';
             if (
-                ($pos == 0 || ($pos == 1 && $partCount == 3)) &&
+                ($pos == 0 || ($pos == 1 && ! $shortDate)) &&
                 substr($part, 0, 1) != '0' && intval($part) < 10
             ) {
                 $tmpDate .= '0';
             }
 
-            if (
-                (($pos == 1 && $partCount == 2) || $pos == 3) &&
-                strlen($dateArray->last()) == 2
-            ) {
+            if ($pos == 3 && strlen($dateArray->last()) == 2) {
                 $tmpDate .= substr(now()->year, 0, 2);
             }
             $tmpDate .= $part;
             $pos++;
         }
 
-        $format = ($partCount == 2) ? 'm/Y' : 'm/d/Y';
+        $result = Carbon::parse($tmpDate);
 
-        $result = Carbon::createFromFormat($format, $tmpDate);
-
-        if ($partCount == 2) {
+        if ($shortDate) {
             $result = $result->endOfMonth();
         }
 
