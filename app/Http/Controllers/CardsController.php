@@ -18,9 +18,7 @@ class CardsController extends Controller
      */
     public function index()
     {
-        $vendors = Vendor::with('cards')->with('cards.transactions.owner')->orderBy('name')->get()->values();
-
-        return view('cards.index', compact('vendors'));
+        return view('cards.index');
     }
 
     /**
