@@ -99,7 +99,13 @@
                         <option 
                             v-for="(card, index) in cardList"
                             :value="index" 
-                        >{{ card.vendor.name }} (ending in {{card.number.substr(-4)}} {{ (card.expiration != null ? 'Exp: '+card.expiration : '') }})</option>
+                        >{{ card.vendor.name }} 
+                            (ending in {{ 
+                                (card.number.substr(-4)) + ')' + 
+                                (card.expiration != null ? ' Exp: '+card.expiration : '') + 
+                                ' Bal: $' + (card.balance > 0 ? card.balance.toFixed(2) : 0)
+                            }}
+                        </option>
                     </select>
                     <select v-else name="cards" class="w-full" v-model="cardSelected" @change="cardSelect">
                         <option value="">No Card</option>
