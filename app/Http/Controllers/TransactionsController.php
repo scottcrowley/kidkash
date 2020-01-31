@@ -90,6 +90,10 @@ class TransactionsController extends Controller
         $owners = User::orderBy('name')->get();
         $cards = $this->getActiveCardList($transaction->vendor_id);
 
+        if ($transaction->card && ! $cards->where('id', $transaction->card->id)->count()) {
+            $cards = $cards->push($transaction->card->load('vendor')->append('balance'));
+        }
+
         return view('transactions.edit', compact('transaction', 'vendors', 'owners', 'cards'));
     }
 
