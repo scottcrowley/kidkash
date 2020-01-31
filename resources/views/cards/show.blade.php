@@ -58,7 +58,7 @@
                 @endforelse
             </content-drawers>
             <div class="mt-4 text-right mr-6">
-                <a href="{{ url()->previous() }}" class="btn border border-secondary-300">Done</a>
+                <a href="{{ route('cards.index') }}" class="btn border border-secondary-300">Done</a>
             </div>
         </div>
     </div>
