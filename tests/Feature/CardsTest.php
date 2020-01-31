@@ -66,6 +66,64 @@ class CardsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_must_be_authenticated_to_view_create_page()
+    {
+        $this->get(route('cards.create'))
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_user_must_be_an_authorized_parent_to_view_create_page()
+    {
+        $this->signIn();
+
+        $this->get(route('cards.create'))
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_view_create_page()
+    {
+        $this->signInParent();
+
+        $this->get(route('cards.create'))
+            ->assertOk()
+            ->assertSee('Add a new Card');
+    }
+
+    /** @test */
+    public function a_user_must_be_authenticated_to_create_a_new_card()
+    {
+        $this->post(route('cards.store'), [])
+            ->assertRedirect(route('login'));
+    }
+
+    /** @test */
+    public function an_authenticated_user_must_be_an_authorized_parent_to_create_a_new_card()
+    {
+        $this->signIn();
+
+        $this->post(route('cards.store'), [])
+            ->assertStatus(403);
+    }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_create_a_new_card()
+    {
+        $this->signInParent();
+
+        $card = makeRaw('App\Card');
+
+        $this->post(route('cards.store'), $card)
+            ->assertRedirect(route('cards.index'));
+
+        $this->assertDatabaseHas('cards', [
+            'number' => $card['number'],
+            'vendor_id' => $card['vendor_id'],
+        ]);
+    }
+
+    /** @test */
     public function a_user_must_be_authenticated_to_view_edit_page()
     {
         $card = create('App\Card');

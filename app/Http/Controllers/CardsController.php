@@ -22,6 +22,42 @@ class CardsController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        $card = new Card;
+
+        $vendors = Vendor::orderBy('name')->get();
+
+        return view('cards.create', compact('card', 'vendors'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'vendor_id' => ['required', 'exists:vendors,id'],
+            'number' => ['required', 'string', 'unique:cards,number'],
+            'pin' => ['nullable', 'string'],
+            'expiration' => ['nullable', 'string'],
+        ]);
+
+        $card = Card::create($data);
+
+        session()->flash('flash', ['message' => 'Card added successfully!', 'level' => 'success']);
+
+        return redirect(route('cards.index'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Card  $transaction

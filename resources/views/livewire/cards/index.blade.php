@@ -42,7 +42,9 @@
                                         </svg>
                                     </a>
                                     <a href="{{ route('cards.show', $card->id) }}" class="hover:underline hover:text-gray-800">{{ $card->number }}</a>
-                                    <span class="text-sm ml-1">({{ $card->owner_names }})</span>
+                                    @if ($card->owner_names)
+                                        <span class="text-sm ml-1">({{ $card->owner_names }})</span>
+                                    @endif
                                     
                                     @if ($card->expiration)
                                         <span class="text-sm ml-1 {{ $card->expiration_alert }}">{{ 'Exp: '.$card->expiration->format('M Y') }}</span>

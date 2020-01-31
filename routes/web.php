@@ -71,6 +71,8 @@ Route::group([
     'middleware' => ['auth', 'parent']
 ], function () {
     Route::get('', 'CardsController@index')->name('cards.index');
+    Route::get('create', 'CardsController@create')->name('cards.create');
+    Route::post('', 'CardsController@store')->name('cards.store');
     Route::get('{card}', 'CardsController@show')->name('cards.show');
     Route::get('{card}/edit', 'CardsController@edit')->name('cards.edit');
     Route::patch('{card}', 'CardsController@update')->name('cards.update');
