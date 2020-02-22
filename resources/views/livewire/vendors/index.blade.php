@@ -46,7 +46,7 @@
                 <div>
                     <p class="font-semibold">Recent Activity:</p>
                     <div class="flex flex-col lg:flex-row pt-2 pb-4">
-                        @forelse ($vendor->transactions->take(3) as $transaction)
+                        @forelse ($vendor->transactions->take(4) as $transaction)
                             <div class="bg-gray-200 rounded-full mb-2 lg:mb:0 lg:mr-2 px-3 py-1 text-sm font-semibold text-gray-700 text-center">
                                 {!! $transaction->vendor_activity_label !!}
                             </div>
