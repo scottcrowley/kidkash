@@ -45,16 +45,6 @@ class User extends Authenticatable
     protected $appends = ['is_authorized_parent', 'has_avatar'];
 
     /**
-     * Get the route key name.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
-    /**
      * getter for whether or not the user has an avatar
      *
      * @return bool

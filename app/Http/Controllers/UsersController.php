@@ -176,6 +176,6 @@ class UsersController extends Controller
      */
     public function vendorsList($user)
     {
-        return User::find($user)->vendors_list;
+        return User::whereSlug($user)->first()->vendors_list;
     }
 }

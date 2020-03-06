@@ -417,7 +417,7 @@ class UsersTest extends TestCase
         create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor->id], 2);
         create('App\Transaction', ['owner_id' => $user->id], 2);
 
-        $response = $this->json('get', route('api.users.vendors', $user->id));
+        $response = $this->json('get', route('api.users.vendors', $user->slug));
         $vendorsList = $response->getData();
 
         $this->assertCount(3, $vendorsList);

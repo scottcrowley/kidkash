@@ -19,8 +19,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('users/{user}/edit', 'UsersController@edit')->middleware('auth', 'authorized')->name('users.edit');
-Route::patch('users/{user}', 'UsersController@update')->middleware('auth', 'authorized')->name('users.update');
+Route::get('users/{user:slug}/edit', 'UsersController@edit')->middleware('auth', 'authorized')->name('users.edit');
+Route::patch('users/{user:slug}', 'UsersController@update')->middleware('auth', 'authorized')->name('users.update');
 
 Route::group([
     'prefix' => 'users',
@@ -29,8 +29,8 @@ Route::group([
     Route::get('', 'UsersController@index')->name('users.index');
     Route::get('create', 'UsersController@create')->name('users.create');
     Route::post('', 'UsersController@store')->name('users.store');
-    Route::get('{user}', 'UsersController@show')->name('users.show');
-    Route::delete('{user}', 'UsersController@destroy')->name('users.delete');
+    Route::get('{user:slug}', 'UsersController@show')->name('users.show');
+    Route::delete('{user:slug}', 'UsersController@destroy')->name('users.delete');
 });
 
 Route::group([
@@ -81,7 +81,7 @@ Route::group([
 
 Route::get('api/cards/{vendors}', 'CardsController@vendorsCards')->middleware('auth', 'parent')->name('api.cards.vendor');
 Route::get('api/cards/{vendors}/{user?}', 'CardsController@userCards')->middleware('auth', 'parent')->name('api.cards.user');
-Route::get('api/users/{user}/vendors', 'UsersController@vendorsList')->middleware('auth', 'parent')->name('api.users.vendors');
+Route::get('api/users/{user:slug}/vendors', 'UsersController@vendorsList')->middleware('auth', 'parent')->name('api.users.vendors');
 Route::get('api/users/{excludeUser?}', 'UsersController@usersList')->middleware('auth', 'parent')->name('api.users.list');
-Route::post('api/users/{user}/avatar', 'UserAvatarsController@store')->middleware('auth', 'authorized')->name('api.users.avatar.add');
-Route::delete('api/users/{user}/avatar', 'UserAvatarsController@destroy')->middleware('auth', 'authorized')->name('api.users.avatar.delete');
+Route::post('api/users/{user:slug}/avatar', 'UserAvatarsController@store')->middleware('auth', 'authorized')->name('api.users.avatar.add');
+Route::delete('api/users/{user:slug}/avatar', 'UserAvatarsController@destroy')->middleware('auth', 'authorized')->name('api.users.avatar.delete');
