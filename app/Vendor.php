@@ -15,16 +15,6 @@ class Vendor extends Model
     protected $fillable = ['name', 'url'];
 
     /**
-     * Get the route key name.
-     *
-     * @return string
-     */
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
-    /**
      * A vendor has many transactions
      *
      * @return hasMany

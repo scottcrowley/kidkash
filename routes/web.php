@@ -40,10 +40,10 @@ Route::group([
     Route::get('', 'VendorsController@index')->name('vendors.index');
     Route::get('create', 'VendorsController@create')->name('vendors.create');
     Route::post('', 'VendorsController@store')->name('vendors.store');
-    Route::get('{vendor}', 'VendorsController@show')->name('vendors.show');
-    Route::get('{vendor}/edit', 'VendorsController@edit')->name('vendors.edit');
-    Route::patch('{vendor}', 'VendorsController@update')->name('vendors.update');
-    Route::delete('{vendor}', 'VendorsController@destroy')->name('vendors.delete');
+    Route::get('{vendor:slug}', 'VendorsController@show')->name('vendors.show');
+    Route::get('{vendor:slug}/edit', 'VendorsController@edit')->name('vendors.edit');
+    Route::patch('{vendor:slug}', 'VendorsController@update')->name('vendors.update');
+    Route::delete('{vendor:slug}', 'VendorsController@destroy')->name('vendors.delete');
 });
 
 Route::group([
