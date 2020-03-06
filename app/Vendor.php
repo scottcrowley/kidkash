@@ -94,7 +94,7 @@ class Vendor extends Model
 
         $owners = (collect($owners))
             ->filter(function ($owner) {
-                return $owner->vendor_transactions->sum('amount') > 0;
+                return number_format($owner->vendor_transactions->sum('amount'), 2) > 0;
             })
             ->sortBy('name')
             ->values()
