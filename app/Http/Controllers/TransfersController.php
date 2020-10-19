@@ -6,6 +6,7 @@ use App\User;
 use App\Vendor;
 use App\Transfer;
 use App\Transaction;
+use Illuminate\Http\Request;
 
 class TransfersController extends Controller
 {
