@@ -8,12 +8,17 @@
 <div class="w-3/4">
     <div class="card">
         <div class="card-header flex justify-between items-center">
-            <p class="text-2xl flex items-center">
+            <div class="text-2xl items-center">
                 {{ $card->number }}
-                @if ($card->expiration)
-                    <span class="ml-2 text-base {{ $card->expiration_alert }}">{{ 'Exp: '.$card->expiration->format('M Y') }}</span>
-                @endif
-            </p>
+                <div class="flex align-top">
+                    @if ($card->expiration)
+                    <span class="text-base {{ $card->expiration_alert }}">{{ 'Exp: '.$card->expiration->format('M Y') }}</span>
+                    @endif
+                    @if ($card->pin)
+                        <span class="ml-2 text-base text-blue-700">{{ 'Pin: '.$card->pin }}</span>
+                    @endif
+                </div>
+            </div>
             <p class="text-2xl text-right">$ {{ number_format($card->balance, 2) }}</p>
         </div>
 

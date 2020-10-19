@@ -260,4 +260,50 @@ class CardsTest extends TestCase
         $this->assertCount(1, $cards);
         $this->assertEquals($vendor->id, $cards[0]->vendor_id);
     }
+
+    /** @test */
+    public function an_expiration_date_is_visible_on_the_show_page_if_it_exits()
+    {
+        $this->signInParent();
+
+        $card = create('App\Card');
+
+        $this->get(route('cards.show', $card->id))
+            ->assertSee('Exp:')
+            ->assertSee($card->expiration->format('M Y'));
+    }
+
+    /** @test */
+    public function an_expiration_date_is_not_visible_on_the_show_page_if_it_does_not_exit()
+    {
+        $this->signInParent();
+
+        $card = create('App\Card', ['expiration' => null]);
+
+        $this->get(route('cards.show', $card->id))
+            ->assertDontSee('Exp:');
+    }
+
+    /** @test */
+    public function a_pin_is_visible_on_the_show_page_if_it_exits()
+    {
+        $this->signInParent();
+
+        $card = create('App\Card');
+
+        $this->get(route('cards.show', $card->id))
+            ->assertSee('Pin:')
+            ->assertSee($card->pin);
+    }
+
+    /** @test */
+    public function a_pin_is_not_visible_on_the_show_page_if_it_does_not_exit()
+    {
+        $this->signInParent();
+
+        $card = create('App\Card', ['pin' => '']);
+
+        $this->get(route('cards.show', $card->id))
+            ->assertDontSee('Pin:');
+    }
 }
