@@ -106,7 +106,7 @@ class User extends Authenticatable
 
         $vendors = (collect($vendors))
             ->filter(function ($vendor) {
-                return number_format($vendor->owner_transactions->sum('amount'), 2) > 0;
+                return number_format($vendor->owner_transactions->sum('amount'), 2) != 0;
             })
             ->sortBy('name')
             ->values()

@@ -127,11 +127,14 @@ class VendorTest extends TestCase
         $vendor = create('App\Vendor');
         $userWithBalance = create('App\User');
         $userWithoutBalance = create('App\User');
+        $userWithNegativeBalance = create('App\User');
 
         create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithBalance->id]);
         create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithoutBalance->id, 'amount' => 20]);
         create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithoutBalance->id, 'amount' => -20]);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithNegativeBalance->id, 'amount' => 10]);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithNegativeBalance->id, 'amount' => -20]);
 
-        $this->assertCount(1, $vendor->fresh()->owners_list);
+        $this->assertCount(2, $vendor->fresh()->owners_list);
     }
 }

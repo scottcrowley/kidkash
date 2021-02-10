@@ -170,13 +170,16 @@ class UserTest extends TestCase
     {
         $user = create('App\User');
         $zeroBalanceVendor = create('App\Vendor');
+        $negativeBalanceVendor = create('App\Vendor');
 
         create('App\Transaction', ['owner_id' => $user->id], 4);
         create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $zeroBalanceVendor->id, 'amount' => 10]);
         create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $zeroBalanceVendor->id, 'amount' => -10]);
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $negativeBalanceVendor->id, 'amount' => 10]);
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $negativeBalanceVendor->id, 'amount' => -20]);
         create('App\Transaction');
 
-        $this->assertCount(4, $user->vendors_list);
+        $this->assertCount(5, $user->vendors_list);
     }
 
     /** @test */
@@ -184,13 +187,15 @@ class UserTest extends TestCase
     {
         $user = create('App\User');
         $zeroBalanceVendor = create('App\Vendor');
+        $negativeBalanceVendor = create('App\Vendor');
         $vendor = create('App\Vendor');
 
         create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $vendor->id, 'amount' => 10], 4);
         create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $zeroBalanceVendor->id, 'amount' => 10]);
         create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $zeroBalanceVendor->id, 'amount' => -10]);
+        create('App\Transaction', ['owner_id' => $user->id, 'vendor_id' => $negativeBalanceVendor->id, 'amount' => -10]);
 
-        $this->assertEquals(40, $user->vendors_list->sum('owner_transaction_totals'));
+        $this->assertEquals(30, $user->vendors_list->sum('owner_transaction_totals'));
         $this->assertEmpty($user->vendors_list->where('id', $zeroBalanceVendor->id));
     }
 
