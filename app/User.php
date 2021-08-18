@@ -81,7 +81,7 @@ class User extends Authenticatable
      */
     public function getTransactionTotalsAttribute()
     {
-        return $this->transactions->sum('amount');
+        return $this->transactions->sum('raw_amount');
     }
 
     /**
@@ -106,12 +106,12 @@ class User extends Authenticatable
 
         $vendors = (collect($vendors))
             ->filter(function ($vendor) {
-                return number_format($vendor->owner_transactions->sum('amount'), 2) != 0;
+                return number_format($vendor->owner_transactions->sum('raw_amount'), 2) != 0;
             })
             ->sortBy('name')
             ->values()
             ->each(function ($vendor) {
-                $vendor->owner_transaction_totals = $vendor->owner_transactions->sum('amount');
+                $vendor->owner_transaction_totals = $vendor->owner_transactions->sum('raw_amount');
                 $vendor = $vendor->makeHidden(['owner_transactions']);
             });
 
@@ -138,7 +138,7 @@ class User extends Authenticatable
             }
             $cards[$id]->card_balance =
                 ($cards[$id]->card_balance) ?
-                    $cards[$id]->card_balance + $transaction->amount : $transaction->amount;
+                    $cards[$id]->card_balance + $transaction->raw_amount : $transaction->raw_amount;
             $cards[$id]->vendor_name = $transaction->vendor->name;
         }
 

@@ -54,7 +54,7 @@ class Card extends Model
      */
     public function getBalanceAttribute()
     {
-        return $this->transactions->sum('amount');
+        return $this->transactions->sum('raw_amount');
     }
 
     /**
@@ -78,10 +78,11 @@ class Card extends Model
      */
     public function getOwnersAttribute()
     {
-        return $this->transactions->pluck('owner')->unique()->each(function ($owner) {
+        return $this->transactions->pluck('owner')->unique('name')->each(function ($owner) {
             $owner->card_transactions = $this->transactions->where('owner_id', $owner->id);
-            $owner->card_transaction_totals = $owner->card_transactions->sum('amount');
-        });
+            $owner->card_transaction_totals = $owner->card_transactions->sum('raw_amount');
+        })->values();
+
     }
 
     /**

@@ -81,6 +81,17 @@ class Transaction extends Model
     }
 
     /**
+     * getter for the raw amount attribute
+     *
+     * @param mixed $value
+     * @return float
+     */
+    public function getRawAmountAttribute()
+    {
+        return $this->getRawOriginal('amount');
+    }
+
+    /**
      * Format the amount attribute
      *
      * @param mixed $value
@@ -128,10 +139,10 @@ class Transaction extends Model
      */
     public function getTypeAttribute()
     {
-        if ($this->amount == 0) {
+        if ($this->raw_amount == 0) {
             return '0';
         }
-        return ($this->amount > 0) ? 'add' : 'use';
+        return ($this->raw_amount > 0) ? 'add' : 'use';
     }
 
     /**
@@ -141,7 +152,7 @@ class Transaction extends Model
      */
     public function getModifiedAmountAttribute()
     {
-        return number_format(abs($this->amount), 2);
+        return number_format(abs($this->getRawOriginal('amount')), 2);
     }
 
     /**

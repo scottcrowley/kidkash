@@ -233,4 +233,43 @@ class VendorsTest extends TestCase
             ->assertSee($user->name)
             ->assertDontSee($user2->name);
     }
+
+    /** @test */
+    public function an_authenticated_authorized_parent_may_display_vendor_details_for_a_given_user_with_transactions_over_999()
+    {
+        $this->signInParent();
+
+        $vendor = create('App\Vendor');
+        $user = create('App\User');
+        $user2 = create('App\User');
+
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $user->id, 'amount' => '1000']);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $user->id, 'amount' => '1000']);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $user2->id]);
+        $this->get(route('vendors.show', [$vendor->slug, 'user' => $user->slug]))
+            ->assertSee($user->name)
+            ->assertDontSee($user2->name)
+            ->assertSee('$ 2,000.00');
+    }
+
+    /** @test */
+    public function the_show_page_displays_balances_for_users_with_associated_nonzero_transaction_balances()
+    {
+        $this->signInParent();
+
+        $vendor = create('App\Vendor');
+        $vendor2 = create('App\Vendor');
+        $user = create('App\User');
+        $user2 = create('App\User');
+
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $user->id, 'amount' => '2000']);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $user->id, 'amount' => '-500']);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $user2->id, 'amount' => '100']);
+        create('App\Transaction', ['vendor_id' => $vendor2->id, 'owner_id' => $user2->id]);
+        $this->get(route('vendors.show', [$vendor->slug]))
+            ->assertSee($user->name)
+            ->assertSee($user2->name)
+            ->assertSee('$ 1,500.00')
+            ->assertSee('$ 100.00');
+    }
 }

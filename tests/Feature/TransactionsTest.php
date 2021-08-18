@@ -423,4 +423,19 @@ class TransactionsTest extends TestCase
 
         $this->assertEmpty(CardTransaction::all());
     }
+    
+    /** @test */
+    public function the_transaction_index_page_displays_amounts_over_999()
+    {
+        $this->signInParent();
+
+        $amount = '-10000';
+
+        $transaction = create('App\Transaction',['amount' => $amount]);
+
+        $token = '$' . number_format(abs($transaction->raw_amount), 2);
+
+        $this->get(route('transactions.index'))
+            ->assertSee($token);
+    }
 }

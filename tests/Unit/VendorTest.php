@@ -122,7 +122,7 @@ class VendorTest extends TestCase
     }
 
     /** @test */
-    public function it_can_access_a_list_of_owners_with_associated_transactions()
+    public function it_can_access_a_list_of_owners_with_nonzero_associated_transactions()
     {
         $vendor = create('App\Vendor');
         $userWithBalance = create('App\User');
@@ -130,6 +130,23 @@ class VendorTest extends TestCase
         $userWithNegativeBalance = create('App\User');
 
         create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithBalance->id]);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithoutBalance->id, 'amount' => 20]);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithoutBalance->id, 'amount' => -20]);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithNegativeBalance->id, 'amount' => 10]);
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithNegativeBalance->id, 'amount' => -20]);
+
+        $this->assertCount(2, $vendor->fresh()->owners_list);
+    }
+
+    /** @test */
+    public function it_can_access_a_list_of_owners_with_associated_transactions_over_999()
+    {
+        $vendor = create('App\Vendor');
+        $userWithBalance = create('App\User');
+        $userWithoutBalance = create('App\User');
+        $userWithNegativeBalance = create('App\User');
+
+        create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithBalance->id, 'amount' => 1000]);
         create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithoutBalance->id, 'amount' => 20]);
         create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithoutBalance->id, 'amount' => -20]);
         create('App\Transaction', ['vendor_id' => $vendor->id, 'owner_id' => $userWithNegativeBalance->id, 'amount' => 10]);

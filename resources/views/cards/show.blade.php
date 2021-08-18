@@ -36,7 +36,7 @@
                                 {{ $owner->name }}
                             </a>
                         </div>
-                        <div>{{ number_format($owner->card_transaction_totals, 2) }}</div>
+                        <div>{{ (($owner->card_transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($owner->card_transaction_totals),2)) }}</div>
                     </div>
                 @empty
                     <p>No Users found</p>
@@ -55,7 +55,7 @@
                             {{ $transaction->updated_at->diffForHumans() . ($transaction->description != '' ? ' - '. $transaction->description : '') }}
                         </div>
                         <div class="ml-1 font-semibold">
-                            {{ (($transaction->amount < 0) ? '-' : '+').' '.number_format(abs($transaction->amount), 2) }} 
+                            {{ (($transaction->raw_amount < 0) ? '- ' : '+') . ' $ ' . $transaction->modified_amount }} 
                         </div>
                     </div>
                 @empty

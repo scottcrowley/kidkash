@@ -51,7 +51,7 @@ class Vendor extends Model
      */
     public function getTransactionTotalsAttribute()
     {
-        return $this->transactions->sum('amount');
+        return $this->transactions->sum('raw_amount');
     }
 
     /**
@@ -84,13 +84,13 @@ class Vendor extends Model
 
         $owners = (collect($owners))
             ->filter(function ($owner) {
-                return number_format($owner->vendor_transactions->sum('amount'), 2) != 0;
+                return number_format($owner->vendor_transactions->sum('raw_amount'), 2) != 0;
             })
             ->sortBy('name')
             ->values()
             ->each(
                 function ($owner) {
-                    $owner->vendor_transaction_totals = $owner->vendor_transactions->sum('amount');
+                    $owner->vendor_transaction_totals = $owner->vendor_transactions->sum('raw_amount');
                 }
             );
 
