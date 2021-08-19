@@ -48,6 +48,10 @@ select {
     }
 }
 
+.form-input {
+    @apply border rounded;
+}
+
 @screen lg {
     .activity-label {
         @apply text-2xl;
