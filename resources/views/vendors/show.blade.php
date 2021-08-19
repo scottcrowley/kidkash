@@ -17,7 +17,7 @@
                 @forelse ($vendor->owners_list as $owner)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700 hover:bg-gray-200 hover:text-gray-800">
                         <div>
-                            <a href="{{ route('users.show', $owner->slug) }}" class="hover:underline hover:text-gray-800">
+                            <a href="{{ route('vendors.show', [$vendor->slug, 'user' => $owner->slug]) }}" class="hover:underline hover:text-gray-800">
                                 {{ $owner->name }}
                             </a>
                         </div>
