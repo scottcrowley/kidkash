@@ -6,7 +6,7 @@
 }
 
 .navbar-brand {
-    @apply inline bg-transparent py-1 mr-4 text-xl no-underline whitespace-no-wrap text-secondary-700;
+    @apply inline bg-transparent py-1 mr-4 text-xl no-underline whitespace-nowrap text-secondary-700;
 
     &:hover {
         @apply text-secondary-900;
@@ -61,11 +61,11 @@
 
 @screen md {
     .navbar {
-        @apply justify-start flex-row flex-no-wrap;
+        @apply justify-start flex-row flex-nowrap;
     }
 
     .navbar > .container {
-        @apply flex-no-wrap;
+        @apply flex-nowrap;
     }
 
     .navbar .nav-link {
