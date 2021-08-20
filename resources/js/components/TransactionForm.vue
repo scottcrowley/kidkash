@@ -221,7 +221,8 @@ export default {
 
         this.showNewCard = this.errorExists();
 
-        if (this.transactionData.amount < 0 && this.transactionData.type == 'use') {
+        if (this.action == 'update') {
+            this.transactionData.type = (this.transactionData.amount < 0) ? 'use' : 'add';
             this.transactionData.amount = Math.abs(this.transactionData.amount);
         }
         
