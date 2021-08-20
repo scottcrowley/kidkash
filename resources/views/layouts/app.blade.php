@@ -36,5 +36,6 @@
 
         <flash message="{{ session('flash.message') }}" baselevel="{{ session('flash.level') }}"></flash>
     </div>
+    @yield('body-end')
 </body>
 </html>
