@@ -59,7 +59,7 @@
 
             <div class="col-6 w-2/3">
                 <div class="relative">
-                    <select name="type" v-model="transactionData.type" class="w-full" :class="checkFieldError('owner_id') ? 'is-invalid' : ''" required>
+                    <select name="type" v-model="transactionData.type" class="w-full" :class="checkFieldError('type') ? 'is-invalid' : ''" required>
                         <option value="0">Choose a Type</option>
                         <option value="add">Adding Money</option>
                         <option value="use">Using Money</option>
@@ -192,7 +192,7 @@ import DeleteConfirmButton from './DeleteConfirmButton';
 
 export default {
     props: [
-        'action', 'transaction', 'owners', 'vendors', 'cards', 'errors', 'redirectPath'
+        'action', 'transaction', 'owners', 'vendors', 'cards', 'errors', 'redirectPath', 'preselectedCard'
 
     ],
     components: {
@@ -203,7 +203,7 @@ export default {
             transactionData: this.transaction,
             cardList: this.cards,
             showNewCard: false,
-            cardSelected: '',
+            cardSelected: ''
         }
     },
     computed: {
@@ -212,7 +212,12 @@ export default {
         }
     },
     created () {
-        this.checkSelectedCard();
+        if (this.preselectedCard || this.transactionData.vendor_id) {
+            this.transactionData.type = (this.preselectedCard) ? 'use' : 0;
+            this.updateSelects(this.transactionData.vendor_id);
+        } else {
+            this.checkSelectedCard();
+        }
 
         this.showNewCard = this.errorExists();
 
@@ -235,8 +240,10 @@ export default {
 
             if (this.cardList.length) {
                 this.cardList.forEach((card, index) => {
-                    if (card.number == this.transactionData.number) {
+                    if ((card.number == this.transactionData.number) || (this.preselectedCard !== null && card.id == this.preselectedCard)) {
                         this.cardSelected = index;
+                        this.transactionData.number = card.number;
+                        this.transactionData.pin = card.pin;
                     }
                 });
             }

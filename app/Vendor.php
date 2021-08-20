@@ -104,13 +104,15 @@ class Vendor extends Model
      */
     public function getCardsListAttribute()
     {
-        return $this->cards
+        $cards = $this->cards
             ->filter(
                 function ($card) {
                     return $card->transactions->isNotEmpty() && $card->balance > 0;
                 }
             )
             ->values();
+        $cards = $cards->sortByDesc('balance');
+        return $cards;
     }
 
     /**

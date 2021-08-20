@@ -11,6 +11,9 @@
             <p class="text-3xl">{{ (($user) ? $user->name.'\'s ' : '').$vendor->name }}</p>
             <p class="text-2xl text-right">{{ (($vendor->transaction_totals < 0) ? '- ' : '').' $ '.(number_format(abs($vendor->transaction_totals),2)) }}</p>
         </div>
+        <div class="mb-2 mt-2 text-right">
+            <a href="{{ route('transactions.create', ['vendor' => $vendor->slug, 'user' => ($user) ? $user->slug : null]) }}" class="btn is-primary is-xsmall mr-2 self-center">New Transaction</a>
+        </div>
 
         <div class="card-body" style="padding-left: 0; padding-right: 0;">
             <content-drawers title="User Balances" :open-default="true">
@@ -28,6 +31,9 @@
                 @endforelse
             </content-drawers>
             <content-drawers title="Cards With Balances" :open-default="{{ $vendor->cards_list->isNotEmpty() ? 'true' : 'false' }}">
+                @php
+                    $vendor->cards_list = $vendor->cards_list->sortByDesc('balance');
+                @endphp
                 @forelse ($vendor->cards_list as $card)
                     <div class="flex items-center justify-between mb-2 lg:mb:0 px-3 py-1 text-lg text-gray-700 hover:bg-gray-200 hover:text-gray-800">
                         <div>

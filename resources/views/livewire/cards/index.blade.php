@@ -33,6 +33,9 @@
                                 <span>$ {{ number_format($vendor->card_balance_totals, 2) }}</span>
                             </p>
                         </div>
+                        @php
+                            $vendor->cards = $vendor->cards->sortByDesc('balance');
+                        @endphp
                         @foreach ($vendor->cards as $card)
                             <div class="text-gray-700 font-semibold text-sm lg:text-base mb-2 py-1 px-3 flex items-center justify-between hover:bg-gray-200 hover:text-gray-800">
                                 <div class="truncate pr-3 flex items-center">

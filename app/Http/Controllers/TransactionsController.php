@@ -32,11 +32,20 @@ class TransactionsController extends Controller
     {
         $transaction = new Transaction;
 
+        $transaction->owner_id = (request()->has('user')) ?
+            User::whereSlug(request('user'))->first()->id : 0;
+        $transaction->vendor_id = (request()->has('vendor')) ?
+            Vendor::whereSlug(request('vendor'))->first()->id : 0;
+        
+        $preselectedCard = request()->has('card') ?
+            Card::findOrFail(request('card'))->id : 0;
+
+        $transaction->type = ($preselectedCard) ? 'use' : 0;
         $vendors = Vendor::orderBy('name')->get();
         $owners = User::orderBy('name')->get();
         $cards = $this->getActiveCardList();
-
-        return view('transactions.create', compact('transaction', 'vendors', 'owners', 'cards'));
+        
+        return view('transactions.create', compact('transaction', 'vendors', 'owners', 'cards', 'preselectedCard'));
     }
 
     /**

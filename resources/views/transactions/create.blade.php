@@ -18,6 +18,7 @@
                     :owners="{{ $owners }}"
                     :vendors="{{ $vendors }}"
                     :cards="{{ $cards }}"
+                    :preselected-card="{{ $preselectedCard }}"
                     :errors="{{ $errors->toJson() }}"
                     redirect-path="{{ url()->previous() }}"
                 ></transaction-form>

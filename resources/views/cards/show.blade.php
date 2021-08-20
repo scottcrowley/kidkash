@@ -23,6 +23,9 @@
         </div>
 
         <div class="card-body" style="padding-left: 0; padding-right: 0;">
+            <div class="mb-2 text-right">
+                <a href="{{ route('transactions.create', ['vendor' => $card->vendor->slug, 'card' => $card->id, 'user' => (count($card->owners) == 1) ? $card->owners->first()->slug : null]) }}" class="btn is-primary is-xsmall mr-2 self-center">New Transaction</a>
+            </div>
             <div class="mb-2 text-2xl font-semibold text-center">
                     <a href="{{ route('vendors.show', $card->vendor->slug) }}" class="hover:underline hover:text-gray-800">
                         {{ $card->vendor->name }}

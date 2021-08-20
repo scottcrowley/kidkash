@@ -25,7 +25,7 @@
                 {{-- "Three Dots" Separator --}}
                 @if (is_string($element))
                     <li class="text-gray-400 bg-gray-100 border border-gray-300 border-l-0 flex items-center justify-center px-2 py-1 text-xs" aria-disabled="true">
-                        <span class="block px-2 py-1">{{ $element }}</span>
+                        <span class="block">{{ $element }}</span>
                     </li>
                 @endif
 
