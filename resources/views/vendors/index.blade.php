@@ -5,7 +5,7 @@
 @endsection
 
 @section('head')
-    @livewireAssets
+    @livewireStyles
 @endsection
 
 @section('content')
@@ -22,4 +22,8 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('body-end')
+    @livewireScripts
 @endsection
