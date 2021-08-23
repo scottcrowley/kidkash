@@ -1,9 +1,9 @@
 <div>
     <div class="mb-6 flex items-center">
-        <div class="flex items-center mr-4">
+        <div class="flex items-center mr-2">
             <p>Per Page:</p>
             <div class="ml-1 relative">
-                <select wire:model="perPage" class="w-full py-1 pl-1 pr-6">
+                <select wire:model="perPage" class="w-full py-1 pl-1 pr-7">
                     <option>5</option>
                     <option>10</option>
                     <option>20</option>
@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="text-gray-600 text-sm">
-            <span class="hidden lg:inline">Showing </span>{{ $transactions->firstItem().' to '.$transactions->lastItem().' out of '. $transactions->total() }} Transactions
+            <span class="hidden lg:inline">Showing </span><span class="hidden md:inline">{{ $transactions->firstItem().' to '.$transactions->lastItem().' out of '. $transactions->total() }}</span> <span class="hidden xl:inline">Transactions</span>
         </div>
         {{  $transactions->onEachSide(0)->links('vendor.pagination.livewire') }}
     </div>
