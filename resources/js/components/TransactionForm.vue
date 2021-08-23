@@ -15,11 +15,6 @@
                     <select v-else name="owner_id" class="w-full" :class="checkFieldError('owner_id') ? 'is-invalid' : ''" required>
                         <option value="">No Owners in Database</option>
                     </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
                 </div>
                 <span class="alert-danger" role="alert" v-if="checkFieldError('owner_id')">
                     <strong v-text="errors.owner_id[0]"></strong>
@@ -42,11 +37,6 @@
                     <select v-else name="vendor_id" class="w-full" :class="checkFieldError('vendor_id') ? 'is-invalid' : ''" required>
                         <option value="">No Vendors in Database</option>
                     </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
                 </div>
                 <span class="alert-danger" role="alert" v-if="checkFieldError('vendor_id')">
                     <strong v-text="errors.vendor_id[0]"></strong>
@@ -64,11 +54,6 @@
                         <option value="add">Adding Money</option>
                         <option value="use">Using Money</option>
                     </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
                 </div>
                 <span class="alert-danger" role="alert" v-if="checkFieldError('type')">
                     <strong v-text="errors.type[0]"></strong>
@@ -111,11 +96,6 @@
                         <option value="">No Card</option>
                         <option value="new">New Card</option>
                     </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
                 </div>
             </div>
         </div>

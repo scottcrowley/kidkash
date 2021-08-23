@@ -37,23 +37,10 @@ module.exports = {
         '112': '28rem',
         '120': '30rem',
       }
-    },
-    customForms: theme => ({
-      default: {
-        'input, textarea, multiselect, select': {
-          fontSize: theme('fontSize.sm'),
-        },
-        'input' : {
-          width: theme('width.full'),
-          paddingTop: theme('spacing.1'),
-          paddingBottom: theme('spacing.1'),
-          lineHeight: theme('lineHeight.relaxed'),
-        },
-      },
-    })
+    }
   },
   variants: {},
   plugins: [
-    require('@tailwindcss/custom-forms'),
+    require('@tailwindcss/forms'),
   ]
 }

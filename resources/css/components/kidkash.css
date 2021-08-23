@@ -12,7 +12,7 @@ select {
     @apply block appearance-none bg-white border border-secondary-400 text-secondary-800 text-sm py-2 pl-2 pr-8 rounded leading-tight shadow cursor-pointer;
     
     &:focus {
-        @apply outline-none bg-white ring;
+        @apply outline-none bg-white ring-1;
     }
 
     &:hover {
@@ -26,10 +26,6 @@ select {
     &.disabled:hover {
         @apply border-secondary-300;
     }
-}
-
-.select-menu-icon {
-    @apply pointer-events-none absolute top-0 right-0 flex items-center px-2 text-secondary-800 mt-2;
 }
 
 .activity-label {
@@ -49,7 +45,7 @@ select {
 }
 
 .form-input {
-    @apply border rounded;
+    @apply border rounded text-sm leading-relaxed w-full py-1 border-secondary-400 text-secondary-800;
 }
 
 @screen lg {

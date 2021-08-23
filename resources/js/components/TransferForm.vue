@@ -23,11 +23,6 @@
                     <select v-else name="owner_id" class="w-full" :class="checkError('owner_id') ? 'is-invalid' : ''" required>
                         <option value="">No Owners in Database</option>
                     </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
                 </div>
                 <span class="alert-danger" role="alert" v-if="checkError('owner_id')">
                     <strong v-text="errors.owner_id[0]"></strong>
@@ -54,11 +49,6 @@
                             :value="owner.id" 
                         >{{ owner.name }}</option>
                     </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" :class="toDisabled ? 'text-secondary-400' : ''">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
                 </div>
                 <span class="alert-danger" role="alert" v-if="checkError('owner_id')">
                     <strong v-text="errors.owner_id[0]"></strong>
@@ -86,11 +76,6 @@
                             :value="vendor.id" 
                         >{{ vendor.name }}</option>
                     </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" :class="vendorDisabled ? 'text-secondary-400' : ''">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
                 </div>
                 <span class="alert-danger" role="alert" v-if="checkError('vendor_id')">
                     <strong v-text="errors.vendor_id[0]"></strong>
@@ -130,11 +115,6 @@
                             :value="index" 
                         >{{ card.vendor.name }} (ending in {{card.number.substr(-5)}}) ${{ card.balance.toFixed(2) }}</option>
                     </select>
-                    <div class="select-menu-icon">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" :class="cardsDisabled ? 'text-secondary-400' : ''">
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                        </svg>
-                    </div>
                 </div>
             </div>
         </div>
