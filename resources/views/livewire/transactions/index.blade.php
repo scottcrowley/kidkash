@@ -16,8 +16,15 @@
         </div>
         {{  $transactions->onEachSide(0)->links('vendor.pagination.livewire') }}
     </div>
+    <div>
+        <input wire:model="search" 
+            id="search" 
+            class="block w-1/2 mb-4 px-3 py-1 rounded-md leading-5 placeholder-gray-500 focus:placeholder-gray-300 sm:text-sm transition duration-150 ease-in-out"
+            placeholder="Search"
+            type="search">
+    </div>
     @forelse ($transactions as $transaction)
-        <div class="max-w-sm w-full lg:max-w-3xl mb-12 mx-auto shadow-lg rounded">
+        <div class="max-w-sm w-full lg:max-w-3xl mb-4 sm:mb-6 mx-auto shadow-lg rounded">
             <div class="bg-white border rounded-b rounded-l lg:rounded-b-none lg:rounded-r px-4 py-2 flex flex-col justify-between leading-normal">
                 <div class="mb-4">
                     <div class="mb-2 flex items-center">

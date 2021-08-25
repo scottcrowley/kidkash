@@ -14,10 +14,17 @@
         <div class="text-gray-600 text-sm">
             <span class="hidden lg:inline">Showing </span>{{ $vendors->firstItem().' to '.$vendors->lastItem().' out of '. $vendors->total() }} <span class="hidden lg:inline">Vendors</span>
         </div>
-        {{  $vendors->links('vendor.pagination.livewire') }}
+        {{  $vendors->onEachSide(0)->links('vendor.pagination.livewire') }}
+    </div>
+    <div>
+        <input wire:model="search" 
+            id="search" 
+            class="block w-1/2 mb-4 px-3 py-1 rounded-md leading-5 placeholder-gray-500 focus:placeholder-gray-300 sm:text-sm transition duration-150 ease-in-out"
+            placeholder="Search"
+            type="search">
     </div>
     @forelse ($vendors as $vendor)
-        <div class="max-w-sm w-full lg:max-w-3xl mb-12 mx-auto shadow-lg rounded">
+        <div class="max-w-sm w-full lg:max-w-3xl mb-4 sm:mb-6 mx-auto shadow-lg rounded">
             <div class="bg-white rounded-b rounded-l lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-around leading-normal">
                 <div class="mb-8">
                     <div class="text-gray-700 font-bold text-2xl mb-2 block lg:flex items-center lg:justify-between">
