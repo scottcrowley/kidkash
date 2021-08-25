@@ -272,4 +272,21 @@ class VendorsTest extends TestCase
             ->assertSee('$ 1,500.00')
             ->assertSee('$ 100.00');
     }
+
+    /** @test */
+    public function vendors_can_be_filtered_by_search_field()
+    {
+        $this->signInParent();
+
+        $vendor1 = create('App\Vendor',['name' => 'Chungas']);
+        $vendor2 = create('App\Vendor');
+
+        $this->get(route('vendors.index'))
+            ->assertSee($vendor1->name)
+            ->assertSee($vendor2->name);
+
+        $this->get(route('vendors.index', ['search' => 'chu']))
+            ->assertSee($vendor1->name)
+            ->assertDontSee($vendor2->name);
+    }
 }

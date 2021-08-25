@@ -438,4 +438,22 @@ class TransactionsTest extends TestCase
         $this->get(route('transactions.index'))
             ->assertSee($token);
     }
+
+    /** @test */
+    public function transactions_can_be_filtered_by_search_field()
+    {
+        $this->signInParent();
+
+        $vendor = create('App\Vendor',['name' => 'Chungas']);
+        $transaction1 = create('App\Transaction',['vendor_id' => $vendor->id]);
+        $transaction2 = create('App\Transaction');
+
+        $this->get(route('transactions.index'))
+            ->assertSee($vendor->name)
+            ->assertSee($transaction2->vendor->name);
+
+        $this->get(route('transactions.index', ['search' => 'chu']))
+            ->assertSee($vendor->name)
+            ->assertDontSee($transaction2->vendor->name);
+    }
 }

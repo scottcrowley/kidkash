@@ -12,6 +12,7 @@ class Index extends Component
 
     public $perPage = 20;
     public $search;
+    protected $queryString = ['search'];
 
     public function updatingSearch() 
     {
