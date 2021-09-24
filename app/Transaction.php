@@ -176,7 +176,7 @@ class Transaction extends Model
      */
     public function getOwnerActivityLabelAttribute()
     {
-        return (($this->type == 'add') ? 'Added $ '.$this->modified_amount.' to ' : 'Used $'.$this->modified_amount.' from ').$this->vendor->name;
+        return (($this->type == 'add') ? 'Added $'.$this->modified_amount.' to ' : 'Used $'.$this->modified_amount.' from ').$this->vendor->name;
     }
 
     /**

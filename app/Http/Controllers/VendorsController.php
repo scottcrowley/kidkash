@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\User;
@@ -44,7 +43,7 @@ class VendorsController extends Controller
 
         Vendor::create($data);
 
-        session()->flash('flash', ['message' => $data['name'].' added successfully!', 'level' => 'success']);
+        session()->flash('flash', ['message' => $data['name'] . ' added successfully!', 'level' => 'success']);
 
         return redirect(route('vendors.index'));
     }
@@ -78,7 +77,7 @@ class VendorsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\User  $user
+     * @param  \App\Vendor  $vendor
      * @return \Illuminate\Http\Response
      */
     public function edit(Vendor $vendor)
@@ -102,7 +101,7 @@ class VendorsController extends Controller
 
         $vendor->update($data);
 
-        session()->flash('flash', ['message' => $vendor->name.' was successfully updated!', 'level' => 'success']);
+        session()->flash('flash', ['message' => $vendor->name . ' was successfully updated!', 'level' => 'success']);
 
         return redirect(route('vendors.index'));
     }
@@ -117,7 +116,7 @@ class VendorsController extends Controller
     {
         $vendor->delete();
 
-        session()->flash('flash', ['message' => $vendor->name.' was successfully deleted from the database!', 'level' => 'success']);
+        session()->flash('flash', ['message' => $vendor->name . ' was successfully deleted from the database!', 'level' => 'success']);
 
         if (request()->wantsJson()) {
             return response([], 204);
