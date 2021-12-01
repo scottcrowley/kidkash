@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Card;
@@ -103,7 +102,7 @@ class CardsController extends Controller
 
         $card->update($data);
 
-        session()->flash('flash', ['message' => $card->number.' was successfully updated!', 'level' => 'success']);
+        session()->flash('flash', ['message' => $card->number . ' was successfully updated!', 'level' => 'success']);
 
         return redirect(route('cards.index'));
     }
@@ -118,7 +117,7 @@ class CardsController extends Controller
     {
         $card->delete();
 
-        session()->flash('flash', ['message' => $card->number.' was successfully deleted from the database!', 'level' => 'success']);
+        session()->flash('flash', ['message' => $card->number . ' was successfully deleted from the database!', 'level' => 'success']);
 
         if (request()->wantsJson()) {
             return response([], 204);

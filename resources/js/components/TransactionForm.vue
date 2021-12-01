@@ -183,7 +183,7 @@ export default {
             transactionData: this.transaction,
             cardList: this.cards,
             showNewCard: false,
-            cardSelected: ''
+            cardSelected: '',
         }
     },
     computed: {
@@ -192,7 +192,7 @@ export default {
         }
     },
     created () {
-        if (this.preselectedCard || this.transactionData.vendor_id) {
+        if (this.action != 'update' && (this.preselectedCard || this.transactionData.vendor_id)) {
             this.transactionData.type = (this.preselectedCard) ? 'use' : 0;
             this.updateSelects(this.transactionData.vendor_id);
         } else {

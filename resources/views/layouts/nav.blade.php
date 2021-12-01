@@ -40,7 +40,7 @@
                                 </button>
                             </div>
                             <div class="hidden md:block">
-                                <button class="dropdown-toggle-link block flex items-center text-secondary-800 no-underline text-base focus:outline-none" v-pre>
+                                <button class="dropdown-toggle-link flex items-center text-secondary-800 no-underline text-base focus:outline-none" v-pre>
                                     <div class="w-10 h-10 mr-3 overflow-hidden rounded-full border border-secondary-700">
                                         <img src="/{{ auth()->user()->avatar_path ?: 'storage/avatars/default.jpg' }}" class="w-full h-full object-cover" />
                                     </div>
